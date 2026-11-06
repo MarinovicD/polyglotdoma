@@ -28,7 +28,7 @@ assets/img/         Logo-Varianten; hier kommen später Fotos hinein
 
 - [ ] Impressum ausfüllen (Name, Anschrift, Kontakt)
 - [ ] Datenschutzerklärung ausfüllen und prüfen lassen
-- [ ] Formular-Dienst einrichten (z. B. Formspree) und Adresse in `assets/js/main.js` bei `FORM_ENDPOINT` eintragen. Bis dahin öffnet das Formular das E-Mail-Programm der Besucher.
+- [ ] Web3Forms-Access-Key (web3forms.com, kostenlos) in `assets/js/main.js` bei `WEB3FORMS_KEY` eintragen. Bis dahin öffnet das Formular ersatzweise das E-Mail-Programm der Besucher.
 - [ ] `CONTACT_EMAIL` in `assets/js/main.js` prüfen
 - [ ] Schriften lokal einbinden statt von Google Fonts laden (Datenschutz)
 
