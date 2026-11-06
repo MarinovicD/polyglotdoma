@@ -85,6 +85,7 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     var mail = form.elements.email.value.trim();
     if (!name) { showError('Bitte gib deinen Namen an.'); form.elements.name.focus(); return; }
     if (!mail || !form.elements.email.checkValidity()) { showError('Bitte gib eine gültige E-Mail-Adresse an.'); form.elements.email.focus(); return; }
+    if (!form.elements.nachricht.value.trim()) { showError('Bitte schreib mir eine kurze Nachricht.'); form.elements.nachricht.focus(); return; }
     if (!form.elements.einwilligung.checked) { showError('Bitte bestätige die Einwilligung zur Datenverarbeitung.'); return; }
 
     var topicText = topic.options[topic.selectedIndex].text;
