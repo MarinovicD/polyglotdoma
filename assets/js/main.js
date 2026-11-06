@@ -1,10 +1,12 @@
 /* polyglot.doma – Seitenlogik (Menü, Formular) */
 
 /* ===== EINSTELLUNGEN =====
-   FORM_ENDPOINT: Adresse des Formular-Dienstes (z. B. Formspree: "https://formspree.io/f/abcdwxyz").
-   Solange leer, öffnet "Nachricht senden" das E-Mail-Programm der Besucher mit fertig ausgefüllter Nachricht.
-   CONTACT_EMAIL: Hierhin gehen die Anfragen im E-Mail-Modus. */
-var FORM_ENDPOINT = '';
+   Das Formular wird über Web3Forms (web3forms.com) verschickt.
+   WEB3FORMS_KEY: Access Key von web3forms.com (kommt per E-Mail). Solange leer, öffnet
+   "Nachricht senden" ersatzweise das E-Mail-Programm der Besucher.
+   CONTACT_EMAIL: Kontaktadresse für Fehlermeldungen und den Ersatzweg. */
+var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+var WEB3FORMS_KEY = '';
 var CONTACT_EMAIL = 'info@talaqa-lab.com';
 
 (function () {
@@ -96,7 +98,7 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     lines.push('Arbeitssprache: ' + (values('arbeitssprache').join(', ') || '–'));
     lines.push('', form.elements.nachricht.value.trim() || '(keine Nachricht)');
 
-    if (!FORM_ENDPOINT) {
+    if (!WEB3FORMS_KEY) {
       var subject = 'Anfrage über polyglot.doma: ' + topicText;
       window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
       showDone();
@@ -104,11 +106,13 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     }
 
     var data = new FormData(form);
-    data.append('_subject', 'Anfrage über polyglot.doma: ' + topicText);
+    data.append('access_key', WEB3FORMS_KEY);
+    data.append('subject', 'Anfrage über polyglot.doma: ' + topicText);
+    data.append('from_name', 'polyglot.doma Website');
     data.append('zusammenfassung', lines.join('\n'));
     submitBtn.disabled = true;
     fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); showDone(); form.reset(); syncFormat(); })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.success) throw new Error(j.message || r.status); showDone(); form.reset(); syncFormat(); }); })
       .catch(function () { showError('Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib mir direkt an ' + CONTACT_EMAIL + '.'); })
       .then(function () { submitBtn.disabled = false; });
   });
