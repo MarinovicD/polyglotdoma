@@ -15,6 +15,9 @@
 @font-face{font-family:'Alexandria';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/alexandria-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'Alexandria';font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/alexandria-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
+@font-face{font-family:'Aref Ruqaa';font-style:normal;font-weight:700;font-display:swap;size-adjust:120%;src:url(../fonts/aref-ruqaa-arabic-700-normal.woff2) format('woff2');unicode-range:U+0600-065F,U+066A-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:'Aref Ruqaa';font-style:normal;font-weight:700;font-display:swap;size-adjust:130%;src:url(../fonts/aref-ruqaa-arabic-700-normal.woff2) format('woff2');unicode-range:U+0660-0669}
+
 
 body{margin:0;background:#F4F6FB;color:#0E1B4D;font-family:'Bricolage Grotesque',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#1D3A9A}a:hover{color:#0E1B4D}
@@ -155,7 +158,10 @@ fieldset{border:none;margin:0;padding:0;min-width:0}
 html[lang="en"] .pd-pct::after,html[lang="bs"] .pd-pct::after{content:counter(n) "%"}
 /* Arabisch: eigene Schrift, keine Laufweite (würde die Buchstaben trennen), arabisch-indische Ziffern, gespiegelte Richtungen */
 html[lang="ar"] body,html[lang="ar"] .pd-field,html[lang="ar"] button{font-family:'Alexandria','Bricolage Grotesque',sans-serif}
-html[lang="ar"] .serif,html[lang="ar"] .pd-oder{font-family:'Alexandria',sans-serif !important;font-style:normal !important;font-weight:600 !important}
+html[lang="ar"] .pd-oder{font-family:'Alexandria',sans-serif !important;font-style:normal !important;font-weight:600 !important}
+/* Arabische Akzentschrift (Gegenstück zur kursiven Instrument Serif): Aref Ruqaa Bold, Ruqʿa-Handschrift (OFL 1.1).
+   Sie zeichnet kleiner als Alexandria – ausgeglichen über size-adjust: Buchstaben 120 %, Ziffern 130 %. */
+html[lang="ar"] .serif{font-family:'Aref Ruqaa','Alexandria',sans-serif !important;font-style:normal !important;font-weight:700 !important}
 html[lang="ar"] body *{letter-spacing:0 !important}
 html[lang="ar"] [dir="ltr"],html[lang="ar"] .pd-switch{letter-spacing:normal}
 html[lang="ar"] h1,html[lang="ar"] h2{line-height:1.25 !important}
