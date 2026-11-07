@@ -117,7 +117,7 @@ B = [
  'serif">صباح</span>'),
 ('serif">Guten Tag</span>',
  'serif">Good day</span>',
- 'serif">نهارك «جيّد»، أي: نهارك سعيد</span>'),
+ 'serif"><span class="pg-nw">نهارك «جيّد»،</span><br><span class="pg-nw">أي: نهارك سعيد</span></span>'),
 ('serif">guter Kaffee</span>',
  'serif">good coffee</span>',
  'serif">قهوة جيّدة</span>'),
