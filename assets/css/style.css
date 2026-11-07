@@ -398,7 +398,7 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 /* Arabische Fassung: bosnische Wörter bleiben lateinisch, links nach rechts, in Bricolage */
 html[lang="ar"] .pl-lesson [lang="bs"]{font-family:'Bricolage Grotesque',sans-serif;direction:ltr;unicode-bidi:isolate}
 html[lang="ar"] .pg-pick,html[lang="ar"] .pg-tag{font-family:'Alexandria',sans-serif}
-html[lang="ar"] .pg-de{font-size:28px}
+html[lang="ar"] .pl-lesson .pg-de.serif{font-family:'Markazi Text','Alexandria',serif !important;font-weight:500 !important;font-size:32px;line-height:1.35}
 html[lang="ar"] .pg-final{white-space:nowrap}
 @media (max-width:560px){html[lang="ar"] .pg-final{font-size:48px}}
 @media (max-width:560px){
