@@ -357,7 +357,7 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 .pg-trio{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:18px 0}
 .pg-trio .pg-tag{font-size:22px;padding:10px 24px}
 .pg-deck{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;position:relative}
-.pg-round[data-pos]::before{content:attr(data-pos);position:absolute;top:-6px;right:0;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#4A68C2}
+.pg-round[data-pos]::before{content:attr(data-pos);position:absolute;top:-6px;inset-inline-end:0;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#4A68C2}
 .pg-item{display:flex;flex-direction:column;align-items:center;gap:2px}
 .pg-ic{width:96px;height:96px;display:block;margin-bottom:6px}
 .pg-w{font-size:76px;font-weight:800;letter-spacing:-0.035em;line-height:1.1;color:#0E1B4D}
@@ -381,7 +381,7 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 .pg-score{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-0.03em;line-height:1.1}
 .pg-again{background:none}
 .pg-rules{display:flex;flex-direction:column;gap:12px;width:100%;max-width:620px;margin:8px 0}
-.pg-rule{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto;align-items:center;gap:18px;background:#D5DEF3;border-radius:24px;padding:12px 22px;text-align:left}
+.pg-rule{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto;align-items:center;gap:18px;background:#D5DEF3;border-radius:24px;padding:12px 22px;text-align:start}
 .pg-rule .pg-w{font-size:40px}
 .pg-rule-t{font-size:18px;line-height:1.35}
 .pg-pairs{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:4px 0 10px}
@@ -395,6 +395,12 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 .pg-why{font-size:16px;margin-top:4px}
 .pg-final{font-size:clamp(64px,9vw,104px);font-weight:800;letter-spacing:-0.04em;line-height:1.1;color:#0E1B4D}
 .pg-note{margin:4px 0 0;font-size:14px;color:#4A68C2}
+/* Arabische Fassung: bosnische Wörter bleiben lateinisch, links nach rechts, in Bricolage */
+html[lang="ar"] .pl-lesson [lang="bs"]{font-family:'Bricolage Grotesque',sans-serif;direction:ltr;unicode-bidi:isolate}
+html[lang="ar"] .pg-pick,html[lang="ar"] .pg-tag{font-family:'Alexandria',sans-serif}
+html[lang="ar"] .pg-de{font-size:28px}
+html[lang="ar"] .pg-final{white-space:nowrap}
+@media (max-width:560px){html[lang="ar"] .pg-final{font-size:48px}}
 @media (max-width:560px){
   .pg-w{font-size:60px}.pg-de{font-size:22px}.pg-ic{width:76px;height:76px}
   .pg-trio .pg-tag{font-size:18px;padding:8px 18px}

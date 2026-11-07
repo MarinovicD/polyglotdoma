@@ -8,6 +8,8 @@
   if (!box || !box.querySelector('.pg-deck')) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var tOk = box.getAttribute('data-ok'), tNo = box.getAttribute('data-no');
+  var ar = document.documentElement.lang === 'ar';
+  function num(n) { return ar ? String(n).replace(/\d/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[d]; }) : String(n); }
 
   function fill(t, map) { return t.replace(/\{(\w)\}/g, function (_, k) { return map[k]; }); }
 
@@ -33,7 +35,7 @@
       fb.textContent = ''; fb.className = 'pl-fb';
       if (sum) sum.hidden = true;
       pickBox.hidden = false;
-      deck.setAttribute('data-pos', (i + 1) + ' / ' + items.length);
+      deck.setAttribute('data-pos', num(i + 1) + ' / ' + num(items.length));
     }
 
     function reset() { clearTimeout(timer); hits = 0; showItem(0); }
@@ -43,7 +45,7 @@
       pickBox.hidden = true;
       fb.textContent = ''; fb.className = 'pl-fb';
       sum.hidden = false;
-      sum.querySelector('.pg-score').textContent = fill(deck.getAttribute('data-done'), { n: hits, t: items.length });
+      sum.querySelector('.pg-score').textContent = fill(deck.getAttribute('data-done'), { n: num(hits), t: num(items.length) });
       deck.removeAttribute('data-pos');
     }
 

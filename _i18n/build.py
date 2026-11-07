@@ -120,6 +120,8 @@ def build_index():
                     sys.exit('AR_EXTRA nicht gefunden: ' + a[:80])
                 out = out.replace(a, b)
             out = out.replace('pd-left', 'pd-TMP').replace('pd-right', 'pd-left').replace('pd-TMP', 'pd-right')
+        if lang in AR_SLUG:
+            out = out.replace('href="arabisch/', 'href="%s/' % AR_SLUG[lang])
         out = to_subdir(out, lang)
         out = fill_all(out, lang, 'index.html')
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
@@ -147,9 +149,12 @@ def build_legal(page, bodies, title_key):
         print('%s/%s geschrieben' % (lang, page))
 
 # ---------- Sprachseiten (eigene Seite je Lehrsprache, z. B. arabisch/, bosnisch/) ----------
-# Arabisch-Seite: DE, EN, BS. Bosnisch-Seite: DE, EN (keine bosnische Fassung, Entscheidung 07.11.2026).
+# Arabisch-Seite: DE, EN, BS. Bosnisch-Seite: DE, EN, AR (keine bosnische Fassung, Entscheidung 07.11.2026).
 AR_PAGE_LANGS = ['de', 'en', 'bs']
-BS_PAGE_LANGS = ['de', 'en']
+BS_PAGE_LANGS = ['de', 'en', 'ar']
+# Ordnernamen je Sprache in der Sprache der Fassung (Regel seit 07.11.2026); Arabisch mit lateinischer
+# Umschrift aus dem Englischen, weil arabische Schrift in Adressen zu %-Zeichenketten wird.
+AR_SLUG = {'de': 'arabisch', 'en': 'arabic', 'bs': 'arapski'}
 
 def slug_of(slug, lang):
     """slug: ein Ordnername für alle Sprachen oder ein dict je Sprache (z. B. bosnisch → /en/bosnian/)."""
@@ -206,11 +211,12 @@ def build_page(slug, rows, langs, extra=()):
         out = src
         for row in sorted(rows, key=lambda r: -len(r[0])):
             out = out.replace(row[0], row[langs.index(lang)])
-        for row in sorted(extra, key=lambda r: -len(r[0])):
-            out = out.replace(row[0], row[AR_PAGE_LANGS.index(lang)])
+        if lang in AR_PAGE_LANGS:
+            for row in sorted(extra, key=lambda r: -len(r[0])):
+                out = out.replace(row[0], row[AR_PAGE_LANGS.index(lang)])
         for row in sorted(shared, key=lambda r: -len(r[0])):
             out = out.replace(row[0], row[COL[lang]])
-        out = out.replace('<html lang="de">', '<html lang="%s">' % lang, 1)
+        out = out.replace('<html lang="de">', '<html lang="%s"%s>' % (lang, ' dir="rtl"' if lang == 'ar' else ''), 1)
         for a in ('href="../assets/', 'src="../assets/', 'href="../favicon.svg"'):
             out = out.replace(a, a.replace('="../', '="../../', 1))
         out = page_switchers(out, slug, langs, lang)
@@ -222,12 +228,12 @@ def build_page(slug, rows, langs, extra=()):
         print('%s/%s/index.html geschrieben' % (lang, slug_of(slug, lang)))
 
 def build_arabisch():
-    build_page('arabisch', A, AR_PAGE_LANGS)
+    build_page(AR_SLUG, A, AR_PAGE_LANGS)
 
-BS_SLUG = {'de': 'bosnisch', 'en': 'bosnian'}
+BS_SLUG = {'de': 'bosnisch', 'en': 'bosnian', 'ar': 'bosnian'}
 
 # Alte Adressen, die auf die neue Adresse weiterleiten (GitHub Pages kann kein 301, daher eine kleine Weiterleitungsseite)
-REDIRECTS = [('en/bosnisch', '../bosnian/')]
+REDIRECTS = [('en/bosnisch', '../bosnian/'), ('en/arabisch', '../arabic/'), ('bs/arabisch', '../arapski/')]
 
 def build_redirects():
     for d, target in REDIRECTS:
@@ -241,11 +247,11 @@ def build_redirects():
 
 def build_bosnisch():
     build_page(BS_SLUG, B, BS_PAGE_LANGS, extra=A)
-    build_redirects()
 
 if __name__ == '__main__':
     build_index()
     build_arabisch()
     build_bosnisch()
+    build_redirects()
     build_legal('impressum.html', IMPRESSUM, 'impressum')
     build_legal('datenschutz.html', DATENSCHUTZ, 'datenschutz')
