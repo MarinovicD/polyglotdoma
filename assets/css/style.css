@@ -298,3 +298,8 @@ html.pd-modal{overflow:hidden}
 .pd-btn[data-topic],.pd-submit{background:#B88A4A !important;color:#0E1B4D !important;border-color:#B88A4A !important}
 .pd-btn[data-topic]:hover,.pd-submit:hover{background:#C99A57 !important;color:#0E1B4D !important;box-shadow:0 14px 28px -12px rgba(184,138,74,.75)}
 .pd-submit svg{stroke:#0E1B4D}
+
+/* Buttons: umbrochener Text bleibt mittig; Hero-Buttons auf dem Handy gleich breit über die volle Breite */
+.pd-btn{text-align:center}
+@media (max-width:560px){.pd-hero-ctas>a{flex:1 1 100%;display:flex;justify-content:center;align-items:center;box-sizing:border-box;padding-left:16px !important;padding-right:16px !important;font-size:17px !important}}
+@media (max-width:560px){#angebot .pd-btn[data-topic]{align-self:stretch !important;display:flex;justify-content:center;padding-left:14px !important;padding-right:14px !important;font-size:16px !important}}
