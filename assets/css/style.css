@@ -278,6 +278,8 @@ html.pd-modal{overflow:hidden}
 .pd-dialog[open]{display:flex;flex-direction:column}
 .pd-dialog::backdrop{background:rgba(14,27,77,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .pd-dialog .pd-formcard{animation:none !important;flex:none !important;width:100%}
+/* Im Pop-up immer sichtbar, auch wenn die Scroll-Animation die Formularkarte noch nicht eingeblendet hat (iPhone: kein Scrollen bei offenem Pop-up) */
+.pd-dialog [data-r]{opacity:1 !important;transform:none !important;clip-path:none !important}
 .pd-x{position:sticky;top:0;z-index:1;align-self:flex-end;flex:none;width:48px;height:48px;margin-bottom:10px;border:none;border-radius:50%;background:#F4F6FB;color:#0E1B4D;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 24px -12px rgba(14,27,77,.8);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .pd-x:hover{transform:rotate(90deg)}
 @media (prefers-reduced-motion: no-preference){.pd-dialog[open]{animation:pdUp .45s cubic-bezier(.2,.8,.2,1) both}.pd-dialog[open]::backdrop{animation:pdFade .3s ease both}}
