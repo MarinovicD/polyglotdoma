@@ -2,9 +2,8 @@
 
 /* ===== EINSTELLUNGEN =====
    Das Formular wird über Web3Forms (web3forms.com) verschickt.
-   WEB3FORMS_KEY: Access Key von web3forms.com (kommt per E-Mail). Solange leer, öffnet
-   "Nachricht senden" ersatzweise das E-Mail-Programm der Besucher.
-   CONTACT_EMAIL: Kontaktadresse für Fehlermeldungen und den Ersatzweg. */
+   WEB3FORMS_KEY: Access Key von web3forms.com (Anfragen gehen an info@talaqa-lab.com).
+   CONTACT_EMAIL: wird in der Fehlermeldung genannt, falls das Senden scheitert. */
 var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
 var WEB3FORMS_KEY = '79d0c64b-8fa2-4c09-9222-6e8390520dae';
 var CONTACT_EMAIL = 'info@talaqa-lab.com';
@@ -112,13 +111,6 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     if (!formatBox.disabled) lines.push('Einzel/Gruppe: ' + (values('format').join(', ') || '–'));
     lines.push('Arbeitssprache: ' + (values('arbeitssprache').join(', ') || '–'));
     lines.push('', form.elements.nachricht.value.trim() || '(keine Nachricht)');
-
-    if (!WEB3FORMS_KEY) {
-      var subject = 'Anfrage über polyglot.doma: ' + topicText;
-      window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
-      showDone();
-      return;
-    }
 
     var data = new FormData(form);
     data.append('access_key', WEB3FORMS_KEY);
