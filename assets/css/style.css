@@ -322,3 +322,10 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 /* Arabisch-Eintrag in der Sprachliste: die ganze Zeile (inkl. Fahne) ist der Link */
 .pd-lang:has(>a){position:relative;cursor:pointer}
 .pd-lang>a::after{content:"";position:absolute;inset:0;border-radius:inherit}
+
+/* Mini-Lektion: Fatha in eigener Farbe (Koralle), beim Lām erst nachträglich eingeblendet */
+.pl-v{position:relative;display:inline-block}
+.pl-v .pl-v-mark{color:#D9573D}
+.pl-v .pl-v-base{position:absolute;inset:0;color:inherit}
+@keyframes plVow{from{opacity:0}to{opacity:1}}
+.pl-step.pl-in .pl-v-in .pl-v-mark,.pl-step:not([hidden]) .pl-v-in .pl-v-mark{animation:plVow 1s ease 1.2s both}

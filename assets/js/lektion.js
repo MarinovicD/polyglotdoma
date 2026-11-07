@@ -36,6 +36,19 @@
     b.addEventListener('click', function () { resetQuizzes(); show(0); });
   });
 
+  /* ---------- Fatha in eigener Farbe ----------
+     Browser färben ein Vokalzeichen nicht getrennt vom Buchstaben. Deshalb zwei deckungsgleiche Ebenen:
+     unten Buchstabe + Fatha in Fatha-Farbe, oben nur der Buchstabe in seiner Farbe. Bei .pl-v-in wird die
+     untere Ebene eingeblendet, die Fatha erscheint also erst nach dem Buchstaben. */
+  box.querySelectorAll('.pl-v').forEach(function (el) {
+    var full = el.textContent, base = el.getAttribute('data-base');
+    el.textContent = '';
+    [['pl-v-mark', full], ['pl-v-base', base]].forEach(function (x) {
+      var s = document.createElement('span'); s.className = x[0]; s.setAttribute('aria-hidden', 'true'); s.textContent = x[1]; el.appendChild(s);
+    });
+    var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = full; el.appendChild(sr);
+  });
+
   /* ---------- Quiz ---------- */
   function resetQuizzes() {
     box.querySelectorAll('.pl-quiz button').forEach(function (b) { b.classList.remove('ok', 'no'); });
