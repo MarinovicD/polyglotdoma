@@ -16,7 +16,7 @@ A = [
 ('content="Drei Lernwege ins Arabische – und eine Mini-Lektion, in der du dein erstes arabisches Wort liest."',
  'content="Three learning paths into Arabic – and a mini-lesson in which you read your first Arabic word."',
  'content="Tri puta učenja do arapskog – i mini-lekcija u kojoj čitaš svoju prvu arapsku riječ."'),
-('>Sprachunterricht · Arabisch</div>', '>Language lessons · Arabic</div>', '>Časovi jezika · arapski</div>'),
+('><span class="pd-eyebrow"><span>Sprachunterricht</span><span>Arabisch</span></span></div>', '><span class="pd-eyebrow"><span>Language lessons</span><span>Arabic</span></span></div>', '><span class="pd-eyebrow"><span>Časovi jezika</span><span>arapski</span></span></div>'),
 ('aria-label="polyglot.doma – zur Startseite"', 'aria-label="polyglot.doma – to the home page"', 'aria-label="polyglot.doma – na početnu stranicu"'),
 ('>Lernwege</a>', '>Learning paths</a>', '>Putevi učenja</a>'),
 ('>Ausprobieren</a>', '>Try it</a>', '>Isprobaj</a>'),

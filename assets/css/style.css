@@ -285,3 +285,16 @@ html.pd-modal{overflow:hidden}
 
 /* Impressum/Datenschutz: Kopfzeile auf dem Handy – Button einzeilig, Schriftzug ausgeblendet (Bildmarke bleibt) */
 @media (max-width:560px){.pd-lwm{display:none}.pd-back{font-size:15px;padding:9px 16px !important}}
+
+/* Kopfzeile „Sprachunterricht · Deutsch · Bosnisch · Arabisch“: Umbruch nur nach dem ersten Teil,
+   Trennpunkt am Zeilenanfang wird abgeschnitten */
+.pd-eyebrow{display:flex;flex-wrap:wrap;row-gap:4px;margin-inline-start:-1em;clip-path:inset(0 0 0 1em)}
+[dir="rtl"] .pd-eyebrow{clip-path:inset(0 1em 0 0)}
+.pd-eyebrow>span{white-space:nowrap}
+.pd-eyebrow>span::before{content:"·";display:inline-block;width:1em;text-align:center;letter-spacing:0}
+
+/* Buchungs-Buttons (Kennenlerngespräch, Konversationsstunde, Lernweg anfragen, Absenden) in Messing –
+   der einzige warme Akzent der Marke; Text in Tinte (Kontrast 5:1) */
+.pd-btn[data-topic],.pd-submit{background:#B88A4A !important;color:#0E1B4D !important;border-color:#B88A4A !important}
+.pd-btn[data-topic]:hover,.pd-submit:hover{background:#C99A57 !important;color:#0E1B4D !important;box-shadow:0 14px 28px -12px rgba(184,138,74,.75)}
+.pd-submit svg{stroke:#0E1B4D}

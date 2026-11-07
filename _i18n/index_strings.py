@@ -26,10 +26,10 @@ S = [
 ('content="de_DE"', 'content="en_GB"', 'content="bs_BA"', 'content="ar_AR"'),
 
 # ---------- Stück 1: Kopfzeile, Navigation, Hero ----------
-('>Sprachunterricht · Deutsch · Bosnisch · Arabisch</div>',
- '>Language lessons · German · Bosnian · Arabic</div>',
- '>Časovi jezika · njemački · bosanski · arapski</div>',
- '>دروس لغات · الألمانية · البوسنية · العربية</div>'),
+('><span class="pd-eyebrow"><span>Sprachunterricht</span><span>Deutsch · Bosnisch · Arabisch</span></span></div>',
+ '><span class="pd-eyebrow"><span>Language lessons</span><span>German · Bosnian · Arabic</span></span></div>',
+ '><span class="pd-eyebrow"><span>Časovi jezika</span><span>njemački · bosanski · arapski</span></span></div>',
+ '><span class="pd-eyebrow"><span>دروس لغات</span><span>الألمانية · البوسنية · العربية</span></span></div>'),
 ('aria-label="Hauptnavigation"', 'aria-label="Main navigation"', 'aria-label="Glavna navigacija"', 'aria-label="التنقل الرئيسي"'),
 ('aria-label="polyglot.doma – zum Seitenanfang"', 'aria-label="polyglot.doma – back to top"', 'aria-label="polyglot.doma – na vrh stranice"', 'aria-label="polyglot.doma – إلى أعلى الصفحة"'),
 ('>Über mich</a>', '>About me</a>', '>O meni</a>', '>عنّي</a>'),
