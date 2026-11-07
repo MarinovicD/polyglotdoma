@@ -372,5 +372,5 @@ S += [
  '>Od nule, osnove jezika ili podrška tokom studija: na stranici za arapski naći ćeš put koji ti odgovara. I mini-lekciju u kojoj čitaš svoju prvu arapsku riječ.</span>',
  '>Von Null an, die Grundlagen der Sprache oder Begleitung im Studium: Auf der Arabisch-Seite findest du den Weg, der zu dir passt. Und eine Mini-Lektion, in der du dein erstes arabisches Wort liest.</span>'),
 ('>Zur Arabisch-Seite →</span>', '>Go to the Arabic page →</span>', '>Na stranicu za arapski →</span>', '>Zur Arabisch-Seite →</span>'),
-('>bäläd · Land</span>', '>balad · country</span>', '>beled · zemlja</span>', '>bäläd · Land</span>'),
+('>balad · Land</span>', '>balad · country</span>', '>beled · zemlja</span>', '>balad · Land</span>'),
 ]

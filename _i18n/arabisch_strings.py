@@ -84,10 +84,10 @@ A = [
  '<p class="pl-hint">An Arabic letter stands for a consonant. The vowels are added as small marks.</p>',
  '<p class="pl-hint">Arapsko slovo označava suglasnik. Samoglasnici se dodaju kao mali znakovi.</p>'),
 # Schritt 2
-('<p class="pl-say">Setzt du einen kleinen <b>Strich darüber</b>, liest du ein <b>ä</b> dazu.</p>',
+('<p class="pl-say">Setzt du einen kleinen <b>Strich darüber</b>, liest du ein <b>a</b> dazu, gesprochen wie ein <b>ä</b>.</p>',
  '<p class="pl-say">Put a small <b>stroke above</b> it, and you add an <b>a</b> – as in <i>cat</i>.</p>',
  '<p class="pl-say">Ako iznad staviš malu <b>crticu</b>, dodaješ glas <b>e</b>.</p>'),
-('</span><b>bä</b></div>', '</span><b>ba</b></div>', '</span><b>be</b></div>'),
+('</span><b>ba</b></div>', '</span><b>ba</b></div>', '</span><b>be</b></div>'),
 ('>+ Strich oben =</span>', '>+ stroke above =</span>', '>+ crtica gore =</span>'),
 ('<p class="pl-hint">Der Buchstabe bleibt gleich, nur das Zeichen kommt dazu. Es heißt Fatha.</p>',
  "<p class=\"pl-hint\">The letter stays the same – only the mark is added. It's called fatha.</p>",
@@ -96,9 +96,9 @@ A = [
 ('<p class="pl-say">Das ist <b>Lam</b>, der Laut <b>l</b>. Mit dem Strich darüber: Wie liest du das?</p>',
  '<p class="pl-say">This is <b>Lam</b>, the sound <b>l</b>. With the stroke above: how do you read it?</p>',
  '<p class="pl-say">Ovo je harf <b>lam</b>, glas <b>l</b>. S crticom iznad: kako to čitaš?</p>'),
-('''<button type="button" data-a="1" data-fb="Schau auf den Buchstaben: Das ist Lam, nicht Ba.">bä</button>
-<button type="button" data-a="2" data-fb="Genau: l + ä = lä.">lä</button>
-<button type="button" data-a="3" data-fb="Erst der Konsonant, dann der Vokal: l + ä.">äl</button>''',
+('''<button type="button" data-a="1" data-fb="Schau auf den Buchstaben: Das ist Lam, nicht Ba.">ba</button>
+<button type="button" data-a="2" data-fb="Genau: l + a = la.">la</button>
+<button type="button" data-a="3" data-fb="Erst der Konsonant, dann der Vokal: l + a.">al</button>''',
  '''<button type="button" data-a="1" data-fb="Look at the letter: this is Lam, not Ba.">ba</button>
 <button type="button" data-a="2" data-fb="Exactly: l + a = la.">la</button>
 <button type="button" data-a="3" data-fb="First the consonant, then the vowel: l + a.">al</button>''',
@@ -115,9 +115,9 @@ A = [
  '<p class="pl-say">Now all three side by side. Arabic is read <b>from right to left</b>.</p>',
  '<p class="pl-say">Sada sva tri jedno pored drugog. Arapski se čita <b>s desna na lijevo</b>.</p>'),
 ('</svg> Leserichtung</p>', '</svg> Reading direction</p>', '</svg> Smjer čitanja</p>'),
-('''<button type="button" data-a="1" data-fb="Das wäre von links gelesen. Fang rechts an.">däläb</button>
-<button type="button" data-a="2" data-fb="Richtig: bä-lä-d. Rechts angefangen, nach links gelesen.">bäläd</button>
-<button type="button" data-a="3" data-fb="Fast. Auch auf Lam steht ein Strich: bä-lä-d.">bäld</button>''',
+('''<button type="button" data-a="1" data-fb="Das wäre von links gelesen. Fang rechts an.">dalab</button>
+<button type="button" data-a="2" data-fb="Richtig: ba-la-d. Rechts angefangen, nach links gelesen.">balad</button>
+<button type="button" data-a="3" data-fb="Fast. Auch auf Lam steht ein Strich: ba-la-d.">bald</button>''',
  '''<button type="button" data-a="1" data-fb="That's reading from the left. Start on the right.">dalab</button>
 <button type="button" data-a="2" data-fb="Right: ba-la-d. Start on the right, read to the left.">balad</button>
 <button type="button" data-a="3" data-fb="Almost. Lam has a stroke too: ba-la-d.">bald</button>''',
@@ -131,7 +131,7 @@ A = [
  'data-t1="Prvo se pružaju jedno prema drugom: be na početku postaje malo kraći, ali tačka ostaje. Lam i dal dobijaju spojnu crticu." data-t2="Onda se primaknu jedno drugom." data-t3="Gotovo: jedna riječ. Tačke i znakovi i dalje ti otkrivaju svako slovo.">Ovako stoje odvojeno.</p>'),
 ('data-again="Nochmal ansehen">Verbinden</button>', 'data-again="Watch again">Connect</button>', 'data-again="Pogledaj ponovo">Spoji</button>'),
 # Schritt 7
-('<p class="pl-say"><b>bäläd</b> heißt <b>Land</b>.</p>', '<p class="pl-say"><b>balad</b> means <b>country</b>.</p>', '<p class="pl-say"><b>beled</b> znači <b>zemlja</b>.</p>'),
+('<p class="pl-say"><b>balad</b> heißt <b>Land</b>.</p>', '<p class="pl-say"><b>balad</b> means <b>country</b>.</p>', '<p class="pl-say"><b>beled</b> znači <b>zemlja</b>.</p>'),
 ('<p class="pl-hint">Du hast eben dein erstes arabisches Wort gelesen. Im Unterricht geht es genau so weiter, Buchstabe für Buchstabe, und schon in der ersten Stunde liest du deine ersten Wörter.</p>',
  "<p class=\"pl-hint\">You've just read your first Arabic word. Lessons continue exactly like this, letter by letter – and in the very first lesson you'll already be reading your first words.</p>",
  '<p class="pl-hint">Upravo si pročitao svoju prvu arapsku riječ. Na času se nastavlja upravo ovako, slovo po slovo, i već na prvom času čitaš svoje prve riječi.</p>'),
