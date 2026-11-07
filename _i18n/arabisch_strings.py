@@ -129,7 +129,7 @@ A = [
 ('data-t1="Zuerst strecken sie sich einander entgegen: Ba wird am Anfang etwas kürzer, sein Punkt bleibt. Lam und Dal bekommen einen Verbindungsstrich." data-t2="Dann rücken sie zusammen." data-t3="Fertig: ein Wort. Die Punkte und Zeichen verraten dir weiterhin jeden Buchstaben.">So stehen sie einzeln da.</p>',
  'data-t1="First they reach towards each other: at the start, Ba gets a little shorter, but keeps its dot. Lam and Dal gain a connecting stroke." data-t2="Then they move together." data-t3="Done: one word. The dots and marks still reveal every letter to you.">Here they stand on their own.</p>',
  'data-t1="Prvo se pružaju jedno prema drugom: be na početku postaje malo kraći, ali tačka ostaje. Lam i dal dobijaju spojnu crticu." data-t2="Onda se primaknu jedno drugom." data-t3="Gotovo: jedna riječ. Tačke i znakovi i dalje ti otkrivaju svako slovo.">Ovako stoje odvojeno.</p>'),
-('data-again="Nochmal ansehen">Verbinden</button>', 'data-again="Watch again">Connect</button>', 'data-again="Pogledaj ponovo">Spoji</button>'),
+('data-next="Zusammenrücken" data-again="Nochmal ansehen">Verbinden</button>', 'data-next="Move them together" data-again="Watch again">Connect</button>', 'data-next="Primakni ih" data-again="Pogledaj ponovo">Spoji</button>'),
 # Schritt 7
 ('<p class="pl-say"><b>balad</b> heißt <b>Land</b>.</p>', '<p class="pl-say"><b>balad</b> means <b>country</b>.</p>', '<p class="pl-say"><b>beled</b> znači <b>zemlja</b>.</p>'),
 ('<p class="pl-hint">Du hast eben dein erstes arabisches Wort gelesen. Im Unterricht geht es genau so weiter, Buchstabe für Buchstabe, und schon in der ersten Stunde liest du deine ersten Wörter.</p>',

@@ -76,33 +76,38 @@
     p.ex.textContent = p.ex.getAttribute('data-t0');
     p.btn.textContent = p.btn.getAttribute('data-first');
     p.btn.style.visibility = '';
+    step.setAttribute('data-phase', '0');
   }
+  /* Drei Phasen, jede per Klick: 0 einzeln → 1 Wortformen → 2 zusammengerückt. Kein automatisches Weiterlaufen. */
   box.querySelectorAll('.pl-play').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var step = btn.closest('.pl-step');
       var p = parts(step);
+      var phase = +(step.getAttribute('data-phase') || 0);
       clearTimers();
-      resetJoin(step);
-      btn.style.visibility = 'hidden';
-      var t = reduce ? [0, 50, 100] : [500, 3400, 5100];
-      timers.push(setTimeout(function () {
+      if (phase === 0) {
         p.letters.forEach(function (l) {
           l.textContent = l.getAttribute('data-con');
           l.classList.remove('pl-pop'); void l.offsetWidth; l.classList.add('pl-pop');
         });
         p.ex.textContent = p.ex.getAttribute('data-t1');
-      }, t[0]));
-      timers.push(setTimeout(function () {
+        btn.textContent = btn.getAttribute('data-next');
+        step.setAttribute('data-phase', '1');
+      } else if (phase === 1) {
         p.join.style.gap = '0px';
         p.letters.forEach(function (l) { l.style.margin = '0 -0.5px'; });
         p.ex.textContent = p.ex.getAttribute('data-t2');
-      }, t[1]));
-      timers.push(setTimeout(function () {
-        p.letters.forEach(function (l) { l.style.color = '#0E1B4D'; });
-        p.ex.textContent = p.ex.getAttribute('data-t3');
-        btn.textContent = btn.getAttribute('data-again');
-        btn.style.visibility = '';
-      }, t[2]));
+        btn.style.visibility = 'hidden';
+        timers.push(setTimeout(function () {
+          p.letters.forEach(function (l) { l.style.color = '#0E1B4D'; });
+          p.ex.textContent = p.ex.getAttribute('data-t3');
+          btn.textContent = btn.getAttribute('data-again');
+          btn.style.visibility = '';
+          step.setAttribute('data-phase', '2');
+        }, reduce ? 100 : 2200));
+      } else {
+        resetJoin(step);
+      }
     });
   });
 
