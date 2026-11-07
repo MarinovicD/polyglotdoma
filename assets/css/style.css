@@ -316,3 +316,5 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 /* Aref Ruqaa: die Sonderform für Lām-Mīm-Mīm am Wortanfang hängt das Lām nicht an (Fehler in der Schrift) –
    nur für diese Wörter abschalten (global abschalten würde Zähne verschlucken, z. B. تتعلّم). */
 .pd-nocalt{font-feature-settings:"calt" 0}
+/* Einzelne Wörter, die Safari mit Aref Ruqaa falsch setzt, als Vektorgrafik aus der Schrift (gleiche Größe wie der Text) */
+.pd-wordsvg{display:inline-block;overflow:visible}
