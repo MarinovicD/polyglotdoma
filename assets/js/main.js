@@ -14,10 +14,10 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
   /* ---------- Sprache der Seite ---------- */
   var LANG = (document.documentElement.lang || 'de').slice(0, 2);
   var MSG = {
-    de: { name: 'Bitte gib deinen Namen an.', mail: 'Bitte gib eine gültige E-Mail-Adresse an.', msg: 'Bitte schreib mir eine kurze Nachricht.', consent: 'Bitte bestätige die Einwilligung zur Datenverarbeitung.', fail: 'Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib mir direkt an ' },
-    en: { name: 'Please enter your name.', mail: 'Please enter a valid email address.', msg: 'Please write me a short message.', consent: 'Please confirm your consent to data processing.', fail: "Unfortunately, that didn't work. Please try again or email me directly at " },
-    bs: { name: 'Molim te, upiši svoje ime.', mail: 'Molim te, upiši ispravnu e-mail adresu.', msg: 'Molim te, napiši mi kratku poruku.', consent: 'Molim te, potvrdi saglasnost za obradu podataka.', fail: 'Nažalost, nije uspjelo. Pokušaj ponovo ili mi piši direktno na ' },
-    ar: { name: 'يرجى إدخال اسمك.', mail: 'يرجى إدخال بريد إلكتروني صحيح.', msg: 'يرجى كتابة رسالة قصيرة.', consent: 'يرجى تأكيد موافقتك على معالجة البيانات.', fail: 'للأسف لم يتم الإرسال. حاول مرة أخرى أو راسلني مباشرة على ' }
+    de: { name: 'Bitte gib deinen Namen an.', mail: 'Bitte gib eine gültige E-Mail-Adresse an.', msg: 'Bitte schreib mir eine kurze Nachricht.', consent: 'Bitte bestätige die Einwilligung zur Datenverarbeitung.', close: 'Schließen', fail: 'Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib mir direkt an ' },
+    en: { name: 'Please enter your name.', mail: 'Please enter a valid email address.', msg: 'Please write me a short message.', consent: 'Please confirm your consent to data processing.', close: 'Close', fail: "Unfortunately, that didn't work. Please try again or email me directly at " },
+    bs: { name: 'Molim te, upiši svoje ime.', mail: 'Molim te, upiši ispravnu e-mail adresu.', msg: 'Molim te, napiši mi kratku poruku.', consent: 'Molim te, potvrdi saglasnost za obradu podataka.', close: 'Zatvori', fail: 'Nažalost, nije uspjelo. Pokušaj ponovo ili mi piši direktno na ' },
+    ar: { name: 'يرجى إدخال اسمك.', mail: 'يرجى إدخال بريد إلكتروني صحيح.', msg: 'يرجى كتابة رسالة قصيرة.', consent: 'يرجى تأكيد موافقتك على معالجة البيانات.', close: 'إغلاق', fail: 'للأسف لم يتم الإرسال. حاول مرة أخرى أو راسلني مباشرة على ' }
   };
   var T = MSG[LANG] || MSG.de;
   /* Anfrage-Mails an mich bleiben immer auf Deutsch */
@@ -66,17 +66,56 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
   topic.addEventListener('change', syncFormat);
   syncFormat();
 
-  /* Angebots-Buttons wählen das Anliegen (und auf Sprachseiten den Lernweg) vor */
-  document.querySelectorAll('[data-topic]').forEach(function (a) {
-    a.addEventListener('click', function () {
+  /* ---------- Formular als Pop-up ----------
+     Alle Links auf #kontakt öffnen das Formular an Ort und Stelle. Dafür wandert die
+     Formularkarte in ein <dialog> und beim Schließen zurück an ihren Platz unten auf
+     der Seite (es gibt also nur ein Formular). Ohne <dialog>-Unterstützung oder ohne
+     JavaScript scrollen die Links wie bisher nach unten. */
+  var card = form.closest('.pd-formcard');
+  var dlg = null, spot = null;
+  if (card && typeof HTMLDialogElement === 'function') {
+    dlg = document.createElement('dialog');
+    dlg.className = 'pd-dialog';
+    dlg.setAttribute('aria-label', form.getAttribute('aria-label') || 'Kontakt');
+    dlg.innerHTML = '<button class="pd-x" type="button" aria-label="' + T.close + '"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 5 L19 19 M19 5 L5 19"/></svg></button>';
+    document.body.appendChild(dlg);
+    spot = document.createElement('div');
+    spot.setAttribute('aria-hidden', 'true');
+    dlg.querySelector('.pd-x').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', function () {
+      if (spot.parentNode) { spot.parentNode.replaceChild(card, spot); }
+      document.documentElement.classList.remove('pd-modal');
+    });
+  }
+  function openPopup() {
+    if (!dlg) return false;
+    if (dlg.open) return true;
+    /* Platzhalter hält unten die Höhe, damit die Seite dahinter nicht springt */
+    spot.style.flex = card.style.flex;
+    spot.style.height = card.offsetHeight + 'px';
+    card.parentNode.replaceChild(spot, card);
+    dlg.appendChild(card);
+    document.documentElement.classList.add('pd-modal');
+    dlg.showModal();
+    dlg.scrollTop = 0;
+    return true;
+  }
+
+  /* Anfrage-Buttons: Anliegen (und auf Sprachseiten den Lernweg) vorwählen, dann Pop-up öffnen */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href="#kontakt"]');
+    if (!a || (dlg && dlg.contains(a))) return;
+    if (a.hasAttribute('data-topic')) {
       topic.value = a.getAttribute('data-topic');
       syncFormat();
       var weg = a.getAttribute('data-lernweg');
       if (weg) {
         form.querySelectorAll('input[name="lernweg"]').forEach(function (r) { r.checked = r.value === weg; });
       }
-      showForm();
-    });
+    }
+    showForm();
+    if (openPopup()) e.preventDefault();
   });
 
   /* "Noch unsicher" schließt die anderen Lernsprachen aus */

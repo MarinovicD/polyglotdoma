@@ -23,6 +23,8 @@ LANGS = ['de', 'en', 'bs', 'ar']
 NAMES = {'de': 'Deutsch', 'en': 'English', 'bs': 'Bosanski', 'ar': 'العربية'}
 SW_LABEL = {'de': 'Sprache der Website', 'en': 'Website language', 'bs': 'Jezik stranice', 'ar': 'لغة الموقع'}
 COL = {'de': 0, 'en': 1, 'bs': 2, 'ar': 3}
+# Fahnen-Icons (assets/img/flags/, eingebunden über style.css): Englisch = USA/GB geteilt, Arabisch = Arabische Liga
+FLAG = {'de': 'de', 'en': 'en', 'bs': 'ba', 'ar': 'ar'}
 
 def rel(from_lang, to_lang, page):
     """Relativer Link von einer Seite in from_lang zur gleichen Seite in to_lang."""
@@ -40,8 +42,8 @@ def switcher(lang, page):
     a = []
     for l in LANGS:
         cur = ' aria-current="page"' if l == lang else ''
-        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s"%s style="%s">%s</a>' % (
-            rel(lang, l, page), l, l, NAMES[l], cur, PILL_ON if l == lang else PILL_OFF, l.upper()))
+        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s" data-flag="%s"%s style="%s">%s</a>' % (
+            rel(lang, l, page), l, l, NAMES[l], FLAG[l], cur, PILL_ON if l == lang else PILL_OFF, l.upper()))
     return ('<span class="pd-switch" role="group" aria-label="%s" style="display: flex; gap: 4px; font-size: 13px; '
             'font-weight: 700; letter-spacing: 0.06em; direction: ltr">%s</span>') % (SW_LABEL[lang], ''.join(a))
 
@@ -49,8 +51,8 @@ def menu_switcher(lang, page):
     a = []
     for l in LANGS:
         cur = ' aria-current="page"' if l == lang else ''
-        a.append('<a href="%s" hreflang="%s" lang="%s"%s style="%s">%s</a>' % (
-            rel(lang, l, page), l, l, cur, PILL_ON if l == lang else PILL_OFF, NAMES[l]))
+        a.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (
+            rel(lang, l, page), l, l, FLAG[l], cur, PILL_ON if l == lang else PILL_OFF, NAMES[l]))
     return ('<span role="group" aria-label="%s" style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 15px; '
             'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">%s</span>') % (
             SW_LABEL[lang], ''.join(a))
@@ -152,8 +154,8 @@ def ar_page_switchers(html, lang):
     for l in AR_PAGE_LANGS:
         cur = ' aria-current="page"' if l == lang else ''
         st = PILL_ON if l == lang else PILL_OFF
-        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s"%s style="%s">%s</a>' % (ar_page_href(lang, l), l, l, NAMES[l], cur, st, l.upper()))
-        m.append('<a href="%s" hreflang="%s" lang="%s"%s style="%s">%s</a>' % (ar_page_href(lang, l), l, l, cur, st, NAMES[l]))
+        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s" data-flag="%s"%s style="%s">%s</a>' % (ar_page_href(lang, l), l, l, NAMES[l], FLAG[l], cur, st, l.upper()))
+        m.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (ar_page_href(lang, l), l, l, FLAG[l], cur, st, NAMES[l]))
     sw = ('<span class="pd-switch" role="group" aria-label="%s" style="display: flex; gap: 4px; font-size: 13px; '
           'font-weight: 700; letter-spacing: 0.06em; direction: ltr">%s</span>') % (SW_LABEL[lang], ''.join(a))
     mn = ('<span role="group" aria-label="%s" style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 15px; '
