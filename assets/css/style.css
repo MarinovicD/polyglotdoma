@@ -168,3 +168,87 @@ html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
 [dir="rtl"] .pd-prog{transform-origin:right}
 [dir="rtl"] .pd-card:hover{transform:translateY(-8px) rotate(.6deg)}
 @media (max-width:560px){[dir="rtl"] .pd-faq .pd-a{padding-left:4px}}
+
+/* ---------- Sprachseite Arabisch: Lernwege ---------- */
+.pl-ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:28px;margin-top:48px}
+.pl-way{background:#F4F6FB;color:#0E1B4D;border-radius:40px;padding:36px;display:flex;flex-direction:column;gap:16px}
+.pl-way-dark{background:#1D3A9A;color:#F4F6FB}
+.pl-way-top{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:96px}
+.pl-num{flex:none;width:56px;height:56px;border-radius:50%;background:#B88A4A;color:#0E1B4D;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.pl-glyph{font-size:68px;line-height:1.4;color:#1D3A9A;direction:rtl}
+.pl-way-dark .pl-glyph{color:#9FB3E3}
+.pl-way h3{margin:4px 0 0;font-size:clamp(30px,2.8vw,38px);letter-spacing:-0.035em;font-weight:800;line-height:1.05}
+.pl-way dl{margin:0}
+.pl-way dt{margin:16px 0 0;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:#1D3A9A}
+.pl-way-dark dt{color:#9FB3E3}
+.pl-way dd{margin:4px 0 0;font-size:17px;line-height:1.55}
+.pl-way-dark dd{color:#F4F6FB}
+.pl-way-btn{margin-top:auto;align-self:flex-start;text-decoration:none;background:#1D3A9A;color:#F4F6FB;border-radius:999px;padding:15px 26px;font-size:17px;font-weight:700}
+.pl-way-btn:hover{color:#F4F6FB}
+.pl-way-dark .pl-way-btn{background:#F4F6FB;color:#0E1B4D}
+.pl-way dl+.pl-way-btn{margin-top:auto;padding-top:15px}
+.pl-way dl{margin-bottom:12px}
+
+/* ---------- Mini-Lektion ---------- */
+/* Markazi Text (OFL 1.1): klassische Naskh-Formen mit gut erkennbaren Vokalzeichen – für Lehrtexte */
+@font-face{font-family:'Markazi Text';font-style:normal;font-weight:400 700;font-display:swap;src:url(../fonts/markazi-text-arabic-wght-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+.pl-lesson .ar,.pl-glyph,.pd-teaser-word .ar{font-family:'Markazi Text','Alexandria',serif;font-weight:500}
+.pl-lesson{max-width:920px;margin:48px auto 0;background:#D5DEF3;border-radius:48px;padding:28px 36px 32px;box-sizing:border-box}
+.pl-progress{display:flex;align-items:center;gap:14px}
+.pl-bar{flex:1;height:6px;border-radius:3px;background:#F4F6FB;overflow:hidden}
+.pl-fill{height:100%;width:0;background:#B88A4A;border-radius:3px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.pl-count{font-size:14px;font-weight:700;min-width:44px;text-align:right}
+.pl-stage{margin-top:18px;background:#F4F6FB;border-radius:32px;padding:36px 32px;min-height:460px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.pl-step{display:flex;flex-direction:column;align-items:center;gap:14px}
+.pl-say{margin:0;font-size:22px;line-height:1.45;max-width:600px}
+.pl-hint{margin:0;font-size:17px;line-height:1.55;max-width:560px;color:#1D3A9A}
+.pl-big{font-size:170px;line-height:1.35}
+.pl-lesson .c1{color:#1D3A9A}.pl-lesson .c2{color:#B88A4A}.pl-lesson .c3{color:#4A68C2}
+.pl-eq{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px}
+.pl-tile{background:#D5DEF3;border-radius:24px;padding:4px 26px 12px;min-width:96px}
+.pl-tile .ar{display:block;font-size:92px;line-height:1.4}
+.pl-tile b{font-size:20px}
+.pl-plus{font-size:19px;color:#4A68C2;font-weight:500}
+.pl-quiz{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.pl-quiz button,.pl-nav button,.pl-play,.pl-restart{font-family:inherit;font-size:17px;font-weight:700;min-height:48px;padding:0 24px;border-radius:999px;border:1.5px solid #0E1B4D;background:#FFFFFF;color:#0E1B4D;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1),background-color .25s,color .25s}
+.pl-quiz button{min-width:96px}
+.pl-quiz button:hover,.pl-nav button:hover,.pl-restart:hover{transform:translateY(-2px)}
+.pl-quiz button.ok{background:#1D3A9A;border-color:#1D3A9A;color:#F4F6FB}
+.pl-quiz button.no{background:#F1DCD6;border-color:#A33B2A;color:#A33B2A}
+.pl-fb{margin:0;min-height:26px;font-size:17px;font-weight:700}
+.pl-fb.ok{color:#1D3A9A}.pl-fb.no{color:#A33B2A}
+.pl-row,.pl-join{display:flex;direction:rtl;justify-content:center;align-items:baseline;font-size:150px;line-height:1.4}
+.pl-row{gap:56px}
+.pl-join{gap:64px;transition:gap 1.3s cubic-bezier(.6,0,.2,1)}
+.pl-join span{transition:color 1s ease}
+.pl-dir{margin:-14px 0 0;display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase}
+.pl-ex{margin:0;font-size:18px;line-height:1.5;max-width:560px;min-height:54px}
+.pl-play{background:#1D3A9A;border-color:#1D3A9A;color:#F4F6FB}
+.pl-end{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-top:6px}
+.pl-restart{background:none}
+.pl-nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+.pl-nav .pl-next{background:#1D3A9A;border-color:#1D3A9A;color:#F4F6FB}
+.pl-nav [hidden]{display:inline-flex !important;visibility:hidden}
+.pl-pop{animation:pdFade .7s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion: no-preference){.pl-step.pl-in{animation:pdFade .45s cubic-bezier(.2,.8,.2,1) both}}
+@media (prefers-reduced-motion: reduce){.pl-join,.pl-join span,.pl-fill{transition:none}}
+@media (max-width:560px){
+  .pl-lesson{padding:16px 14px 18px;border-radius:32px}
+  .pl-stage{padding:24px 14px;min-height:420px;border-radius:24px}
+  .pl-say{font-size:19px}.pl-hint{font-size:16px}
+  .pl-big{font-size:112px}
+  .pl-row,.pl-join{font-size:92px}.pl-row{gap:28px}.pl-join{gap:36px}
+  .pl-way{padding:28px;border-radius:32px}
+  .pl-eq{flex-wrap:nowrap;gap:8px}.pl-tile{padding:2px 14px 10px;min-width:0}.pl-tile .ar{font-size:72px}.pl-plus{font-size:15px}
+}
+
+/* ---------- Startseite: Hinweis auf die Arabisch-Seite ---------- */
+.pd-teaser{margin-top:56px;background:#0E1B4D;color:#F4F6FB;border-radius:40px;padding:44px 48px;display:flex;flex-wrap:wrap;align-items:center;gap:40px;position:relative;overflow:hidden;text-decoration:none}
+.pd-teaser-word{flex:1 1 260px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pd-teaser-word .ar{font-size:120px;line-height:1.5;color:#F4F6FB;direction:rtl}
+.pd-hint-link{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:500;color:#0E1B4D;text-decoration:none;border-bottom:1.5px solid #B88A4A;padding-bottom:3px}
+.pd-hint-link:hover{color:#1D3A9A}
+.pd-lang a{color:inherit;text-decoration:none;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.pd-lang a small{font-size:15px;font-weight:500;letter-spacing:0;color:#1D3A9A}
+.pd-lang:hover a small{color:#D5DEF3}
+@media (max-width:560px){.pd-teaser{padding:30px 24px;border-radius:32px;gap:24px}.pd-teaser-word .ar{font-size:92px}}

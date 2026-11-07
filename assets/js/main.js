@@ -66,11 +66,15 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
   topic.addEventListener('change', syncFormat);
   syncFormat();
 
-  /* Angebots-Buttons wählen das Anliegen vor */
+  /* Angebots-Buttons wählen das Anliegen (und auf Sprachseiten den Lernweg) vor */
   document.querySelectorAll('[data-topic]').forEach(function (a) {
     a.addEventListener('click', function () {
       topic.value = a.getAttribute('data-topic');
       syncFormat();
+      var weg = a.getAttribute('data-lernweg');
+      if (weg) {
+        form.querySelectorAll('input[name="lernweg"]').forEach(function (r) { r.checked = r.value === weg; });
+      }
       showForm();
     });
   });
@@ -118,6 +122,8 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
       'Anliegen: ' + topicText,
       'Website-Sprache: ' + (LANG_DE[LANG] || LANG)
     ];
+    if (form.querySelector('input[name="lernweg"]')) lines.push('Lernweg: ' + (values('lernweg').join(', ') || '–'));
+    if (document.body.getAttribute('data-seite')) lines.push('Gesendet von: ' + document.body.getAttribute('data-seite'));
     if (!formatBox.disabled) lines.push('Einzel/Gruppe: ' + (values('format').join(', ') || '–'));
     lines.push('Arbeitssprache: ' + (values('arbeitssprache').join(', ') || '–'));
     lines.push('', form.elements.nachricht.value.trim() || '(keine Nachricht)');

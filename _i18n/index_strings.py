@@ -86,7 +86,7 @@ S = [
 ('>Ich spreche außerdem</li>', '>I also speak</li>', '>Također govorim</li>', '>أتحدث أيضًا</li>'),
 ('-0.02em">Deutsch</li>', '-0.02em">German</li>', '-0.02em">Njemački</li>', '-0.02em">الألمانية</li>'),
 ('-0.02em">Bosnisch</li>', '-0.02em">Bosnian</li>', '-0.02em">Bosanski</li>', '-0.02em">البوسنية</li>'),
-('-0.02em">Arabisch</li>', '-0.02em">Arabic</li>', '-0.02em">Arapski</li>', '-0.02em">العربية</li>'),
+('<a href="arabisch/">Arabisch <small>', '<a href="arabisch/">Arabic <small>', '<a href="arabisch/">Arapski <small>', '<a href="arabisch/">العربية <small>'),
 ('-0.02em">Englisch</li>', '-0.02em">English</li>', '-0.02em">Engleski</li>', '-0.02em">الإنجليزية</li>'),
 ('-0.02em">Türkisch</li>', '-0.02em">Turkish</li>', '-0.02em">Turski</li>', '-0.02em">التركية</li>'),
 ('-0.02em">Französisch</li>', '-0.02em">French</li>', '-0.02em">Francuski</li>', '-0.02em">الفرنسية</li>'),
