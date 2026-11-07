@@ -277,3 +277,6 @@ html.pd-modal{overflow:hidden}
 .pd-x:hover{transform:rotate(90deg)}
 @media (prefers-reduced-motion: no-preference){.pd-dialog[open]{animation:pdUp .45s cubic-bezier(.2,.8,.2,1) both}.pd-dialog[open]::backdrop{animation:pdFade .3s ease both}}
 @media (max-width:560px){.pd-dialog{width:calc(100% - 16px);max-height:calc(100% - 16px)}}
+
+/* Impressum/Datenschutz: Kopfzeile auf dem Handy – Button einzeilig, Schriftzug ausgeblendet (Bildmarke bleibt) */
+@media (max-width:560px){.pd-lwm{display:none}.pd-back{font-size:15px;padding:9px 16px !important}}
