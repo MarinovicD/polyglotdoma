@@ -81,7 +81,9 @@ def fill_all(html, lang, page):
 
 def to_subdir(html, lang):
     html = html.replace('<html lang="de">', '<html lang="%s"%s>' % (lang, ' dir="rtl"' if lang == 'ar' else ''), 1)
-    for a in ('href="assets/', 'src="assets/', 'poster="assets/', 'href="favicon.svg"', 'href="arabisch/'):
+    # Links auf die Arabisch-Seite bleiben relativ: /en/ → /en/arabisch/, /bs/ → /bs/arabisch/
+    # (die AR-Startseite hat keine solchen Links, siehe NOAR)
+    for a in ('href="assets/', 'src="assets/', 'poster="assets/', 'href="favicon.svg"'):
         html = html.replace(a, a.replace('="', '="../', 1))
     return html
 

@@ -318,3 +318,7 @@ html[lang="ar"] p.serif{line-height:1.9 !important}
 .pd-nocalt{font-feature-settings:"calt" 0}
 /* Einzelne Wörter, die Safari mit Aref Ruqaa falsch setzt, als Vektorgrafik aus der Schrift (gleiche Größe wie der Text) */
 .pd-wordsvg{display:inline-block;overflow:visible}
+
+/* Arabisch-Eintrag in der Sprachliste: die ganze Zeile (inkl. Fahne) ist der Link */
+.pd-lang:has(>a){position:relative;cursor:pointer}
+.pd-lang>a::after{content:"";position:absolute;inset:0;border-radius:inherit}
