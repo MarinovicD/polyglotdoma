@@ -16,7 +16,7 @@ from arabisch_strings import A
 
 # Vollständige Adresse der Website mit / am Ende, z. B. 'https://polyglotdoma.com/'.
 # Solange leer, werden keine hreflang-Links gesetzt (Google verlangt absolute Adressen).
-BASE_URL = ''
+BASE_URL = 'https://polyglotdoma.com/'
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGS = ['de', 'en', 'bs', 'ar']
