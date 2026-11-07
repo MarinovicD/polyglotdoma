@@ -151,8 +151,12 @@ def build_legal(page, bodies, title_key):
 AR_PAGE_LANGS = ['de', 'en', 'bs']
 BS_PAGE_LANGS = ['de', 'en']
 
+def slug_of(slug, lang):
+    """slug: ein Ordnername für alle Sprachen oder ein dict je Sprache (z. B. bosnisch → /en/bosnian/)."""
+    return slug[lang] if isinstance(slug, dict) else slug
+
 def page_href(slug, from_lang, to_lang):
-    return ('../' if from_lang == 'de' else '../../') + ('' if to_lang == 'de' else to_lang + '/') + slug + '/'
+    return ('../' if from_lang == 'de' else '../../') + ('' if to_lang == 'de' else to_lang + '/') + slug_of(slug, to_lang) + '/'
 
 def page_switchers(html, slug, langs, lang):
     a, m = [], []
@@ -167,7 +171,7 @@ def page_switchers(html, slug, langs, lang):
           'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">%s</span>') % (SW_LABEL[lang], ''.join(m))
     alt = ''
     if BASE_URL:
-        alt = '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s%s/">' % (l, BASE_URL, '' if l == 'de' else l + '/', slug) for l in langs)
+        alt = '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s%s/">' % (l, BASE_URL, '' if l == 'de' else l + '/', slug_of(slug, l)) for l in langs)
     html = fill(html, 'LANGSW', sw)
     html = fill(html, 'LANGMENU', mn)
     return fill(html, 'ALT', alt)
@@ -189,13 +193,13 @@ def shared_rows(extra=()):
 def build_page(slug, rows, langs, extra=()):
     """rows: Zeilen (DE, ...) in der Reihenfolge von langs. extra: Zeilen (DE, EN, BS) einer anderen Sprachseite,
     die nach den eigenen Zeilen, aber vor den Startseiten-Texten angewendet werden."""
-    path = os.path.join(ROOT, slug, 'index.html')
+    path = os.path.join(ROOT, slug_of(slug, 'de'), 'index.html')
     src = open(path, encoding='utf-8').read()
     de = page_switchers(src, slug, langs, 'de')
     open(path, 'w', encoding='utf-8').write(de)
     missing = [r[0] for r in rows if r[0] not in src]
     if missing:
-        sys.exit('Nicht in %s/index.html gefunden:\n  ' % slug + '\n  '.join(m[:90] for m in missing))
+        sys.exit('Nicht in %s/index.html gefunden:\n  ' % slug_of(slug, 'de') + '\n  '.join(m[:90] for m in missing))
     shared = shared_rows()
     de_text = text_nodes(de)
     for lang in langs[1:]:
@@ -212,16 +216,32 @@ def build_page(slug, rows, langs, extra=()):
         out = page_switchers(out, slug, langs, lang)
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
         if left:
-            print('[%s/%s] noch deutsch?' % (lang, slug), left)
-        os.makedirs(os.path.join(ROOT, lang, slug), exist_ok=True)
-        open(os.path.join(ROOT, lang, slug, 'index.html'), 'w', encoding='utf-8').write(out)
-        print('%s/%s/index.html geschrieben' % (lang, slug))
+            print('[%s/%s] noch deutsch?' % (lang, slug_of(slug, lang)), left)
+        os.makedirs(os.path.join(ROOT, lang, slug_of(slug, lang)), exist_ok=True)
+        open(os.path.join(ROOT, lang, slug_of(slug, lang), 'index.html'), 'w', encoding='utf-8').write(out)
+        print('%s/%s/index.html geschrieben' % (lang, slug_of(slug, lang)))
 
 def build_arabisch():
     build_page('arabisch', A, AR_PAGE_LANGS)
 
+BS_SLUG = {'de': 'bosnisch', 'en': 'bosnian'}
+
+# Alte Adressen, die auf die neue Adresse weiterleiten (GitHub Pages kann kein 301, daher eine kleine Weiterleitungsseite)
+REDIRECTS = [('en/bosnisch', '../bosnian/')]
+
+def build_redirects():
+    for d, target in REDIRECTS:
+        os.makedirs(os.path.join(ROOT, d), exist_ok=True)
+        html = ('<!doctype html>\n<html><head><meta charset="utf-8"><meta name="robots" content="noindex">'
+                '<link rel="canonical" href="%s%s"><meta http-equiv="refresh" content="0; url=%s">'
+                '<title>polyglot.doma</title></head><body><a href="%s">polyglot.doma</a></body></html>\n') % (
+                BASE_URL, os.path.normpath(os.path.join(d, target)) + '/', target, target)
+        open(os.path.join(ROOT, d, 'index.html'), 'w', encoding='utf-8').write(html)
+        print('%s/index.html (Weiterleitung) geschrieben' % d)
+
 def build_bosnisch():
-    build_page('bosnisch', B, BS_PAGE_LANGS, extra=A)
+    build_page(BS_SLUG, B, BS_PAGE_LANGS, extra=A)
+    build_redirects()
 
 if __name__ == '__main__':
     build_index()
