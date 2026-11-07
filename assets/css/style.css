@@ -149,3 +149,22 @@ fieldset{border:none;margin:0;padding:0;min-width:0}
 .pd-prog{display:block;transform-origin:left;animation:pdGrow linear both;animation-timeline:scroll(root)}
 }
 }
+
+/* ---------- Sprachfassungen ---------- */
+.pd-note{background:#D5DEF3;border-radius:24px;padding:14px 20px;font-size:15px !important;line-height:1.5}
+html[lang="en"] .pd-pct::after,html[lang="bs"] .pd-pct::after{content:counter(n) "%"}
+/* Arabisch: eigene Schrift, keine Laufweite (würde die Buchstaben trennen), arabisch-indische Ziffern, gespiegelte Richtungen */
+html[lang="ar"] body,html[lang="ar"] .pd-field,html[lang="ar"] button{font-family:'Alexandria','Bricolage Grotesque',sans-serif}
+html[lang="ar"] .serif,html[lang="ar"] .pd-oder{font-family:'Alexandria',sans-serif !important;font-style:normal !important;font-weight:600 !important}
+html[lang="ar"] body *{letter-spacing:0 !important}
+html[lang="ar"] [dir="ltr"],html[lang="ar"] .pd-switch{letter-spacing:normal}
+html[lang="ar"] h1,html[lang="ar"] h2{line-height:1.25 !important}
+html[lang="ar"] h3{line-height:1.35 !important}
+html[lang="ar"] .pd-count::after{content:counter(n, arabic-indic)}
+html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
+[dir="rtl"] .pd-lang:hover{transform:translateX(-8px)}
+[dir="rtl"] .pd-faq .pd-a{padding:0 4px 26px 64px}
+[dir="rtl"] .pd-submit svg{transform:scaleX(-1)}
+[dir="rtl"] .pd-prog{transform-origin:right}
+[dir="rtl"] .pd-card:hover{transform:translateY(-8px) rotate(.6deg)}
+@media (max-width:560px){[dir="rtl"] .pd-faq .pd-a{padding-left:4px}}

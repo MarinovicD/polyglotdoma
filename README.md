@@ -35,3 +35,13 @@ assets/img/         Logo-Varianten; hier kommen später Fotos hinein
 ## Offene Inhalte (nur in `entwurf` sichtbar)
 
 Foto (Hero), Zitate + Sprachen von Ayman/Dante/Celal, Video, Instagram-Link, Preise, Verschiebe-Frist, Antwortzeit „[X] Tage“, Übersetzungen EN/BS/AR.
+
+## Sprachfassungen (DE · EN · BS · AR)
+Deutsch liegt im Hauptordner, die anderen Sprachen in `en/`, `bs/`, `ar/`. Diese Ordner werden
+erzeugt – nicht von Hand ändern. Nach jeder Änderung an den deutschen Seiten:
+
+    python3 _i18n/build.py
+
+Übersetzungen: `_i18n/index_strings.py` (Startseite) und `_i18n/legal_strings.py` (Impressum, Datenschutz).
+Steht ein deutscher Text nicht mehr exakt so in index.html, bricht das Skript mit einer Meldung ab.
+Sobald die Domain feststeht, in `_i18n/build.py` `BASE_URL` setzen (dann kommen hreflang-Links dazu).

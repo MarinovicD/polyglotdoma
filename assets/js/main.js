@@ -12,6 +12,19 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
 (function () {
   'use strict';
 
+  /* ---------- Sprache der Seite ---------- */
+  var LANG = (document.documentElement.lang || 'de').slice(0, 2);
+  var MSG = {
+    de: { name: 'Bitte gib deinen Namen an.', mail: 'Bitte gib eine gültige E-Mail-Adresse an.', msg: 'Bitte schreib mir eine kurze Nachricht.', consent: 'Bitte bestätige die Einwilligung zur Datenverarbeitung.', fail: 'Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib mir direkt an ' },
+    en: { name: 'Please enter your name.', mail: 'Please enter a valid email address.', msg: 'Please write me a short message.', consent: 'Please confirm your consent to data processing.', fail: "Unfortunately, that didn't work. Please try again or email me directly at " },
+    bs: { name: 'Molim te, upiši svoje ime.', mail: 'Molim te, upiši ispravnu e-mail adresu.', msg: 'Molim te, napiši mi kratku poruku.', consent: 'Molim te, potvrdi saglasnost za obradu podataka.', fail: 'Nažalost, nije uspjelo. Pokušaj ponovo ili mi piši direktno na ' },
+    ar: { name: 'يرجى إدخال اسمك.', mail: 'يرجى إدخال بريد إلكتروني صحيح.', msg: 'يرجى كتابة رسالة قصيرة.', consent: 'يرجى تأكيد موافقتك على معالجة البيانات.', fail: 'للأسف لم يتم الإرسال. حاول مرة أخرى أو راسلني مباشرة على ' }
+  };
+  var T = MSG[LANG] || MSG.de;
+  /* Anfrage-Mails an mich bleiben immer auf Deutsch */
+  var TOPIC_DE = { kennenlernen: 'Ich möchte ein kostenfreies Kennenlerngespräch', konversation: 'Ich interessiere mich für Konversationsstunden', frage: 'Ich habe eine Frage zum Unterricht', anderes: 'Etwas anderes' };
+  var LANG_DE = { de: 'Deutsch', en: 'Englisch', bs: 'Bosnisch', ar: 'Arabisch' };
+
   /* ---------- Menü (schmale Bildschirme) ---------- */
   var menuBtn = document.querySelector('.pd-menubtn');
   var menu = document.getElementById('pd-menu');
@@ -83,17 +96,18 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     showError('');
     var name = form.elements.name.value.trim();
     var mail = form.elements.email.value.trim();
-    if (!name) { showError('Bitte gib deinen Namen an.'); form.elements.name.focus(); return; }
-    if (!mail || !form.elements.email.checkValidity()) { showError('Bitte gib eine gültige E-Mail-Adresse an.'); form.elements.email.focus(); return; }
-    if (!form.elements.nachricht.value.trim()) { showError('Bitte schreib mir eine kurze Nachricht.'); form.elements.nachricht.focus(); return; }
-    if (!form.elements.einwilligung.checked) { showError('Bitte bestätige die Einwilligung zur Datenverarbeitung.'); return; }
+    if (!name) { showError(T.name); form.elements.name.focus(); return; }
+    if (!mail || !form.elements.email.checkValidity()) { showError(T.mail); form.elements.email.focus(); return; }
+    if (!form.elements.nachricht.value.trim()) { showError(T.msg); form.elements.nachricht.focus(); return; }
+    if (!form.elements.einwilligung.checked) { showError(T.consent); return; }
 
-    var topicText = topic.options[topic.selectedIndex].text;
+    var topicText = TOPIC_DE[topic.value] || topic.options[topic.selectedIndex].text;
     var lines = [
       'Name: ' + name,
       'E-Mail: ' + mail,
       'Lernsprachen: ' + (values('lernsprachen').join(', ') || '–'),
-      'Anliegen: ' + topicText
+      'Anliegen: ' + topicText,
+      'Website-Sprache: ' + (LANG_DE[LANG] || LANG)
     ];
     if (!formatBox.disabled) lines.push('Einzel/Gruppe: ' + (values('format').join(', ') || '–'));
     lines.push('Arbeitssprache: ' + (values('arbeitssprache').join(', ') || '–'));
@@ -111,10 +125,11 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     data.append('subject', 'Anfrage über polyglot.doma: ' + topicText);
     data.append('from_name', 'polyglot.doma Website');
     data.append('zusammenfassung', lines.join('\n'));
+    data.append('website_sprache', LANG_DE[LANG] || LANG);
     submitBtn.disabled = true;
     fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.success) throw new Error(j.message || r.status); showDone(); form.reset(); syncFormat(); }); })
-      .catch(function () { showError('Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib mir direkt an ' + CONTACT_EMAIL + '.'); })
+      .catch(function () { showError(T.fail + CONTACT_EMAIL + (LANG === 'ar' ? '' : '.')); })
       .then(function () { submitBtn.disabled = false; });
   });
 
