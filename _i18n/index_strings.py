@@ -86,7 +86,7 @@ S = [
 ('>Ich spreche außerdem</li>', '>I also speak</li>', '>Također govorim</li>', '>أتحدث أيضًا</li>'),
 ('-0.02em">Deutsch</li>', '-0.02em">German</li>', '-0.02em">Njemački</li>', '-0.02em">الألمانية</li>'),
 ('-0.02em">Bosnisch</li>', '-0.02em">Bosnian</li>', '-0.02em">Bosanski</li>', '-0.02em">البوسنية</li>'),
-('<a href="arabisch/">Arabisch <small>', '<a href="arabisch/">Arabic <small>', '<a href="arabisch/">Arapski <small>', '<a href="arabisch/">العربية <small>'),
+('<a href="arabisch/"><span class="pd-lang-name">Arabisch <small>', '<a href="arabisch/"><span class="pd-lang-name">Arabic <small>', '<a href="arabisch/"><span class="pd-lang-name">Arapski <small>', '<a href="arabisch/"><span class="pd-lang-name">العربية <small>'),
 ('-0.02em">Englisch</li>', '-0.02em">English</li>', '-0.02em">Engleski</li>', '-0.02em">الإنجليزية</li>'),
 ('-0.02em">Türkisch</li>', '-0.02em">Turkish</li>', '-0.02em">Turski</li>', '-0.02em">التركية</li>'),
 ('-0.02em">Französisch</li>', '-0.02em">French</li>', '-0.02em">Francuski</li>', '-0.02em">الفرنسية</li>'),
@@ -360,7 +360,7 @@ AR_EXTRA += [
 # In der arabischen Fassung werden diese Stellen entfernt (<!--NOAR--> … <!--/NOAR--> in index.html).
 S += [
 ('>Arabisch</a><!--/NOAR-->', '>Arabic</a><!--/NOAR-->', '>Arapski</a><!--/NOAR-->', '>Arabisch</a><!--/NOAR-->'),
-('<small>Lernwege ansehen →</small>', '<small>See learning paths →</small>', '<small>Pogledaj puteve učenja →</small>', '<small>Lernwege ansehen →</small>'),
+('<small>Lernwege ansehen</small>', '<small>See learning paths</small>', '<small>Pogledaj puteve učenja</small>', '<small>Lernwege ansehen</small>'),
 ('</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>', '</span>New: Read your first Arabic word – in two minutes →</a>', '</span>Novo: Pročitaj svoju prvu arapsku riječ – za dvije minute →</a>', '</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>'),
 ('>Im Fokus: Arabisch</span>', '>In focus: Arabic</span>', '>U fokusu: arapski</span>', '>Im Fokus: Arabisch</span>'),
 ('>Drei Wege ins Arabische – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">vom ersten Buchstaben bis zum fließenden Sprechen.</span>',

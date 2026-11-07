@@ -248,9 +248,14 @@ html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
 .pd-teaser-word .ar{font-size:120px;line-height:1.5;color:#F4F6FB;direction:rtl}
 .pd-hint-link{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:500;color:#0E1B4D;text-decoration:none;border-bottom:1.5px solid #B88A4A;padding-bottom:3px}
 .pd-hint-link:hover{color:#1D3A9A}
-.pd-lang a{color:inherit;text-decoration:none;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.pd-lang a small{font-size:15px;font-weight:500;letter-spacing:0;color:#1D3A9A}
+.pd-lang a{color:inherit;text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pd-lang-name{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pd-lang a small{font-size:15px;font-weight:500;letter-spacing:0;line-height:1.3;color:#1D3A9A}
 .pd-lang:hover a small{color:#D5DEF3}
+.pd-lang-go{flex:none;width:44px;height:44px;border-radius:50%;background:#1D3A9A;color:#F4F6FB;display:flex;align-items:center;justify-content:center;transition:transform .35s cubic-bezier(.2,.8,.2,1),background-color .35s,color .35s}
+.pd-lang-go svg{display:block}
+.pd-lang:hover .pd-lang-go{background:#F4F6FB;color:#1D3A9A;transform:translateX(4px)}
+[dir="rtl"] .pd-lang-go svg{transform:scaleX(-1)}
 @media (max-width:560px){.pd-teaser{padding:30px 24px;border-radius:32px;gap:24px}.pd-teaser-word .ar{font-size:92px}}
 
 /* ---------- Fahnen-Icons (assets/img/flags/, 4:3) ---------- */
