@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from index_strings import S, AR_EXTRA
 from legal_strings import UI, IMPRESSUM, DATENSCHUTZ
 from arabisch_strings import A
+from bosnisch_strings import B
 
 # Vollständige Adresse der Website mit / am Ende, z. B. 'https://polyglotdoma.com/'.
 # Solange leer, werden keine hreflang-Links gesetzt (Google verlangt absolute Adressen).
@@ -145,39 +146,35 @@ def build_legal(page, bodies, title_key):
         open(os.path.join(ROOT, lang, page), 'w', encoding='utf-8').write(h + main)
         print('%s/%s geschrieben' % (lang, page))
 
-# ---------- Arabisch-Seite (nur DE, EN, BS) ----------
+# ---------- Sprachseiten (eigene Seite je Lehrsprache, z. B. arabisch/, bosnisch/) ----------
+# Arabisch-Seite: DE, EN, BS. Bosnisch-Seite: DE, EN (keine bosnische Fassung, Entscheidung 07.11.2026).
 AR_PAGE_LANGS = ['de', 'en', 'bs']
+BS_PAGE_LANGS = ['de', 'en']
 
-def ar_page_href(from_lang, to_lang):
-    return ('../' if from_lang == 'de' else '../../') + ('' if to_lang == 'de' else to_lang + '/') + 'arabisch/'
+def page_href(slug, from_lang, to_lang):
+    return ('../' if from_lang == 'de' else '../../') + ('' if to_lang == 'de' else to_lang + '/') + slug + '/'
 
-def ar_page_switchers(html, lang):
+def page_switchers(html, slug, langs, lang):
     a, m = [], []
-    for l in AR_PAGE_LANGS:
+    for l in langs:
         cur = ' aria-current="page"' if l == lang else ''
         st = PILL_ON if l == lang else PILL_OFF
-        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s" data-flag="%s"%s style="%s">%s</a>' % (ar_page_href(lang, l), l, l, NAMES[l], FLAG[l], cur, st, l.upper()))
-        m.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (ar_page_href(lang, l), l, l, FLAG[l], cur, st, NAMES[l]))
+        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s" data-flag="%s"%s style="%s">%s</a>' % (page_href(slug, lang, l), l, l, NAMES[l], FLAG[l], cur, st, l.upper()))
+        m.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (page_href(slug, lang, l), l, l, FLAG[l], cur, st, NAMES[l]))
     sw = ('<span class="pd-switch" role="group" aria-label="%s" style="display: flex; gap: 4px; font-size: 13px; '
           'font-weight: 700; letter-spacing: 0.06em; direction: ltr">%s</span>') % (SW_LABEL[lang], ''.join(a))
     mn = ('<span role="group" aria-label="%s" style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 15px; '
           'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">%s</span>') % (SW_LABEL[lang], ''.join(m))
     alt = ''
     if BASE_URL:
-        alt = '\n'.join('<link rel="alternate" hreflang="%s" href="%s%sarabisch/">' % (l, BASE_URL, '' if l == 'de' else l + '/') for l in AR_PAGE_LANGS)
+        alt = '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s%s/">' % (l, BASE_URL, '' if l == 'de' else l + '/', slug) for l in langs)
     html = fill(html, 'LANGSW', sw)
     html = fill(html, 'LANGMENU', mn)
     return fill(html, 'ALT', alt)
 
-def build_arabisch():
-    path = os.path.join(ROOT, 'arabisch', 'index.html')
-    src = open(path, encoding='utf-8').read()
-    de = ar_page_switchers(src, 'de')
-    open(path, 'w', encoding='utf-8').write(de)
-    missing = [r[0] for r in A if r[0] not in src]
-    if missing:
-        sys.exit('Nicht in arabisch/index.html gefunden:\n  ' + '\n  '.join(m[:90] for m in missing))
-    # Gemeinsame Texte aus der Startseite (Formular, FAQ); bei mehrteiligen Antworten auch einzelne Absätze
+def shared_rows(extra=()):
+    """Gemeinsame Texte aus der Startseite (Formular, FAQ); bei mehrteiligen Antworten auch einzelne Absätze.
+    extra: weitere Zeilen im Format (DE, EN, BS) aus anderen Sprachseiten."""
     shared = []
     for r in S:
         shared.append(r)
@@ -187,26 +184,48 @@ def build_arabisch():
             parts = [x.split('</p><p>') for x in r]
             if all(len(p) == len(parts[0]) for p in parts):
                 shared.append(tuple(p[0] + '</p>' for p in parts))
+    return shared
+
+def build_page(slug, rows, langs, extra=()):
+    """rows: Zeilen (DE, ...) in der Reihenfolge von langs. extra: Zeilen (DE, EN, BS) einer anderen Sprachseite,
+    die nach den eigenen Zeilen, aber vor den Startseiten-Texten angewendet werden."""
+    path = os.path.join(ROOT, slug, 'index.html')
+    src = open(path, encoding='utf-8').read()
+    de = page_switchers(src, slug, langs, 'de')
+    open(path, 'w', encoding='utf-8').write(de)
+    missing = [r[0] for r in rows if r[0] not in src]
+    if missing:
+        sys.exit('Nicht in %s/index.html gefunden:\n  ' % slug + '\n  '.join(m[:90] for m in missing))
+    shared = shared_rows()
     de_text = text_nodes(de)
-    for lang in ('en', 'bs'):
+    for lang in langs[1:]:
         out = src
-        for row in sorted(A, key=lambda r: -len(r[0])):
+        for row in sorted(rows, key=lambda r: -len(r[0])):
+            out = out.replace(row[0], row[langs.index(lang)])
+        for row in sorted(extra, key=lambda r: -len(r[0])):
             out = out.replace(row[0], row[AR_PAGE_LANGS.index(lang)])
         for row in sorted(shared, key=lambda r: -len(r[0])):
             out = out.replace(row[0], row[COL[lang]])
         out = out.replace('<html lang="de">', '<html lang="%s">' % lang, 1)
         for a in ('href="../assets/', 'src="../assets/', 'href="../favicon.svg"'):
             out = out.replace(a, a.replace('="../', '="../../', 1))
-        out = ar_page_switchers(out, lang)
+        out = page_switchers(out, slug, langs, lang)
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
         if left:
-            print('[%s/arabisch] noch deutsch?' % lang, left)
-        os.makedirs(os.path.join(ROOT, lang, 'arabisch'), exist_ok=True)
-        open(os.path.join(ROOT, lang, 'arabisch', 'index.html'), 'w', encoding='utf-8').write(out)
-        print('%s/arabisch/index.html geschrieben' % lang)
+            print('[%s/%s] noch deutsch?' % (lang, slug), left)
+        os.makedirs(os.path.join(ROOT, lang, slug), exist_ok=True)
+        open(os.path.join(ROOT, lang, slug, 'index.html'), 'w', encoding='utf-8').write(out)
+        print('%s/%s/index.html geschrieben' % (lang, slug))
+
+def build_arabisch():
+    build_page('arabisch', A, AR_PAGE_LANGS)
+
+def build_bosnisch():
+    build_page('bosnisch', B, BS_PAGE_LANGS, extra=A)
 
 if __name__ == '__main__':
     build_index()
     build_arabisch()
+    build_bosnisch()
     build_legal('impressum.html', IMPRESSUM, 'impressum')
     build_legal('datenschutz.html', DATENSCHUTZ, 'datenschutz')
