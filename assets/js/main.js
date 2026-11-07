@@ -6,7 +6,7 @@
    "Nachricht senden" ersatzweise das E-Mail-Programm der Besucher.
    CONTACT_EMAIL: Kontaktadresse für Fehlermeldungen und den Ersatzweg. */
 var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
-var WEB3FORMS_KEY = '';
+var WEB3FORMS_KEY = '79d0c64b-8fa2-4c09-9222-6e8390520dae';
 var CONTACT_EMAIL = 'info@talaqa-lab.com';
 
 (function () {
