@@ -67,25 +67,33 @@
     });
   });
 
-  /* ---------- Verbindungs-Animation ---------- */
+  /* ---------- Verbindungs-Animation ----------
+     Die Buchstaben sind eine Vektorgrafik aus Markazi Text (assets: _i18n nicht betroffen), damit Safari die
+     Vokalzeichen nicht verschiebt. Je Buchstabe eine Gruppe .pl-g mit Einzelform (.pl-iso) und verbundener
+     Form (.pl-con); data-s0/-s1 = Versatz in Font-Einheiten je Phase. */
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function parts(step) {
     return {
       join: step.querySelector('.pl-join'),
-      letters: Array.prototype.slice.call(step.querySelectorAll('.pl-join span')),
+      groups: Array.prototype.slice.call(step.querySelectorAll('.pl-g')),
       ex: step.querySelector('.pl-ex'),
       btn: step.querySelector('.pl-play')
     };
+  }
+  /* Lage je Phase: 0 = Einzelformen gespreizt, 1 = Wortformen gespreizt, 2 = zusammen */
+  function place(p, phase) {
+    p.groups.forEach(function (g) { g.style.transform = 'translateX(' + (phase < 2 ? g.getAttribute('data-s' + phase) : 0) + 'px)'; });
   }
   function resetJoin(step) {
     var p = parts(step);
     if (!p.ex.hasAttribute('data-t0')) p.ex.setAttribute('data-t0', p.ex.textContent);
     if (!p.btn.hasAttribute('data-first')) p.btn.setAttribute('data-first', p.btn.textContent);
-    p.join.style.transition = 'none';
-    p.join.style.gap = '';
-    p.letters.forEach(function (l) { l.textContent = l.getAttribute('data-iso'); l.style.color = ''; l.style.margin = ''; l.classList.remove('pl-pop'); });
-    void p.join.offsetWidth;
-    p.join.style.transition = '';
+    p.join.classList.add('pl-still');
+    p.join.removeAttribute('data-con');
+    p.join.removeAttribute('data-done');
+    place(p, 0);
+    void p.join.getBoundingClientRect();
+    p.join.classList.remove('pl-still');
     p.ex.textContent = p.ex.getAttribute('data-t0');
     p.btn.textContent = p.btn.getAttribute('data-first');
     p.btn.style.visibility = '';
@@ -99,25 +107,25 @@
       var phase = +(step.getAttribute('data-phase') || 0);
       clearTimers();
       if (phase === 0) {
-        p.letters.forEach(function (l) {
-          l.textContent = l.getAttribute('data-con');
-          l.classList.remove('pl-pop'); void l.offsetWidth; l.classList.add('pl-pop');
-        });
+        p.join.classList.add('pl-still');
+        p.join.setAttribute('data-con', '');
+        place(p, 1);
+        void p.join.getBoundingClientRect();
+        p.join.classList.remove('pl-still');
         p.ex.textContent = p.ex.getAttribute('data-t1');
         btn.textContent = btn.getAttribute('data-next');
         step.setAttribute('data-phase', '1');
       } else if (phase === 1) {
-        p.join.style.gap = '0px';
-        p.letters.forEach(function (l) { l.style.margin = '0 -0.5px'; });
+        place(p, 2);
         p.ex.textContent = p.ex.getAttribute('data-t2');
         btn.style.visibility = 'hidden';
         timers.push(setTimeout(function () {
-          p.letters.forEach(function (l) { l.style.color = '#0E1B4D'; });
+          p.join.setAttribute('data-done', '');
           p.ex.textContent = p.ex.getAttribute('data-t3');
           btn.textContent = btn.getAttribute('data-again');
           btn.style.visibility = '';
           step.setAttribute('data-phase', '2');
-        }, reduce ? 100 : 2200));
+        }, reduce ? 100 : 1500));
       } else {
         resetJoin(step);
       }

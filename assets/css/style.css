@@ -223,10 +223,17 @@ html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
 .pl-quiz button.no{background:#F1DCD6;border-color:#A33B2A;color:#A33B2A}
 .pl-fb{margin:0;min-height:26px;font-size:17px;font-weight:700}
 .pl-fb.ok{color:#1D3A9A}.pl-fb.no{color:#A33B2A}
-.pl-row,.pl-join{display:flex;direction:rtl;justify-content:center;align-items:baseline;font-size:150px;line-height:1.4}
+.pl-row{display:flex;direction:rtl;justify-content:center;align-items:baseline;font-size:150px;line-height:1.4}
 .pl-row{gap:56px}
-.pl-join{gap:64px;transition:gap 1.3s cubic-bezier(.6,0,.2,1)}
-.pl-join span{transition:color 1s ease}
+.pl-join{font-size:150px;line-height:1}
+.pl-joinsvg{display:block;margin:0 auto;overflow:visible}
+.pl-g{fill:currentColor;transition:transform 1.3s cubic-bezier(.6,0,.2,1),color 1s ease}
+.pl-g .pl-con{display:none}
+.pl-join[data-con] .pl-g .pl-iso{display:none}
+.pl-join[data-con] .pl-g .pl-con{display:inline;animation:plVow .5s ease both}
+.pl-join[data-done] .pl-g{color:#0E1B4D}
+.pl-join .pl-mk{fill:#D9573D}
+.pl-still .pl-g{transition:none}
 .pl-dir{margin:-14px 0 0;display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase}
 .pl-ex{margin:0;font-size:18px;line-height:1.5;max-width:560px;min-height:54px}
 .pl-play{background:#1D3A9A;border-color:#1D3A9A;color:#F4F6FB}
@@ -237,13 +244,13 @@ html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
 .pl-nav [hidden]{display:inline-flex !important;visibility:hidden}
 .pl-pop{animation:pdFade .7s cubic-bezier(.2,.8,.2,1) both}
 @media (prefers-reduced-motion: no-preference){.pl-step.pl-in{animation:pdFade .45s cubic-bezier(.2,.8,.2,1) both}}
-@media (prefers-reduced-motion: reduce){.pl-join,.pl-join span,.pl-fill{transition:none}}
+@media (prefers-reduced-motion: reduce){.pl-g,.pl-fill{transition:none}}
 @media (max-width:560px){
   .pl-lesson{padding:16px 14px 18px;border-radius:32px}
   .pl-stage{padding:24px 14px;min-height:420px;border-radius:24px}
   .pl-say{font-size:19px}.pl-hint{font-size:16px}
   .pl-big{font-size:112px}
-  .pl-row,.pl-join{font-size:92px}.pl-row{gap:28px}.pl-join{gap:36px}
+  .pl-row,.pl-join{font-size:92px}.pl-row{gap:28px}
   .pl-way{padding:28px;border-radius:32px}
   .pl-eq{flex-wrap:nowrap;gap:8px}.pl-tile{padding:2px 14px 10px;min-width:0}.pl-tile .ar{font-size:72px}.pl-plus{font-size:15px}
 }
