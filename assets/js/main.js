@@ -39,6 +39,16 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     window.addEventListener('resize', function () { if (window.innerWidth > 1320) setMenu(false); });
   }
 
+  /* ---------- Video: eigener Play-Knopf, lädt erst beim Klick ---------- */
+  var video = document.getElementById('pd-video');
+  var vplay = document.querySelector('.pd-vplay');
+  if (video && vplay) {
+    video.controls = false;
+    vplay.hidden = false;
+    vplay.addEventListener('click', function () { video.controls = true; video.play(); });
+    video.addEventListener('play', function () { vplay.hidden = true; video.controls = true; });
+  }
+
   /* ---------- Formular ---------- */
   var form = document.getElementById('pd-form');
   if (!form) return;

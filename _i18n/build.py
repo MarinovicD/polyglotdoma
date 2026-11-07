@@ -78,7 +78,7 @@ def fill_all(html, lang, page):
 
 def to_subdir(html, lang):
     html = html.replace('<html lang="de">', '<html lang="%s"%s>' % (lang, ' dir="rtl"' if lang == 'ar' else ''), 1)
-    for a in ('href="assets/', 'src="assets/', 'href="favicon.svg"'):
+    for a in ('href="assets/', 'src="assets/', 'poster="assets/', 'href="favicon.svg"'):
         html = html.replace(a, a.replace('="', '="../', 1))
     return html
 

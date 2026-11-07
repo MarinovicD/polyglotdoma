@@ -97,6 +97,11 @@ S = [
  '>أنا دوماغوي، عمري ٣٠ عامًا. أنقل اليوم إلى طلابي الطريقة التي تعلّمت بها التحدث بعدة لغات بطلاقة. أُعدّ جميع المواد بنفسي، ونقرّر معًا ماذا نفعل ومتى.</p>'),
 ('>Kein Kurs von der Stange.</p>', '>No one-size-fits-all course.</p>', '>Nema kursa po šablonu.</p>', '>دورات على مقاسك</p>'),
 
+# Video (Vorschlag 07.11., Freigabe ausstehend)
+('aria-label="Video abspielen"', 'aria-label="Play video"', 'aria-label="Pokreni video"', 'aria-label="تشغيل الفيديو"'),
+('color: #1D3A9A">Ein Video, viele Sprachen</span>', 'color: #1D3A9A">One video, many languages</span>', 'color: #1D3A9A">Jedan video, mnogo jezika</span>', 'color: #1D3A9A">فيديو واحد، لغات كثيرة</span>'),
+('>Auf Bosnisch, mit Untertiteln auf Arabisch und Englisch</span>', '>In Bosnian, with Arabic and English subtitles</span>', '>Na bosanskom, s titlovima na arapskom i engleskom</span>', '>بالبوسنية، مع ترجمة إلى العربية والإنجليزية</span>'),
+
 # ---------- Stück 3: Angebot ----------
 ('<span>02 — Angebot</span><span>Zwei Wege zur Sprache</span>',
  '<span>02 — What I offer</span><span>Two paths to a language</span>',
