@@ -126,9 +126,9 @@ A = [
 <button type="button" data-a="3" data-fb="Skoro. I na lamu je crtica: be-le-d.">beld</button>'''),
 # Schritt 6
 ('<p class="pl-say">Beim Schreiben bleiben die Buchstaben aber nicht getrennt.</p>', "<p class=\"pl-say\">But when you write, the letters don't stay apart.</p>", '<p class="pl-say">Ali pri pisanju slova ne ostaju odvojena.</p>'),
-('data-t1="Zuerst strecken sie sich einander entgegen: Ba wird am Anfang etwas kürzer, sein Punkt bleibt. Lam und Dal bekommen einen Verbindungsstrich." data-t2="Dann rücken sie zusammen." data-t3="Fertig: ein Wort. Die Punkte und Zeichen verraten dir weiterhin jeden Buchstaben.">So stehen sie einzeln da.</p>',
- 'data-t1="First they reach towards each other: at the start, Ba gets a little shorter, but keeps its dot. Lam and Dal gain a connecting stroke." data-t2="Then they move together." data-t3="Done: one word. The dots and marks still reveal every letter to you.">Here they stand on their own.</p>',
- 'data-t1="Prvo se pružaju jedno prema drugom: be na početku postaje malo kraći, ali tačka ostaje. Lam i dal dobijaju spojnu crticu." data-t2="Onda se primaknu jedno drugom." data-t3="Gotovo: jedna riječ. Tačke i znakovi i dalje ti otkrivaju svako slovo.">Ovako stoje odvojeno.</p>'),
+('data-t1="Die Buchstaben verbinden sich und verändern dabei leicht ihre Form." data-t2="Dann rücken sie zusammen." data-t3="Fertig: ein Wort. Die Punkte und Zeichen verraten dir weiterhin jeden Buchstaben.">So stehen sie einzeln da.</p>',
+ 'data-t1="The letters connect and change their shape slightly as they do." data-t2="Then they move together." data-t3="Done: one word. The dots and marks still reveal every letter to you.">Here they stand on their own.</p>',
+ 'data-t1="Slova se spajaju i pritom malo mijenjaju oblik." data-t2="Onda se primaknu jedno drugom." data-t3="Gotovo: jedna riječ. Tačke i znakovi i dalje ti otkrivaju svako slovo.">Ovako stoje odvojeno.</p>'),
 ('data-next="Zusammenrücken" data-again="Nochmal ansehen">Verbinden</button>', 'data-next="Move them together" data-again="Watch again">Connect</button>', 'data-next="Primakni ih" data-again="Pogledaj ponovo">Spoji</button>'),
 # Schritt 7
 ('<p class="pl-say"><b>balad</b> heißt <b>Land</b>.</p>', '<p class="pl-say"><b>balad</b> means <b>country</b>.</p>', '<p class="pl-say"><b>beled</b> znači <b>zemlja</b>.</p>'),
