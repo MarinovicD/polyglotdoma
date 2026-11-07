@@ -182,6 +182,15 @@ html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
 .pl-way-dark .pl-way-btn{background:#F4F6FB;color:#0E1B4D}
 .pl-way dl+.pl-way-btn{margin-top:auto;padding-top:15px}
 .pl-way dl{margin-bottom:12px}
+/* Konversation als Alternative zu den Lernwegen */
+.pl-talk{margin-top:28px;background:#0E1B4D;color:#F4F6FB;border-radius:40px;padding:40px 48px;display:flex;flex-wrap:wrap;align-items:center;gap:28px 40px}
+.pl-talk-oder{flex:none;width:76px;height:76px;border-radius:50%;background:#B88A4A;color:#0E1B4D;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-style:italic;font-size:28px}
+.pl-talk-text{flex:1 1 420px;min-width:0}
+.pl-talk h3{margin:0;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.035em;font-weight:800;line-height:1.1}
+.pl-talk p{margin:12px 0 0;font-size:17px;line-height:1.6;color:#D5DEF3;max-width:720px}
+.pl-talk-btn{flex:none;text-decoration:none;border-radius:999px;padding:15px 26px;font-size:17px;font-weight:700}
+html[lang="ar"] .pl-talk-oder{font-family:'Alexandria',sans-serif;font-style:normal;font-weight:600;font-size:24px}
+@media (max-width:560px){.pl-talk{padding:28px;border-radius:32px;gap:18px}.pl-talk-oder{width:56px;height:56px;font-size:22px}.pl-talk-btn{width:100%;text-align:center;box-sizing:border-box}}
 
 /* ---------- Mini-Lektion ---------- */
 /* Markazi Text (OFL 1.1): klassische Naskh-Formen mit gut erkennbaren Vokalzeichen – für Lehrtexte */

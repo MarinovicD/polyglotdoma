@@ -62,6 +62,9 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     var conv = topic.value === 'konversation';
     formatBox.hidden = conv;
     formatBox.disabled = conv;
+    /* Auf Sprachseiten: Lernweg passt nicht zur Konversation */
+    var wegBox = document.getElementById('pd-lernweg');
+    if (wegBox) { wegBox.hidden = conv; wegBox.disabled = conv; }
   }
   topic.addEventListener('change', syncFormat);
   syncFormat();
