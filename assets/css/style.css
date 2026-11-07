@@ -309,3 +309,7 @@ html.pd-modal{overflow:hidden}
 .pd-btn{text-align:center}
 @media (max-width:560px){.pd-hero-ctas>a{flex:1 1 100%;display:flex;justify-content:center;align-items:center;box-sizing:border-box;padding-left:16px !important;padding-right:16px !important;font-size:17px !important}}
 @media (max-width:560px){#angebot .pd-btn[data-topic]{align-self:stretch !important;display:flex;justify-content:center;padding-left:14px !important;padding-right:14px !important;font-size:16px !important}}
+/* Ruqʿa stapelt manche Wörter (z. B. منهجي) steil nach oben – davor optisch engeren Wortabstand.
+   Liegt auf dem Leerzeichen, wirkt also nicht, wenn dort umbrochen wird. */
+.pd-kern{word-spacing:-.3em}
+html[lang="ar"] p.serif{line-height:1.9 !important}

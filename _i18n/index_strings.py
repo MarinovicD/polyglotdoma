@@ -140,7 +140,7 @@ S = [
 ('>Ideal für Einsteiger und alle, die systematisch vorankommen wollen.</p>',
  '>Ideal for beginners and anyone who wants to make structured progress.</p>',
  '>Idealno za početnike i sve koji žele sistematski napredovati.</p>',
- '>مثالي للمبتدئين ولكل من يريد التقدّم بشكل منهجي.</p>'),
+ '>مثالي للمبتدئين ولكل من يريد التقدّم بشكل<span class="pd-kern"> </span>منهجي.</p>'),
 ('>Kennenlerngespräch anfragen</a>', '>Request an intro call</a>', '>Zatraži razgovor za upoznavanje</a>', '>اطلب مكالمة تعارف</a>'),
 ('>Konversation</span>', '>Conversation</span>', '>Konverzacija</span>', '>محادثة</span>'),
 ('>Sprechen, das dich weiterbringt</h3>', '>Speaking that takes you further</h3>', '>Govor koji te vodi naprijed</h3>', '>محادثة تدفعك إلى الأمام</h3>'),
