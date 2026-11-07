@@ -122,6 +122,12 @@ def build_index():
             out = out.replace('pd-left', 'pd-TMP').replace('pd-right', 'pd-left').replace('pd-TMP', 'pd-right')
         if lang in AR_SLUG:
             out = out.replace('href="arabisch/', 'href="%s/' % AR_SLUG[lang])
+        if lang == 'bs':
+            # Bosnische Fassung: kein Link auf die Bosnisch-Seite (die gibt es nicht auf Bosnisch)
+            out = re.sub(r'<!--NOBS-->.*?<!--/NOBS-->', '', out, flags=re.S)
+            out = re.sub(r'<!--BS:(.*?)-->', r'\1', out)
+        if lang in BS_SLUG:
+            out = out.replace('href="bosnisch/', 'href="%s/' % BS_SLUG[lang])
         out = to_subdir(out, lang)
         out = fill_all(out, lang, 'index.html')
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
