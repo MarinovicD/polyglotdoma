@@ -190,7 +190,7 @@ S = [
  '>Everyday life, family, work, an exam or travel: we clarify your goal. Your plan grows out of it – we set the pace and content together.</p>',
  '>Svakodnevica, porodica, posao, ispit ili odmor: razjasnimo tvoj cilj. Iz toga nastaje tvoj plan – tempo i sadržaj određujemo zajedno.</p>',
  '>الحياة اليومية، العائلة، العمل، امتحان أو سفر: نحدّد هدفك معًا، ومنه تنشأ خطتك. أما الوتيرة والمحتوى فنقرّرهما سويًّا.</p>'),
-('font-size: 26px">Basislager</div>', 'font-size: 26px">Base camp</div>', 'font-size: 26px">Bazni kamp</div>', 'font-size: 26px"><span class="pd-nocalt">المخيّم</span> الأساسي</div>'),
+('font-size: 26px">Basislager</div>', 'font-size: 26px">Base camp</div>', 'font-size: 26px">Bazni kamp</div>', 'font-size: 26px">المخيّم الأساسي</div>'),
 ('4px 12px">Verständlicher Input</span>', '4px 12px">Comprehensible input</span>', '4px 12px">Razumljiv input</span>', '4px 12px">المُدخلات المفهومة</span>'),
 ('>Hören wie ein Kind</h3>', '>Listen like a child</h3>', '>Slušaj kao dijete</h3>', '>استمع كطفل</h3>'),
 ('>Kinder verstehen eine Sprache lange, bevor sie sie sprechen. Du hörst und liest Inhalte, die knapp über deinem Niveau liegen – so wächst dein Verständnis fast nebenbei.</p>',
