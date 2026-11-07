@@ -355,3 +355,22 @@ AR_EXTRA += [
  ('style="position: absolute; right: 28px; top: 24px; width: 180px; height: 131px"', 'style="position: absolute; left: 28px; top: 24px; width: 180px; height: 131px; transform: scaleX(-1)"'),
  ('style="position: absolute; right: 36px; top: 28px; width: 92px; height: 92px"', 'style="position: absolute; left: 36px; top: 28px; width: 92px; height: 92px"'),
 ]
+
+# ---------- Hinweise auf die Arabisch-Seite (07.11.2026, siehe claude/uebersetzungen-arabisch-seite.md) ----------
+# In der arabischen Fassung werden diese Stellen entfernt (<!--NOAR--> … <!--/NOAR--> in index.html).
+S += [
+('>Arabisch</a><!--/NOAR-->', '>Arabic</a><!--/NOAR-->', '>Arapski</a><!--/NOAR-->', '>Arabisch</a><!--/NOAR-->'),
+('<small>Lernwege ansehen →</small>', '<small>See learning paths →</small>', '<small>Pogledaj puteve učenja →</small>', '<small>Lernwege ansehen →</small>'),
+('</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>', '</span>New: Read your first Arabic word – in two minutes →</a>', '</span>Novo: Pročitaj svoju prvu arapsku riječ – za dvije minute →</a>', '</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>'),
+('>Im Fokus: Arabisch</span>', '>In focus: Arabic</span>', '>U fokusu: arapski</span>', '>Im Fokus: Arabisch</span>'),
+('>Drei Wege ins Arabische – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">vom ersten Buchstaben bis zum fließenden Sprechen.</span>',
+ '>Three paths into Arabic – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">from the first letter to speaking fluently.</span>',
+ '>Tri puta do arapskog – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">od prvog slova do tečnog govora.</span>',
+ '>Drei Wege ins Arabische – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">vom ersten Buchstaben bis zum fließenden Sprechen.</span>'),
+('>Von Null an, die Grundlagen der Sprache oder Begleitung im Studium: Auf der Arabisch-Seite findest du den Weg, der zu dir passt. Und eine Mini-Lektion, in der du dein erstes arabisches Wort liest.</span>',
+ ">From zero, the foundations of the language or support for your studies: on the Arabic page you'll find the path that suits you. Plus a mini-lesson in which you read your first Arabic word.</span>",
+ '>Od nule, osnove jezika ili podrška tokom studija: na stranici za arapski naći ćeš put koji ti odgovara. I mini-lekciju u kojoj čitaš svoju prvu arapsku riječ.</span>',
+ '>Von Null an, die Grundlagen der Sprache oder Begleitung im Studium: Auf der Arabisch-Seite findest du den Weg, der zu dir passt. Und eine Mini-Lektion, in der du dein erstes arabisches Wort liest.</span>'),
+('>Zur Arabisch-Seite →</span>', '>Go to the Arabic page →</span>', '>Na stranicu za arapski →</span>', '>Zur Arabisch-Seite →</span>'),
+('>bäläd · Land</span>', '>balad · country</span>', '>beled · zemlja</span>', '>bäläd · Land</span>'),
+]
