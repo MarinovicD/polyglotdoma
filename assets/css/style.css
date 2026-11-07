@@ -170,6 +170,7 @@ html[lang="ar"] .pd-pct::after{content:counter(n, arabic-indic) "٪"}
 .pl-num{flex:none;width:56px;height:56px;border-radius:50%;background:#B88A4A;color:#0E1B4D;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
 .pl-glyph{font-size:68px;line-height:1.4;color:#1D3A9A;direction:rtl}
 .pl-way-dark .pl-glyph{color:#9FB3E3}
+.pl-glyph.pl-glyph-lat{font-weight:400;font-family:'Instrument Serif',serif;font-style:italic;font-size:52px;line-height:1.1;direction:ltr;text-align:right;letter-spacing:-0.01em}
 .pl-way h3{margin:4px 0 0;font-size:clamp(30px,2.8vw,38px);letter-spacing:-0.035em;font-weight:800;line-height:1.05}
 .pl-way dl{margin:0}
 .pl-way dt{margin:16px 0 0;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:#1D3A9A}
