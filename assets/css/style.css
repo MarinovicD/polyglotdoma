@@ -621,3 +621,26 @@ html[dir="rtl"] .pd-morebtn:hover .pd-morebtn-ic{transform:scaleX(-1) translateX
 @media (max-width:560px){.pt-dots{width:240px;height:240px;opacity:.7}.pt-card{padding:24px 18px;border-radius:28px}.pt-title{font-size:22px}.pt-wd,.pt-days{gap:4px}.pt-day{font-size:16px}.pt-slots{grid-template-columns:repeat(3,minmax(0,1fr))}.pt-grid{padding-bottom:200px !important}.pt-bg{height:300px}}
 html[lang="ar"] .pt-wd{letter-spacing:0;font-size:13px}
 html[lang="ar"] .pt-kicker{letter-spacing:0}
+/* ===== Kontakt: zwei Wege (Termin wählen / schreiben) ===== */
+.pk-ways{display:flex;flex-direction:column;gap:14px;margin-top:8px;max-width:520px}
+.pk-way{display:flex;flex-direction:column;gap:8px;border-radius:28px;padding:24px 26px;box-sizing:border-box;position:relative}
+.pk-way-termin{background:#1D3A9A;color:#F4F6FB;text-decoration:none;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.pk-way-termin:hover{transform:translateY(-3px);box-shadow:0 18px 36px -18px rgba(0,0,0,.7)}
+.pk-way-termin:focus-visible{outline:3px solid #B88A4A;outline-offset:3px}
+.pk-way-form{border:1.5px dashed #4A68C2;color:#F4F6FB;padding-inline-end:84px}
+.pk-ic{width:44px;height:44px;border-radius:50%;background:#F4F6FB;color:#1D3A9A;display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.pk-t{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.pk-d{font-size:16px;line-height:1.5;color:#D5DEF3}
+.pk-btn{align-self:flex-start;margin-top:8px;display:inline-flex;align-items:center;gap:10px;background:#B88A4A;color:#0E1B4D;border-radius:999px;padding:13px 22px;font-size:17px;font-weight:700}
+.pk-way-termin:hover .pk-btn{background:#C99A57}
+.pk-arrow{position:absolute;top:50%;inset-inline-end:24px;margin-top:-22px;width:44px;height:44px;border-radius:50%;border:1.5px solid #9FB3E3;color:#F4F6FB;display:flex;align-items:center;justify-content:center}
+.pk-hint{display:flex;align-items:center;gap:12px;background:#D5DEF3;color:#0E1B4D;border-radius:18px;padding:12px 14px;text-decoration:none;font-size:15px;line-height:1.4;transition:background-color .25s}
+.pk-hint:hover{background:#9FB3E3}
+.pk-hint>svg{flex:none;color:#1D3A9A}
+.pk-hint>span:first-of-type{flex:1 1 auto}
+.pk-hint b{color:#1D3A9A;white-space:nowrap}
+.pk-hint-go{flex:none;width:34px;height:34px;border-radius:50%;background:#B88A4A;color:#0E1B4D;display:flex;align-items:center;justify-content:center}
+.pk-hint-go svg{width:16px;height:16px}
+[dir="rtl"] .pk-btn svg,[dir="rtl"] .pk-hint-go svg,[dir="rtl"] .pk-arrow svg{transform:scaleX(-1)}
+@media (max-width:1000px){.pk-arrow svg,[dir="rtl"] .pk-arrow svg{transform:rotate(90deg)}}
+@media (max-width:560px){.pk-way{padding:22px}.pk-way-form{padding-inline-end:76px}.pk-arrow{inset-inline-end:18px}.pk-btn{align-self:stretch;justify-content:center}}

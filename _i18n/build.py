@@ -98,6 +98,12 @@ ALLOW = {'polyglot', 'doma', 'Domagoj', 'FAQ', 'Kontakt', 'DE', 'EN', 'BS', 'AR'
          'Domagoj Marinović', 'Google Drive', 'Web3Forms.', 'Google', 'docs.github.com', 'web3forms.com',
          'policies.google.com', 'info@talaqa-lab.com', 'Matina bb', '72230 Žepče', 'polyglot.doma', '© 2026 polyglot.doma', '03 — FAQ'}
 
+def nde(html):
+    """<!--DEONLY-->…<!--/DEONLY-->: nur auf Deutsch (entfällt in den anderen Fassungen).
+    <!--NDE:…-->: alter Inhalt für die anderen Fassungen, bis die neue Fassung übersetzt ist (auf Deutsch auskommentiert)."""
+    html = re.sub(r'<!--DEONLY-->.*?<!--/DEONLY-->', '', html, flags=re.S)
+    return re.sub(r'<!--NDE:(.*?)-->', r'\1', html, flags=re.S)
+
 def untermin(html):
     """Terminbuchung (/termin/) gibt es vorerst nur auf Deutsch: in den anderen Fassungen
     führen die Kennenlerngespräch-Buttons weiter zum Kontaktformular (Pop-up)."""
@@ -113,7 +119,7 @@ def build_index():
     if missing:
         sys.exit('Nicht in index.html gefunden:\n  ' + '\n  '.join(m[:90] for m in missing))
     for lang in ('en', 'bs', 'ar'):
-        out = src
+        out = nde(src)
         if lang == 'ar':
             # Arabische Fassung: keine Hinweise auf die Arabisch-Seite (Entscheidung 07.11.2026)
             out = re.sub(r'<!--NOAR-->.*?<!--/NOAR-->', '', out, flags=re.S)
@@ -224,7 +230,7 @@ def build_page(slug, rows, langs, extra=()):
     shared = shared_rows()
     de_text = text_nodes(de)
     for lang in langs[1:]:
-        out = src
+        out = nde(src)
         for row in sorted(rows, key=lambda r: -len(r[0])):
             out = out.replace(row[0], row[langs.index(lang)])
         if lang in AR_PAGE_LANGS:
