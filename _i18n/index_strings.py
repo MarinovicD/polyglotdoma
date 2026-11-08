@@ -385,6 +385,9 @@ S += [
 ('value="Weiß ich noch nicht"><span>Weiß ich noch nicht</span>', 'value="Weiß ich noch nicht"><span>Not sure yet</span>', 'value="Weiß ich noch nicht"><span>Još ne znam</span>', 'value="Weiß ich noch nicht"><span>لا أعرف بعد</span>'),
 ]
 
+# Button auf die Seite „Über mich“ (seit 08.11.2026 in allen Sprachen)
+S += [('>Mehr über mich <span class="pd-morebtn-ic"', '>More about me <span class="pd-morebtn-ic"', '>Više o meni <span class="pd-morebtn-ic"', '>المزيد عنّي <span class="pd-morebtn-ic"')]
+
 # ---------- Archiviert (08.11.2026): Zeilen nicht mehr auf der Startseite, siehe archiv_startseite.py ----------
 from archiv_startseite import ARCHIVIERT as _ARCH
 S = [r for r in S if r[0] not in _ARCH]

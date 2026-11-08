@@ -14,6 +14,7 @@ from index_strings import S, AR_EXTRA
 from legal_strings import UI, IMPRESSUM, DATENSCHUTZ
 from arabisch_strings import A
 from bosnisch_strings import B
+from ueber_strings import U
 
 # Vollständige Adresse der Website mit / am Ende, z. B. 'https://polyglotdoma.com/'.
 # Solange leer, werden keine hreflang-Links gesetzt (Google verlangt absolute Adressen).
@@ -130,6 +131,7 @@ def build_index():
             out = re.sub(r'<!--BS:(.*?)-->', r'\1', out)
         if lang in BS_SLUG:
             out = out.replace('href="bosnisch/', 'href="%s/' % BS_SLUG[lang])
+        out = out.replace('href="ueber-mich/', 'href="%s/' % UEBER_SLUG[lang])
         out = to_subdir(out, lang)
         out = fill_all(out, lang, 'index.html')
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
@@ -255,6 +257,12 @@ def build_redirects():
         open(os.path.join(ROOT, d, 'index.html'), 'w', encoding='utf-8').write(html)
         print('%s/index.html (Weiterleitung) geschrieben' % d)
 
+# Seite „Über mich & Blog“ (seit 08.11.2026 in allen vier Sprachen)
+UEBER_SLUG = {'de': 'ueber-mich', 'en': 'about-me', 'bs': 'o-meni', 'ar': 'about-me'}
+
+def build_ueber():
+    build_page(UEBER_SLUG, U, ['de', 'en', 'bs', 'ar'])
+
 def build_bosnisch():
     build_page(BS_SLUG, B, BS_PAGE_LANGS, extra=A)
 
@@ -262,6 +270,7 @@ if __name__ == '__main__':
     build_index()
     build_arabisch()
     build_bosnisch()
+    build_ueber()
     build_redirects()
     build_legal('impressum.html', IMPRESSUM, 'impressum')
     build_legal('datenschutz.html', DATENSCHUTZ, 'datenschutz')
