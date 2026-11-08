@@ -644,3 +644,4 @@ html[lang="ar"] .pt-kicker{letter-spacing:0}
 [dir="rtl"] .pk-btn svg,[dir="rtl"] .pk-hint-go svg,[dir="rtl"] .pk-arrow svg{transform:scaleX(-1)}
 @media (max-width:1000px){.pk-arrow svg,[dir="rtl"] .pk-arrow svg{transform:rotate(90deg)}}
 @media (max-width:560px){.pk-way{padding:22px}.pk-way-form{padding-inline-end:76px}.pk-arrow{inset-inline-end:18px}.pk-btn{align-self:stretch;justify-content:center}}
+.pt-home{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1.5px solid #0E1B4D;border-radius:999px;color:#0E1B4D;text-decoration:none;font-size:16px;font-weight:700;padding:0 24px;margin-top:6px}

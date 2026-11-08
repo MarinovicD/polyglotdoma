@@ -44,4 +44,5 @@ T = [
 ('>← Startseite</a>', '>← Home</a>', '>← Početna</a>', '>→ الرئيسية</a>'),
 ('>Startseite</a>', '>Home</a>', '>Početna</a>', '>الرئيسية</a>'),
 ('<span class="sr-only">Zur Startseite</span>', '<span class="sr-only">To the home page</span>', '<span class="sr-only">Na početnu stranicu</span>', '<span class="sr-only">إلى الصفحة الرئيسية</span>'),
+('>Zur Startseite</a>', '>Back to the home page</a>', '>Nazad na početnu</a>', '>العودة إلى الصفحة الرئيسية</a>'),
 ]
