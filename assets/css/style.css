@@ -550,3 +550,5 @@ html[lang="ar"] .pg-final{white-space:nowrap}
 .pd-morebtn-ic{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#F4F6FB;color:#1D3A9A;font-size:20px;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .pd-morebtn:hover{background:#0E1B4D;transform:translateY(-2px)}
 .pd-morebtn:hover .pd-morebtn-ic{transform:translateX(4px)}
+/* Über mich AR: Zeitangaben der Stationen in Ruqʿa */
+html[lang="ar"] .pw-when{font-family:'Aref Ruqaa','Alexandria',sans-serif;font-style:normal;font-weight:700;font-size:21px;line-height:1.5}
