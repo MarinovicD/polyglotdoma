@@ -164,7 +164,6 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     if (form.querySelector('input[name="lernweg"]')) lines.push('Lernweg: ' + (values('lernweg').join(', ') || '–'));
     if (document.body.getAttribute('data-seite')) lines.push('Gesendet von: ' + document.body.getAttribute('data-seite'));
     if (!formatBox.disabled) lines.push('Einzel/Gruppe: ' + (values('format').join(', ') || '–'));
-    lines.push('Arbeitssprache: ' + (values('arbeitssprache').join(', ') || '–'));
     lines.push('', form.elements.nachricht.value.trim() || '(keine Nachricht)');
 
     var data = new FormData(form);

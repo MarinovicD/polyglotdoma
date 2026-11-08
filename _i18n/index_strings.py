@@ -236,10 +236,10 @@ S = [
 ('uppercase">Ziel</div>', 'uppercase">Destination</div>', 'uppercase">Cilj</div>', 'uppercase">الوجهة</div>'),
 
 # ---------- Stück 5: FAQ ----------
-('<span>04 — FAQ</span><span>Gut zu wissen</span>',
- '<span>04 — FAQ</span><span>Good to know</span>',
- '<span>04 — Česta pitanja</span><span>Dobro je znati</span>',
- '<span>٠٤ — أسئلة شائعة</span><span>من المفيد أن تعرف</span>'),
+('<span>03 — FAQ</span><span>Gut zu wissen</span>',
+ '<span>03 — FAQ</span><span>Good to know</span>',
+ '<span>03 — Česta pitanja</span><span>Dobro je znati</span>',
+ '<span>٠٣ — أسئلة شائعة</span><span>من المفيد أن تعرف</span>'),
 ('>Häufige <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">Fragen.</span>',
  '>Frequently asked <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">questions.</span>',
  '>Česta <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">pitanja.</span>',
@@ -376,3 +376,8 @@ S += [
 ('>Zur Arabisch-Seite →</span>', '>Go to the Arabic page →</span>', '>Na stranicu za arapski →</span>', '>Zur Arabisch-Seite →</span>'),
 ('>balad · Land</span>', '>balad · country</span>', '>beled · zemlja</span>', '>balad · Land</span>'),
 ]
+
+# ---------- Archiviert (08.11.2026): Zeilen nicht mehr auf der Startseite, siehe archiv_startseite.py ----------
+from archiv_startseite import ARCHIVIERT as _ARCH
+S = [r for r in S if r[0] not in _ARCH]
+AR_EXTRA = [r for r in AR_EXTRA if r[0] not in _ARCH]

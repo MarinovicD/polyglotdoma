@@ -95,7 +95,7 @@ def text_nodes(html):
 
 ALLOW = {'polyglot', 'doma', 'Domagoj', 'FAQ', 'Kontakt', 'DE', 'EN', 'BS', 'AR', 'Deutsch', 'English', 'Bosanski',
          'Domagoj Marinović', 'Google Drive', 'Web3Forms.', 'Google', 'docs.github.com', 'web3forms.com',
-         'policies.google.com', 'info@talaqa-lab.com', 'Matina bb', '72230 Žepče', 'polyglot.doma', '© 2026 polyglot.doma', '04 — FAQ'}
+         'policies.google.com', 'info@talaqa-lab.com', 'Matina bb', '72230 Žepče', 'polyglot.doma', '© 2026 polyglot.doma', '03 — FAQ'}
 
 def build_index():
     src = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
