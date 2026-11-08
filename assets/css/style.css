@@ -460,6 +460,12 @@ html[lang="ar"] .pg-final{white-space:nowrap}
 .pu-tag-on{background:#1D3A9A;color:#F4F6FB}
 .pu-why{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center;margin-top:40px}
 .pu-why p{margin:24px 0 0}
+.pu-blogcta{margin-top:40px;background:#0E1B4D;color:#F4F6FB;border-radius:40px;padding:48px 56px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px 48px}
+.pu-blogcta-text{flex:1 1 480px;min-width:0}
+.pu-blogcta p{margin:16px 0 0;font-size:19px;line-height:1.55;color:#D5DEF3;max-width:620px}
+.pu-blogcta-btn{flex:none;text-decoration:none;background:#F4F6FB;color:#0E1B4D;border-radius:999px;padding:16px 30px;font-size:18px;font-weight:700}
+.pu-blogcta-btn:hover{background:#D5DEF3}
+@media (max-width:560px){.pu-blogcta{padding:32px 28px;border-radius:32px}.pu-blogcta-btn{width:100%;text-align:center;box-sizing:border-box}}
 .pu-posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;margin-top:48px}
 .pu-post{background:#F4F6FB;border-radius:32px;overflow:hidden;display:flex;flex-direction:column}
 .pu-post-img{background:#9FB3E3;padding:28px 40px 0}
