@@ -379,7 +379,7 @@ S += [
 
 # ---------- Formular: „Was suchst du?“ (08.11.2026) ----------
 S += [
-('>Was suchst du?</legend>', '>What are you looking for?</legend>', '>Šta tražiš?</legend>', '>عمّ تبحث؟</legend>'),
+('>Was suchst du?</legend>', '>What are you looking for?</legend>', '>Šta tražiš?</legend>', '>عن ماذا تبحث؟</legend>'),
 ('value="Unterricht"><span>Unterricht</span>', 'value="Unterricht"><span>Lessons</span>', 'value="Unterricht"><span>Nastava</span>', 'value="Unterricht"><span>دروس</span>'),
 ('value="Konversation"><span>Konversation</span>', 'value="Konversation"><span>Conversation</span>', 'value="Konversation"><span>Konverzacija</span>', 'value="Konversation"><span>محادثة</span>'),
 ('value="Weiß ich noch nicht"><span>Weiß ich noch nicht</span>', 'value="Weiß ich noch nicht"><span>Not sure yet</span>', 'value="Weiß ich noch nicht"><span>Još ne znam</span>', 'value="Weiß ich noch nicht"><span>لا أعرف بعد</span>'),
