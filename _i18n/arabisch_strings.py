@@ -168,4 +168,5 @@ A = [
  '<p>In conversation sessions, you talk with someone who speaks Arabic fluently, adapts to your level and helps you move forward in free speaking. You choose the topics, ask when a word is missing, and get help with phrasing exactly when you need it. One-to-one, without a fixed syllabus. In Modern Standard Arabic or the Lebanese dialect.</p>',
  '<p>Na času konverzacije razgovaraš s nekim ko tečno govori arapski, prilagođava se tvom nivou i pomaže ti da napreduješ u slobodnom govoru. Ti biraš teme, pitaš kad ti zafali riječ i dobiješ pomoć pri formulisanju upravo onda kad ti treba. Individualno, bez fiksnog plana. Na književnom arapskom ili libanonskom dijalektu.</p>'),
 ('data-topic="konversation">Konversationsstunde anfragen</a>', 'data-topic="konversation">Request a conversation session</a>', 'data-topic="konversation">Zatraži čas konverzacije</a>'),
+('<span class="sr-only">Zur Startseite</span>', '<span class="sr-only">To the home page</span>', '<span class="sr-only">Na početnu stranicu</span>'),
 ]

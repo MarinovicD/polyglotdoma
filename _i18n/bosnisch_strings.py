@@ -356,4 +356,8 @@ B = [
  'data-topic="konversation">Request a conversation session</a>',
  'data-topic="konversation">اطلب حصة محادثة</a>',
  'data-topic="konversation">Zatraži čas konverzacije</a>'),
+('<span class="sr-only">Zur Startseite</span>',
+ '<span class="sr-only">To the home page</span>',
+ '<span class="sr-only">إلى الصفحة الرئيسية</span>',
+ '<span class="sr-only">Na početnu stranicu</span>'),
 ]

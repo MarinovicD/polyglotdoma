@@ -53,6 +53,11 @@ section{scroll-margin-top:96px}
 
 @media (max-width: 1000px){.pd-oder{display:none !important}}
 @media (max-width: 1320px){.pd-navlinks{display:none !important}.pd-menubtn{display:inline-flex !important}}
+/* Sprachseiten: runder Startseiten-Button neben dem Menü, sobald die Navigation eingeklappt ist */
+.pd-homebtn{display:none;flex:none;width:48px;height:48px;border-radius:50%;border:1.5px solid #0E1B4D;box-sizing:border-box;align-items:center;justify-content:center;text-decoration:none;transition:background-color .2s}
+.pd-homebtn:hover{background:#D5DEF3}
+@media (max-width: 1320px){.pd-homebtn{display:inline-flex}}
+@media (max-width: 1320px){nav .pd-homebtn + .pd-menubtn{margin-inline-start:-12px}}
 @media (max-width: 960px){.pd-switch{display:none !important}.pd-long{display:none}.pd-short{display:inline}.pd-wm{font-size:22px !important}}
 @media (max-width: 560px){
   .pd-cta{display:none !important}
