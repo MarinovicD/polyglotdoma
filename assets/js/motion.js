@@ -18,7 +18,7 @@
   }
   function mark(el, type) {
     if (!el || el.hasAttribute('data-r')) return;
-    if (el.closest('[data-r]') || el.closest('dialog') || el.closest('.pl-stage')) return;
+    if (el.closest('[data-r]') || el.closest('dialog') || el.closest('.pl-stage') || el.closest('.pt-card')) return;
     el.setAttribute('data-r', type);
   }
 

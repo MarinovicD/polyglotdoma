@@ -98,6 +98,11 @@ ALLOW = {'polyglot', 'doma', 'Domagoj', 'FAQ', 'Kontakt', 'DE', 'EN', 'BS', 'AR'
          'Domagoj Marinović', 'Google Drive', 'Web3Forms.', 'Google', 'docs.github.com', 'web3forms.com',
          'policies.google.com', 'info@talaqa-lab.com', 'Matina bb', '72230 Žepče', 'polyglot.doma', '© 2026 polyglot.doma', '03 — FAQ'}
 
+def untermin(html):
+    """Terminbuchung (/termin/) gibt es vorerst nur auf Deutsch: in den anderen Fassungen
+    führen die Kennenlerngespräch-Buttons weiter zum Kontaktformular (Pop-up)."""
+    return re.sub(r'href="[^"]*termin/[^"]*" data-termin', 'href="#kontakt" data-termin', html)
+
 def build_index():
     src = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     de = fill_all(src, 'de', 'index.html')
@@ -132,6 +137,7 @@ def build_index():
         if lang in BS_SLUG:
             out = out.replace('href="bosnisch/', 'href="%s/' % BS_SLUG[lang])
         out = out.replace('href="ueber-mich/', 'href="%s/' % UEBER_SLUG[lang])
+        out = untermin(out)
         out = to_subdir(out, lang)
         out = fill_all(out, lang, 'index.html')
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
@@ -231,6 +237,7 @@ def build_page(slug, rows, langs, extra=()):
         out = out.replace('<html lang="de">', '<html lang="%s"%s>' % (lang, ' dir="rtl"' if lang == 'ar' else ''), 1)
         for a in ('href="../assets/', 'src="../assets/', 'href="../favicon.svg"'):
             out = out.replace(a, a.replace('="../', '="../../', 1))
+        out = untermin(out)
         out = page_switchers(out, slug, langs, lang)
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
         if left:
