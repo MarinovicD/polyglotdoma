@@ -557,3 +557,7 @@ html[lang="ar"] .pw-when{font-family:'Aref Ruqaa','Alexandria',sans-serif;font-s
   html[dir="rtl"] .pw-r .pw-head{justify-content:flex-start}
   html[dir="rtl"] .pw-r .pw-head>span:first-of-type{flex:1 0 auto}
 }
+/* „Mehr über mich“ in RTL: Kreis an den linken Rand, Pfeil nach links */
+.pd-morebtn{padding:10px;padding-inline-start:28px}
+html[dir="rtl"] .pd-morebtn-ic{transform:scaleX(-1)}
+html[dir="rtl"] .pd-morebtn:hover .pd-morebtn-ic{transform:scaleX(-1) translateX(4px)}
