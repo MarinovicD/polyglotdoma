@@ -122,6 +122,8 @@ def build_index():
             out = out.replace('pd-left', 'pd-TMP').replace('pd-right', 'pd-left').replace('pd-TMP', 'pd-right')
         if lang in AR_SLUG:
             out = out.replace('href="arabisch/', 'href="%s/' % AR_SLUG[lang])
+        # <!--DEONLY-->…<!--/DEONLY-->: nur in der deutschen Fassung (z. B. Link auf die Seite „Über mich“, die es noch nicht übersetzt gibt)
+        out = re.sub(r'<!--DEONLY-->.*?<!--/DEONLY-->', '', out, flags=re.S)
         if lang == 'bs':
             # Bosnische Fassung: kein Link auf die Bosnisch-Seite (die gibt es nicht auf Bosnisch)
             out = re.sub(r'<!--NOBS-->.*?<!--/NOBS-->', '', out, flags=re.S)
