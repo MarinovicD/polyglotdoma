@@ -19,6 +19,7 @@ var TERMIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyuZcosvtfNoGpCxz
     ar: { msg: 'يرجى أن تكتب لي باختصار عن نفسك وعن هدفك.', loading: 'جارٍ تحميل المواعيد المتاحة …', none: 'لا توجد مواعيد متاحة حاليًا. <a href="../#kontakt">راسلني</a> وسنجد موعدًا معًا.', loadFail: 'تعذّر تحميل المواعيد المتاحة الآن. حاول مرة أخرى بعد قليل أو <a href="../#kontakt">راسلني</a>.', noFree: 'لا مواعيد متاحة', name: 'يرجى إدخال اسمك.', mail: 'يرجى إدخال بريد إلكتروني صحيح.', consent: 'يرجى تأكيد موافقتك على معالجة البيانات.', taken: 'حُجز هذا الموعد للتوّ. يرجى اختيار موعد آخر.', limit: 'لديك طلبان مفتوحان بالفعل. سأتواصل معك قريبًا.', fail: 'للأسف لم يتم الإرسال. حاول مرة أخرى أو راسلني مباشرة على ', sending: 'جارٍ الإرسال …', demo: 'معاينة ببيانات تجريبية، لن يُحجز أي موعد.' }
   };
   var T = TXT[LANG] || TXT.de;
+  var LERNWEG = '';
   var DEMO = !TERMIN_ENDPOINT || /[?&]demo=1\b/.test(location.search);
 
   var $ = function (id) { return document.getElementById(id); };
@@ -166,7 +167,7 @@ var TERMIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyuZcosvtfNoGpCxz
     if (!$('pt-consent').checked) { showError(T.consent, $('pt-consent')); return; }
     var langs = [].map.call(form.querySelectorAll('input[name="lernsprachen"]:checked'), function (x) { return x.value; });
     var art = form.querySelector('input[name="art"]:checked');
-    var payload = { name: name, email: email, start: selSlot.toISOString(), lang: LANG, lernsprachen: langs,
+    var payload = { lernweg: LERNWEG, name: name, email: email, start: selSlot.toISOString(), lang: LANG, lernsprachen: langs,
       art: art ? art.value : '', nachricht: $('pt-msg').value, tz: TZ, consent: true, hp: form.querySelector('.pt-hp').value };
     errorBox.hidden = true; submit.disabled = true;
     var label = submit.firstChild.nodeValue; submit.firstChild.nodeValue = T.sending + ' ';
@@ -213,6 +214,8 @@ var TERMIN_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyuZcosvtfNoGpCxz
   /* Vorauswahl aus dem Link, z. B. ?sprache=Arabisch (Arabisch-Seite) oder ?art=Unterricht (Startseite) */
   var q = {};
   location.search.replace(/[?&]([^=&]+)=([^&]*)/g, function (_, k, v) { q[k] = decodeURIComponent(v.replace(/\+/g, ' ')); });
+  /* Lernweg (von den Karten „Diesen Weg anfragen“) geht nur in die Mail an mich */
+  LERNWEG = ['Von Null an', 'Grundlagen der Sprache', 'Begleitung im Studium', 'Mit bosnischen Wurzeln', 'Ankommen in Bosnien', 'Weiß ich noch nicht'].indexOf(q.lernweg) >= 0 ? q.lernweg : '';
   [].forEach.call(form.querySelectorAll('input[name="lernsprachen"], input[name="art"]'), function (inp) {
     if ((inp.name === 'lernsprachen' && inp.value === q.sprache) || (inp.name === 'art' && inp.value === q.art)) inp.checked = true;
   });

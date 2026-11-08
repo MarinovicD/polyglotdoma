@@ -120,6 +120,7 @@ function createRequest_(d) {
   var langs = (Array.isArray(d.lernsprachen) ? d.lernsprachen : []).map(function (x) { return clean_(x, 30); })
     .filter(function (x) { return ['Arabisch', 'Deutsch', 'Bosnisch', 'Noch unsicher'].indexOf(x) >= 0; });
   var art = ['Unterricht', 'Konversation', 'Weiß ich noch nicht'].indexOf(d.art) >= 0 ? d.art : '';
+  var lernweg = ['Von Null an', 'Grundlagen der Sprache', 'Begleitung im Studium', 'Mit bosnischen Wurzeln', 'Ankommen in Bosnien', 'Weiß ich noch nicht'].indexOf(d.lernweg) >= 0 ? d.lernweg : '';
   var tz = validTz_(d.tz) ? d.tz : CFG.TZ;
   var start = Date.parse(d.start);
   if (!name) return { ok: false, error: 'name' };
@@ -141,7 +142,7 @@ function createRequest_(d) {
     var end = start + CFG.DURATION * 60000;
     var ev = Calendar.Events.insert({
       summary: '⏳ Anfrage: Kennenlerngespräch – ' + name,
-      description: ownerSummary_(name, email, langs, art, msg, lang, tz) + '\n\nNoch nicht bestätigt. Bestätigen oder ablehnen über den Link in der Mail.',
+      description: ownerSummary_(name, email, langs, art, lernweg, msg, lang, tz) + '\n\nNoch nicht bestätigt. Bestätigen oder ablehnen über den Link in der Mail.',
       start: { dateTime: new Date(start).toISOString(), timeZone: CFG.TZ },
       end: { dateTime: new Date(end).toISOString(), timeZone: CFG.TZ },
       colorId: '8',                                                // Grafit: noch offen
@@ -162,7 +163,7 @@ function createRequest_(d) {
   sendOwnerMail_(
     'Neue Terminanfrage: ' + name + ' · ' + whenOwner,
     'Neue Anfrage für ein Kennenlerngespräch:\n\n' + whenOwner + ' (deine Zeit)\n\n' +
-      ownerSummary_(name, email, langs, art, msg, lang, tz) +
+      ownerSummary_(name, email, langs, art, lernweg, msg, lang, tz) +
       '\n\nBestätigen oder ablehnen:\n' + reviewUrl +
       '\n\nDas Zeitfenster ist ' + CFG.HOLD_HOURS + ' Stunden für die Anfrage reserviert.',
     { replyTo: email, button: { url: reviewUrl, label: 'Anfrage ansehen' } }
@@ -172,10 +173,11 @@ function createRequest_(d) {
   return { ok: true };
 }
 
-function ownerSummary_(name, email, langs, art, msg, lang, tz) {
+function ownerSummary_(name, email, langs, art, lernweg, msg, lang, tz) {
   return 'Name: ' + name + '\nE-Mail: ' + email +
     '\nLernsprachen: ' + (langs.length ? langs.join(', ') : '–') +
     '\nSucht: ' + (art || '–') +
+    (lernweg ? '\nLernweg: ' + lernweg : '') +
     '\nWebsite-Sprache: ' + { de: 'Deutsch', en: 'Englisch', bs: 'Bosnisch', ar: 'Arabisch' }[lang] +
     '\nZeitzone: ' + tz +
     '\n\nNachricht:\n' + (msg || '–');
