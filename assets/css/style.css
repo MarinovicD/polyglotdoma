@@ -527,15 +527,20 @@ html[lang="ar"] .pg-final{white-space:nowrap}
 .pw-mountain svg{position:absolute;inset:0;width:100%;height:100%}
 .pw-peak{left:50%;top:calc(100% - 320px)}
 @media (max-width:760px){
-  .pw-stop{grid-template-columns:56px minmax(0,1fr);margin-bottom:16px}
-  .pw-mark{grid-column:1}
-  .pw-l .pw-card,.pw-r .pw-card{grid-column:2}
-  .pw-l .pw-dot{left:28%}.pw-r .pw-dot{left:72%}
+  .pw-stop{display:block;position:relative;margin-bottom:44px}
+  .pw-mark{position:absolute;top:0;bottom:0;width:58px;min-height:0;height:auto}
+  .pw-l .pw-mark{right:0}.pw-r .pw-mark{left:0}
+  .pw-l .pw-dot,.pw-r .pw-dot{left:50%}
+  .pw-l .pw-card{margin-right:58px;transform:rotate(-1.2deg)}
+  .pw-r .pw-card{margin-left:58px;transform:rotate(1.2deg)}
   .pw-card{flex-direction:column;align-items:flex-start;gap:10px;padding:18px 20px;border-radius:26px}
+  .pw-r .pw-card{align-items:flex-end;text-align:right}
+  .pw-r .pw-head{justify-content:flex-end}
+  .pw-r .pw-head>span:first-of-type{flex:0 1 auto}
   .pw-ic{width:84px;height:62px}
   .pw-head{font-size:22px}
   .pw-summit{margin-top:8px}
-  .pw-now{position:relative;left:auto;top:auto;width:auto;margin-left:56px}
+  .pw-now{position:relative;left:auto;top:auto;width:auto;margin:0 24px}
   .pw-mountain{height:240px;margin-top:-10px}
   .pw-peak{top:calc(100% - 213px)}
   .pw-sub{display:none}
