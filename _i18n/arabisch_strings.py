@@ -161,4 +161,11 @@ A = [
 ('<span>Grundlagen der Sprache</span>', '<span>The foundations of the language</span>', '<span>Osnove jezika</span>'),
 ('<span>Begleitung im Studium</span>', '<span>Support for your studies</span>', '<span>Podrška tokom studija</span>'),
 ('<span>Weiß ich noch nicht</span>', '<span>Not sure yet</span>', '<span>Još ne znam</span>'),
+# ---------- Konversations-Band (08.11.2026) ----------
+('<span class="pl-talk-oder" aria-hidden="true">oder</span>', '<span class="pl-talk-oder" aria-hidden="true">or</span>', '<span class="pl-talk-oder" aria-hidden="true">ili</span>'),
+('<h3>Lieber direkt sprechen?</h3>', '<h3>Rather go straight to speaking?</h3>', '<h3>Radije odmah razgovarati?</h3>'),
+('<p>Mit Konversation sprichst du mit jemandem, der Arabisch fließend spricht, sich auf dein Niveau einstellt und dich im freien Sprechen weiterbringt. Du wählst die Themen, fragst nach, wenn dir ein Wort fehlt, und bekommst Hilfe beim Formulieren genau dann, wenn du sie brauchst. Einzeln, ohne festen Lehrplan. Auf Hocharabisch oder im libanesischen Dialekt.</p>',
+ '<p>In conversation sessions, you talk with someone who speaks Arabic fluently, adapts to your level and helps you move forward in free speaking. You choose the topics, ask when a word is missing, and get help with phrasing exactly when you need it. One-to-one, without a fixed syllabus. In Modern Standard Arabic or the Lebanese dialect.</p>',
+ '<p>Na času konverzacije razgovaraš s nekim ko tečno govori arapski, prilagođava se tvom nivou i pomaže ti da napreduješ u slobodnom govoru. Ti biraš teme, pitaš kad ti zafali riječ i dobiješ pomoć pri formulisanju upravo onda kad ti treba. Individualno, bez fiksnog plana. Na književnom arapskom ili libanonskom dijalektu.</p>'),
+('data-topic="konversation">Konversationsstunde anfragen</a>', 'data-topic="konversation">Request a conversation session</a>', 'data-topic="konversation">Zatraži čas konverzacije</a>'),
 ]

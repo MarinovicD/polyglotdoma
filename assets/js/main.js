@@ -58,12 +58,16 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
   var doneBox = document.getElementById('pd-done');
   var submitBtn = form.querySelector('.pd-submit');
 
+  /* "Was suchst du?": Einzel/Gruppe nur bei Unterricht, Lernweg (Sprachseiten) nicht bei Konversation */
+  function art() { var r = form.querySelector('input[name="art"]:checked'); return r ? r.value : ''; }
+  function setArt(v) { form.querySelectorAll('input[name="art"]').forEach(function (r) { r.checked = r.value === v; }); }
   function syncFormat() {
-    var conv = topic.value === 'konversation';
-    formatBox.hidden = conv;
-    formatBox.disabled = conv;
+    var a = art();
+    formatBox.hidden = formatBox.disabled = a !== 'Unterricht';
+    var wegBox = document.getElementById('pd-lernweg');
+    if (wegBox) { wegBox.hidden = wegBox.disabled = a === 'Konversation'; }
   }
-  topic.addEventListener('change', syncFormat);
+  form.querySelectorAll('input[name="art"]').forEach(function (r) { r.addEventListener('change', syncFormat); });
   syncFormat();
 
   /* ---------- Formular als Pop-up ----------
@@ -107,12 +111,16 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     var a = e.target.closest('a[href="#kontakt"]');
     if (!a || (dlg && dlg.contains(a))) return;
     if (a.hasAttribute('data-topic')) {
-      topic.value = a.getAttribute('data-topic');
-      syncFormat();
+      var t = a.getAttribute('data-topic');
+      if (t === 'konversation') { topic.value = 'kennenlernen'; setArt('Konversation'); }
+      else topic.value = t;
+      if (a.getAttribute('data-art')) setArt(a.getAttribute('data-art'));
       var weg = a.getAttribute('data-lernweg');
       if (weg) {
+        if (weg !== 'Weiß ich noch nicht') setArt('Unterricht');
         form.querySelectorAll('input[name="lernweg"]').forEach(function (r) { r.checked = r.value === weg; });
       }
+      syncFormat();
     }
     showForm();
     if (openPopup()) e.preventDefault();
@@ -159,16 +167,18 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
       'E-Mail: ' + mail,
       'Lernsprachen: ' + (values('lernsprachen').join(', ') || '–'),
       'Anliegen: ' + topicText,
+      'Sucht: ' + (art() || '–'),
       'Website-Sprache: ' + (LANG_DE[LANG] || LANG)
     ];
-    if (form.querySelector('input[name="lernweg"]')) lines.push('Lernweg: ' + (values('lernweg').join(', ') || '–'));
+    var wegField = document.getElementById('pd-lernweg');
+    if (wegField && !wegField.disabled) lines.push('Lernweg: ' + (values('lernweg').join(', ') || '–'));
     if (document.body.getAttribute('data-seite')) lines.push('Gesendet von: ' + document.body.getAttribute('data-seite'));
     if (!formatBox.disabled) lines.push('Einzel/Gruppe: ' + (values('format').join(', ') || '–'));
     lines.push('', form.elements.nachricht.value.trim() || '(keine Nachricht)');
 
     var data = new FormData(form);
     data.append('access_key', WEB3FORMS_KEY);
-    data.append('subject', 'Anfrage über polyglot.doma: ' + topicText);
+    data.append('subject', 'Anfrage über polyglot.doma: ' + topicText + (art() ? ' · ' + art() : ''));
     data.append('from_name', 'polyglot.doma Website');
     data.append('zusammenfassung', lines.join('\n'));
     data.append('website_sprache', LANG_DE[LANG] || LANG);

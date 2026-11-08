@@ -86,8 +86,8 @@ S = [
 ('>Ich spreche außerdem</li>', '>I also speak</li>', '>Također govorim</li>', '>أتحدث أيضًا</li>'),
 ('-0.02em">Deutsch</li>', '-0.02em">German</li>', '-0.02em">Njemački</li>', '-0.02em">الألمانية</li>'),
 ('<a href="bosnisch/"><span class="pd-lang-name">Bosnisch <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosnian <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosanski <small>', '<a href="bosnisch/"><span class="pd-lang-name">البوسنية <small>'),
-('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Isprobaj mini-lekciju</small>', '<small>جرّب الدرس القصير</small>'),
-('>Bosnisch</a><!--/NOBS-->', '>Bosnian</a><!--/NOBS-->', '>Bosanski</a><!--/NOBS-->', '>البوسنية</a><!--/NOBS-->'),
+('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Pogledaj puteve učenja</small>', '<small>جرّب الدرس القصير</small>'),
+('>Bosnisch</a>', '>Bosnian</a>', '>Bosanski</a>', '>البوسنية</a>'),
 ('<a href="arabisch/"><span class="pd-lang-name">Arabisch <small>', '<a href="arabisch/"><span class="pd-lang-name">Arabic <small>', '<a href="arabisch/"><span class="pd-lang-name">Arapski <small>', '<a href="arabisch/"><span class="pd-lang-name">العربية <small>'),
 ('-0.02em">Englisch</li>', '-0.02em">English</li>', '-0.02em">Engleski</li>', '-0.02em">الإنجليزية</li>'),
 ('-0.02em">Türkisch</li>', '-0.02em">Turkish</li>', '-0.02em">Turski</li>', '-0.02em">التركية</li>'),
@@ -375,6 +375,14 @@ S += [
  '>Von Null an, die Grundlagen der Sprache oder Begleitung im Studium: Auf der Arabisch-Seite findest du den Weg, der zu dir passt. Und eine Mini-Lektion, in der du dein erstes arabisches Wort liest.</span>'),
 ('>Zur Arabisch-Seite →</span>', '>Go to the Arabic page →</span>', '>Na stranicu za arapski →</span>', '>Zur Arabisch-Seite →</span>'),
 ('>balad · Land</span>', '>balad · country</span>', '>beled · zemlja</span>', '>balad · Land</span>'),
+]
+
+# ---------- Formular: „Was suchst du?“ (08.11.2026) ----------
+S += [
+('>Was suchst du?</legend>', '>What are you looking for?</legend>', '>Šta tražiš?</legend>', '>عمّ تبحث؟</legend>'),
+('value="Unterricht"><span>Unterricht</span>', 'value="Unterricht"><span>Lessons</span>', 'value="Unterricht"><span>Nastava</span>', 'value="Unterricht"><span>دروس</span>'),
+('value="Konversation"><span>Konversation</span>', 'value="Konversation"><span>Conversation</span>', 'value="Konversation"><span>Konverzacija</span>', 'value="Konversation"><span>محادثة</span>'),
+('value="Weiß ich noch nicht"><span>Weiß ich noch nicht</span>', 'value="Weiß ich noch nicht"><span>Not sure yet</span>', 'value="Weiß ich noch nicht"><span>Još ne znam</span>', 'value="Weiß ich noch nicht"><span>لا أعرف بعد</span>'),
 ]
 
 # ---------- Archiviert (08.11.2026): Zeilen nicht mehr auf der Startseite, siehe archiv_startseite.py ----------

@@ -54,4 +54,5 @@ ARCHIVIERT = [
     'font-size: 20px">05</div>',
     'font-size: 20px">06</div>',
     'style="position: absolute; right: 36px; top: 28px; width: 92px; height: 92px"',
+    '>Ich interessiere mich für Konversationsstunden</option>',
 ]

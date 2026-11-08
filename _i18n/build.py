@@ -155,9 +155,9 @@ def build_legal(page, bodies, title_key):
         print('%s/%s geschrieben' % (lang, page))
 
 # ---------- Sprachseiten (eigene Seite je Lehrsprache, z. B. arabisch/, bosnisch/) ----------
-# Arabisch-Seite: DE, EN, BS. Bosnisch-Seite: DE, EN, AR (keine bosnische Fassung, Entscheidung 07.11.2026).
+# Arabisch-Seite: DE, EN, BS. Bosnisch-Seite: DE, EN, AR, BS (bosnische Fassung seit 08.11.2026, ohne Mini-Lektion: <!--NOBS-->).
 AR_PAGE_LANGS = ['de', 'en', 'bs']
-BS_PAGE_LANGS = ['de', 'en', 'ar']
+BS_PAGE_LANGS = ['de', 'en', 'ar', 'bs']
 # Ordnernamen je Sprache in der Sprache der Fassung (Regel seit 07.11.2026); Arabisch mit lateinischer
 # Umschrift aus dem Englischen, weil arabische Schrift in Adressen zu %-Zeichenketten wird.
 AR_SLUG = {'de': 'arabisch', 'en': 'arabic', 'bs': 'arapski'}
@@ -222,6 +222,8 @@ def build_page(slug, rows, langs, extra=()):
                 out = out.replace(row[0], row[AR_PAGE_LANGS.index(lang)])
         for row in sorted(shared, key=lambda r: -len(r[0])):
             out = out.replace(row[0], row[COL[lang]])
+        # <!--NOBS-->…<!--/NOBS--> usw.: entfällt in dieser Sprachfassung
+        out = re.sub(r'<!--NO%s-->.*?<!--/NO%s-->' % (lang.upper(), lang.upper()), '', out, flags=re.S)
         out = out.replace('<html lang="de">', '<html lang="%s"%s>' % (lang, ' dir="rtl"' if lang == 'ar' else ''), 1)
         for a in ('href="../assets/', 'src="../assets/', 'href="../favicon.svg"'):
             out = out.replace(a, a.replace('="../', '="../../', 1))
@@ -236,7 +238,7 @@ def build_page(slug, rows, langs, extra=()):
 def build_arabisch():
     build_page(AR_SLUG, A, AR_PAGE_LANGS)
 
-BS_SLUG = {'de': 'bosnisch', 'en': 'bosnian', 'ar': 'bosnian'}
+BS_SLUG = {'de': 'bosnisch', 'en': 'bosnian', 'ar': 'bosnian', 'bs': 'bosanski'}
 
 # Alte Adressen, die auf die neue Adresse weiterleiten (GitHub Pages kann kein 301, daher eine kleine Weiterleitungsseite)
 REDIRECTS = [('en/bosnisch', '../bosnian/'), ('en/arabisch', '../arabic/'), ('bs/arabisch', '../arapski/')]
