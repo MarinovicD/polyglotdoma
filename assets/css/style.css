@@ -478,3 +478,25 @@ html[lang="ar"] .pg-final{white-space:nowrap}
 .pu-post h3{margin:14px 0 0;font-size:26px;line-height:1.15;letter-spacing:-.03em;font-weight:800}
 .pu-post p{margin:10px 0 0;font-size:17px;line-height:1.55}
 @media (max-width:860px){.pu-why{grid-template-columns:1fr;gap:36px}.pu-photo{flex:1 1 100%}.pu-photo svg{max-width:300px}}
+/* Über mich: Zeitleiste „Mein Weg“ als gepunktete Route */
+.pu-route{list-style:none;margin:56px 0 0;padding:0;position:relative;max-width:980px}
+.pu-route::before{content:"";position:absolute;left:170px;top:14px;bottom:40px;border-left:3px dotted #1D3A9A}
+.pu-stop{display:grid;grid-template-columns:140px 60px minmax(0,1fr);align-items:start;margin-bottom:22px}
+.pu-when{text-align:right;padding-top:16px;font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;line-height:1.1;color:#1D3A9A}
+.pu-dot{justify-self:center;margin-top:20px;width:18px;height:18px;border-radius:50%;background:#1D3A9A;box-shadow:0 0 0 6px #D5DEF3;position:relative;z-index:1}
+.pu-stop-now .pu-dot{width:26px;height:26px;margin-top:16px;background:#0E1B4D}
+.pu-stop-card{background:#F4F6FB;border-radius:28px;padding:20px 26px 22px}
+.pu-stop-now .pu-stop-card{background:#0E1B4D;color:#F4F6FB}
+.pu-stop-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;font-size:24px;font-weight:800;letter-spacing:-.03em}
+.pu-stop-head>span:first-of-type{flex:1 0 auto}
+.pu-stop-card p{margin:10px 0 0;font-size:17px;line-height:1.55}
+.pu-stop-now .pu-stop-card p{color:#D5DEF3}
+.pu-stop-now .pu-tag-on{background:#9FB3E3;color:#0E1B4D}
+@media (max-width:700px){
+  .pu-route::before{left:9px;top:8px}
+  .pu-stop{grid-template-columns:30px minmax(0,1fr);row-gap:6px}
+  .pu-when{grid-column:2;grid-row:1;text-align:left;padding-top:0;font-size:22px}
+  .pu-dot{grid-column:1;grid-row:1;justify-self:start;margin-top:5px}
+  .pu-stop-now .pu-dot{margin-top:1px;margin-left:-4px}
+  .pu-stop-card{grid-column:2;grid-row:2}
+}
