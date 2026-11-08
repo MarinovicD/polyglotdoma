@@ -57,13 +57,16 @@ DATENSCHUTZ = {
 <p><strong>Web3Forms.</strong> The contact form is sent via the Web3Forms service (web3forms.com). Web3Forms receives your form entries and forwards them to me by email; according to the provider, the entries are also stored for a limited time. Technical data such as your IP address is processed as well, among other things to protect against spam. The provider's servers may be located outside the EU, in particular in the USA. The legal basis is Art. 6(1)(b) and (f) GDPR; my legitimate interest lies in offering a reliable way to get in touch that is protected against misuse. More in the Web3Forms privacy policy: <a href="https://web3forms.com/privacy">web3forms.com</a>.</p>
 <p><strong>Google (email).</strong> My email inbox is hosted by Google. Enquiries that reach me via the form or by email are therefore stored on Google's servers; data may be transferred to the USA in the process. The legal basis is Art. 6(1)(b) and (f) GDPR. More in Google's privacy policy: <a href="https://policies.google.com/privacy?hl=en">policies.google.com</a>.</p>
 
-<h2>7. No cookies, no tracking</h2>
+<h2>7. Booking an appointment</h2>
+<p>On the page <a href="book/">Book an intro call</a>, you can choose a free time. To do this, the page asks my Google Calendar which times are free; only free time slots are transmitted, not the content of my appointments. When you request an appointment, I process your details (name, email address, chosen time, selected languages and options, your message and your device’s time zone, so that I can show you the correct time). The request is entered in my Google Calendar and you receive emails about the status of your request. If I confirm the appointment, I add you as a guest and create a link for a call via Google Meet. Processing takes place via Google Workspace (Google Calendar, Gmail, Google Apps Script) on Google’s servers; data may be transferred to the USA in the process. The legal basis is Art. 6(1)(b) GDPR (steps prior to entering into a contract) and your consent under Art. 6(1)(a) GDPR, which you can withdraw at any time with effect for the future. I delete declined or unconfirmed requests from the calendar after 48 hours at the latest.</p>
+
+<h2>8. No cookies, no tracking</h2>
 <p>This website does not set any cookies and does not use any analytics or tracking tools.</p>
 
-<h2>8. External links</h2>
+<h2>9. External links</h2>
 <p>If you click on a link to another service, for example Instagram, you leave this website. The respective provider is responsible for the data processing there.</p>
 
-<h2>9. Your rights</h2>
+<h2>10. Your rights</h2>
 <p>You have the right of access (Art. 15 GDPR), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and objection (Art. 21). You can withdraw any consent you have given at any time. Just send me an email.</p>
 <p>You can also lodge a complaint with a data protection supervisory authority, for example the authority where you live in the EU or the Personal Data Protection Agency of Bosnia and Herzegovina (Agencija za zaštitu ličnih podataka u BiH).</p>
 
@@ -90,13 +93,16 @@ DATENSCHUTZ = {
 <p><strong>Web3Forms.</strong> Kontakt-formular se šalje putem servisa Web3Forms (web3forms.com). Web3Forms prima podatke iz formulara i prosljeđuje mi ih e-mailom; prema navodima pružaoca, podaci se uz to čuvaju ograničeno vrijeme. Pri tome se obrađuju i tehnički podaci poput tvoje IP adrese, između ostalog radi zaštite od spama. Serveri pružaoca mogu se nalaziti izvan EU, posebno u SAD-u. Pravni osnov je čl. 6 st. 1 tač. b i f GDPR-a; moj legitimni interes je pouzdan način kontakta zaštićen od zloupotrebe. Više o tome u politici privatnosti Web3Formsa: <a href="https://web3forms.com/privacy">web3forms.com</a>.</p>
 <p><strong>Google (e-mail).</strong> Moj e-mail sandučić nalazi se kod Googlea. Upiti koji mi stignu putem formulara ili e-maila zato se pohranjuju na Googleovim serverima; pri tome podaci mogu biti preneseni u SAD. Pravni osnov je čl. 6 st. 1 tač. b i f GDPR-a. Više o tome u politici privatnosti Googlea: <a href="https://policies.google.com/privacy?hl=bs">policies.google.com</a>.</p>
 
-<h2>7. Bez kolačića, bez praćenja</h2>
+<h2>7. Zakazivanje termina</h2>
+<p>Na stranici <a href="termin/">Zakaži razgovor za upoznavanje</a> možeš izabrati slobodan termin. Za to stranica u mom Google kalendaru provjerava koja su vremena slobodna; pri tome se prenose samo slobodni termini, a ne sadržaj mojih obaveza. Kada zatražiš termin, obrađujem tvoje podatke (ime, e-mail adresu, izabrani termin, odabrane jezike i opcije, tvoju poruku te vremensku zonu tvog uređaja, kako bih ti ispravno prikazao vrijeme). Zahtjev se upisuje u moj Google kalendar, a ti dobijaš e-mailove o statusu svog zahtjeva. Ako potvrdim termin, dodajem te kao gosta i pravim link za razgovor preko Google Meeta. Obrada se vrši putem Google Workspacea (Google Kalendar, Gmail, Google Apps Script) na Googleovim serverima; pri tome se podaci mogu prenositi u SAD. Pravni osnov je čl. 6 st. 1 tač. b GDPR-a (radnje prije zaključenja ugovora) te tvoja saglasnost prema čl. 6 st. 1 tač. a GDPR-a, koju možeš u svakom trenutku povući s djelovanjem za ubuduće. Odbijene ili nepotvrđene zahtjeve brišem iz kalendara najkasnije nakon 48 sati.</p>
+
+<h2>8. Bez kolačića, bez praćenja</h2>
 <p>Ova stranica ne postavlja kolačiće (cookies) i ne koristi alate za analitiku ni praćenje.</p>
 
-<h2>8. Vanjski linkovi</h2>
+<h2>9. Vanjski linkovi</h2>
 <p>Ako klikneš na link prema drugoj ponudi, na primjer prema Instagramu, napuštaš ovu stranicu. Za obradu podataka tamo odgovoran je odgovarajući pružalac.</p>
 
-<h2>9. Tvoja prava</h2>
+<h2>10. Tvoja prava</h2>
 <p>Imaš pravo na pristup (čl. 15 GDPR-a), ispravku (čl. 16), brisanje (čl. 17), ograničenje obrade (čl. 18), prenosivost podataka (čl. 20) i prigovor (čl. 21). Datu saglasnost možeš povući u svakom trenutku. Za to mi samo pošalji e-mail.</p>
 <p>Osim toga, možeš podnijeti pritužbu nadzornom tijelu za zaštitu podataka, na primjer nadležnom tijelu u mjestu tvog prebivališta u EU ili Agenciji za zaštitu ličnih podataka u Bosni i Hercegovini.</p>
 
@@ -123,13 +129,16 @@ DATENSCHUTZ = {
 <p><strong>Web3Forms.</strong> يُرسَل نموذج التواصل عبر خدمة Web3Forms (web3forms.com)، التي تستقبل ما تدخله في النموذج وتحوّله إليّ بالبريد الإلكتروني؛ ووفقًا لمقدّم الخدمة تُحفَظ المدخلات أيضًا لفترة محدودة. وتُعالَج كذلك بيانات تقنية مثل عنوان IP الخاص بك، ومن ذلك للحماية من الرسائل المزعجة. وقد تقع خوادم مقدّم الخدمة خارج الاتحاد الأوروبي، ولا سيما في الولايات المتحدة. الأساس القانوني هو المادة ٦، الفقرة ١، البندان (b) و(f) من اللائحة؛ ومصلحتي المشروعة هي توفير وسيلة تواصل موثوقة ومحمية من إساءة الاستخدام. لمزيد من المعلومات، راجع سياسة الخصوصية لدى Web3Forms: <a href="https://web3forms.com/privacy">web3forms.com</a>.</p>
 <p><strong>Google (البريد الإلكتروني).</strong> صندوق بريدي الإلكتروني مستضاف لدى Google، ولذلك تُحفَظ الاستفسارات التي تصلني عبر النموذج أو البريد الإلكتروني على خوادم Google؛ وقد تُنقل البيانات في هذا الإطار إلى الولايات المتحدة. الأساس القانوني هو المادة ٦، الفقرة ١، البندان (b) و(f) من اللائحة. لمزيد من المعلومات، راجع سياسة الخصوصية لدى Google: <a href="https://policies.google.com/privacy?hl=ar">policies.google.com</a>.</p>
 
-<h2>٧. لا ملفات تعريف ارتباط، ولا تتبّع</h2>
+<h2>٧. حجز المواعيد</h2>
+<p>في صفحة <a href="book/">احجز مكالمة تعارف</a> يمكنك اختيار موعد متاح. ولهذا الغرض تستعلم الصفحة من تقويم Google الخاص بي عن الأوقات المتاحة، ولا تُنقل إلا الأوقات المتاحة دون أي تفاصيل عن مواعيدي. وعندما تطلب موعدًا، أعالج بياناتك (الاسم، والبريد الإلكتروني، والموعد المختار، واللغات والخيارات التي اخترتها، ورسالتك، والمنطقة الزمنية لجهازك لكي أعرض لك الوقت بشكل صحيح). يُسجَّل الطلب في تقويم Google الخاص بي، وتصلك رسائل بالبريد الإلكتروني عن حالة طلبك. وإذا أكّدت الموعد، أضيفك ضيفًا وأنشئ رابطًا لمكالمة عبر Google Meet. تتم المعالجة عبر Google Workspace (تقويم Google وGmail وGoogle Apps Script) على خوادم Google، وقد تُنقل البيانات إلى الولايات المتحدة. الأساس القانوني هو المادة ٦، الفقرة ١، البند (b) من اللائحة (الإجراءات السابقة لإبرام العقد)، وكذلك موافقتك وفق المادة ٦، الفقرة ١، البند (a)، التي يمكنك سحبها في أي وقت بأثر مستقبلي. أحذف الطلبات المرفوضة أو غير المؤكدة من التقويم بعد ٤٨ ساعة على الأكثر.</p>
+
+<h2>٨. لا ملفات تعريف ارتباط، ولا تتبّع</h2>
 <p>لا يستخدم هذا الموقع ملفات تعريف الارتباط (Cookies)، ولا أي أدوات للتحليل أو التتبّع.</p>
 
-<h2>٨. الروابط الخارجية</h2>
+<h2>٩. الروابط الخارجية</h2>
 <p>عندما تضغط على رابط يؤدي إلى خدمة أخرى، مثل Instagram، فإنك تغادر هذا الموقع، ويكون مقدّم تلك الخدمة مسؤولًا عن معالجة البيانات هناك.</p>
 
-<h2>٩. حقوقك</h2>
+<h2>١٠. حقوقك</h2>
 <p>لك الحق في الاطلاع (المادة ١٥ من اللائحة)، والتصحيح (المادة ١٦)، والحذف (المادة ١٧)، وتقييد المعالجة (المادة ١٨)، ونقل البيانات (المادة ٢٠)، والاعتراض (المادة ٢١). ويمكنك سحب أي موافقة منحتها في أي وقت. يكفي أن ترسل لي بريدًا إلكترونيًا.</p>
 <p>ويمكنك كذلك تقديم شكوى إلى سلطة رقابية لحماية البيانات، مثل السلطة المختصة في مكان إقامتك في الاتحاد الأوروبي، أو وكالة حماية البيانات الشخصية في البوسنة والهرسك (<span dir="ltr">Agencija za zaštitu ličnih podataka u BiH</span>).</p>
 

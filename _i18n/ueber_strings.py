@@ -70,10 +70,6 @@ U = [
 # Kontakt
 ('#9FB3E3">Lass uns kennenlernen.</span>', '#9FB3E3">Let’s get to know each other.</span>', '#9FB3E3">Upoznajmo se.</span>', '#9FB3E3">فلنتعارف.</span>'),
 # Kontakt, Kopfzeile, Navigation (wie auf der Bosnisch-Seite bzw. Startseite)
-('>Schreib mir, welche Sprache du lernen willst, wo du gerade stehst und was dein Ziel ist. Ich melde mich persönlich bei dir und wir vereinbaren ein Kennenlerngespräch.</p>',
- '>Write to me which language you want to learn, where you are at the moment and what your goal is. I’ll get back to you personally and we’ll arrange an intro call.</p>',
- '>Napiši mi koji jezik želiš učiti, gdje se trenutno nalaziš i koji ti je cilj. Javit ću ti se lično i dogovorit ćemo razgovor za upoznavanje.</p>',
- '>اكتب لي اللغة التي تريد تعلّمها، وإلى أين وصلت فيها، وما هدفك. سأتواصل معك شخصيًا، ونحدّد موعدًا لمكالمة التعارف.</p>'),
 ('<span>Sprachunterricht</span><span>', '<span>Language lessons</span><span>', '<span>Časovi jezika</span><span>', '<span>دروس لغات</span><span>'),
 ('>← Startseite</a>', '>← Home</a>', '>← Početna</a>', '>→ الرئيسية</a>'),
 ('>Startseite</a>', '>Home</a>', '>Početna</a>', '>الرئيسية</a>'),

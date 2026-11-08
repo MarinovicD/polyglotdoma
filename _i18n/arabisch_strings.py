@@ -153,9 +153,6 @@ A = [
 
 # ---------- Kontakt ----------
 ('>Bereit für den ersten Buchstaben?</span>', '>Ready for the first letter?</span>', '>Spreman za prvo slovo?</span>'),
-('>Schreib mir, wo du mit deinem Arabisch gerade stehst und was dein Ziel ist. Ich melde mich persönlich bei dir und wir vereinbaren ein Kennenlerngespräch.</p>',
- ">Write to me where you currently stand with your Arabic and what your goal is. I'll get back to you personally and we'll arrange an intro call.</p>",
- '>Napiši mi gdje si trenutno s arapskim i koji ti je cilj. Javit ću ti se lično i dogovorit ćemo razgovor za upoznavanje.</p>'),
 ('>Welcher Lernweg passt zu dir?</legend>', '>Which learning path suits you?</legend>', '>Koji put učenja ti odgovara?</legend>'),
 ('<span>Von Null an</span>', '<span>From zero</span>', '<span>Od nule</span>'),
 ('<span>Grundlagen der Sprache</span>', '<span>The foundations of the language</span>', '<span>Osnove jezika</span>'),

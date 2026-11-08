@@ -453,32 +453,32 @@ var MAIL = {
     joinLabel: 'Zum Gespräch',
     icsTitle: 'Kennenlerngespräch mit Domagoj (polyglot.doma)',
     releasedSubject: 'Dein Terminwunsch für das Kennenlerngespräch',
-    declined: 'Hallo {name},\n\nleider passt mir der Termin am {when} nicht. Das tut mir leid!\n\n{note}Such dir gern einen anderen Termin aus:\n{site}\n\nBis bald\nDomagoj',
+    declined: 'Hallo {name},\n\nleider konnte ich deinen Wunschtermin nicht bestätigen:\n\n{when}\n\n{note}Such dir gern einen anderen Termin aus:\n{site}\n\nBis bald\nDomagoj',
     expired: 'Hallo {name},\n\nleider konnte ich deine Anfrage für {when} nicht rechtzeitig bestätigen. Das tut mir leid! Das Zeitfenster ist jetzt wieder freigegeben.\n\nSuch dir gern einen neuen Termin aus:\n{site}\n\nBis bald\nDomagoj',
     rebookLabel: 'Neuen Termin wählen'
   },
   en: {
     receivedSubject: 'Your request for an intro call',
-    received: 'Hi {name},\n\nthank you for your request! You chose this time:\n\n{when}\n\nI’ll look at your request and confirm the appointment personally within two days at the latest. Until then, the slot is reserved for you. Once it’s confirmed, you’ll also get the link to the call.\n\nSee you soon\nDomagoj',
+    received: 'Hi {name},\n\nThank you for your request! You chose this time:\n\n{when}\n\nI’ll look at your request and confirm the appointment personally within two days at the latest. Until then, the slot is reserved for you. Once it’s confirmed, you’ll also get the link to the call.\n\nSee you soon\nDomagoj',
     confirmedSubject: 'Confirmed: your intro call on {date}',
-    confirmed: 'Hi {name},\n\ngreat news, your appointment is confirmed:\n\n{when}\n\nWe’ll talk on Google Meet. Here’s your link:\n{link}\n\n{note}You’ll find the appointment for your calendar attached. If anything comes up, just reply to this email.\n\nSee you soon\nDomagoj',
+    confirmed: 'Hi {name},\n\nGreat news, your appointment is confirmed:\n\n{when}\n\nWe’ll talk on Google Meet. Here’s your link:\n{link}\n\n{note}You’ll find the appointment for your calendar attached. If anything comes up, just reply to this email.\n\nSee you soon\nDomagoj',
     joinLabel: 'Join the call',
     icsTitle: 'Intro call with Domagoj (polyglot.doma)',
     releasedSubject: 'Your requested time for the intro call',
-    declined: 'Hi {name},\n\nunfortunately, {when} doesn’t work for me. I’m sorry!\n\n{note}Feel free to choose another time:\n{site}\n\nSee you soon\nDomagoj',
-    expired: 'Hi {name},\n\nunfortunately, I wasn’t able to confirm your request for {when} in time. I’m sorry! The slot has now been released.\n\nFeel free to choose a new time:\n{site}\n\nSee you soon\nDomagoj',
+    declined: 'Hi {name},\n\nUnfortunately, I wasn’t able to confirm your requested time:\n\n{when}\n\n{note}Feel free to choose another time:\n{site}\n\nSee you soon\nDomagoj',
+    expired: 'Hi {name},\n\nUnfortunately, I wasn’t able to confirm your request for {when} in time. I’m sorry! The slot has now been released.\n\nFeel free to choose a new time:\n{site}\n\nSee you soon\nDomagoj',
     rebookLabel: 'Choose a new time'
   },
   bs: {
     receivedSubject: 'Tvoj zahtjev za razgovor za upoznavanje',
-    received: 'Zdravo {name},\n\nhvala ti na zahtjevu! Tvoj željeni termin:\n\n{when}\n\nPogledat ću tvoj zahtjev i lično potvrditi termin, najkasnije u roku od dva dana. Do tada je termin rezervisan za tebe. Uz potvrdu dobit ćeš i link za razgovor.\n\nDo uskoro\nDomagoj',
+    received: 'Zdravo {name},\n\nHvala ti na zahtjevu! Tvoj željeni termin:\n\n{when}\n\nPogledat ću tvoj zahtjev i lično potvrditi termin, najkasnije u roku od dva dana. Do tada je termin rezervisan za tebe. Uz potvrdu dobit ćeš i link za razgovor.\n\nDo uskoro\nDomagoj',
     confirmedSubject: 'Potvrđeno: tvoj razgovor za upoznavanje, {date}',
-    confirmed: 'Zdravo {name},\n\ndrago mi je, tvoj termin je potvrđen:\n\n{when}\n\nRazgovaramo preko Google Meeta. Evo tvog linka:\n{link}\n\n{note}U prilogu je termin za tvoj kalendar. Ako ti nešto iskrsne, samo odgovori na ovaj mail.\n\nDo uskoro\nDomagoj',
-    joinLabel: 'Na razgovor',
+    confirmed: 'Zdravo {name},\n\nDrago mi je, tvoj termin je potvrđen:\n\n{when}\n\nRazgovaramo preko Google Meeta. Evo tvog linka:\n{link}\n\n{note}U prilogu je termin za tvoj kalendar. Ako ti nešto iskrsne, samo odgovori na ovaj mail.\n\nDo uskoro\nDomagoj',
+    joinLabel: 'Pridruži se razgovoru',
     icsTitle: 'Razgovor za upoznavanje s Domagojem (polyglot.doma)',
     releasedSubject: 'Tvoj željeni termin za razgovor za upoznavanje',
-    declined: 'Zdravo {name},\n\nnažalost, termin {when} mi ne odgovara. Žao mi je!\n\n{note}Slobodno izaberi neki drugi termin:\n{site}\n\nDo uskoro\nDomagoj',
-    expired: 'Zdravo {name},\n\nnažalost, nisam stigao na vrijeme potvrditi tvoj zahtjev za {when}. Žao mi je! Termin je sada ponovo slobodan.\n\nSlobodno izaberi novi termin:\n{site}\n\nDo uskoro\nDomagoj',
+    declined: 'Zdravo {name},\n\nNažalost, nisam mogao potvrditi tvoj željeni termin:\n\n{when}\n\n{note}Slobodno izaberi neki drugi termin:\n{site}\n\nDo uskoro\nDomagoj',
+    expired: 'Zdravo {name},\n\nNažalost, nisam stigao na vrijeme potvrditi tvoj zahtjev za {when}. Žao mi je! Termin je sada ponovo slobodan.\n\nSlobodno izaberi novi termin:\n{site}\n\nDo uskoro\nDomagoj',
     rebookLabel: 'Izaberi novi termin'
   },
   ar: {
@@ -489,7 +489,7 @@ var MAIL = {
     joinLabel: 'الانضمام إلى المكالمة',
     icsTitle: 'مكالمة تعارف مع دوماغوي (polyglot.doma)',
     releasedSubject: 'موعدك المطلوب لمكالمة التعارف',
-    declined: 'مرحبًا {name}،\n\nللأسف لا يناسبني موعد {when}. أنا آسف!\n\n{note}يمكنك اختيار موعد آخر:\n{site}\n\nإلى اللقاء قريبًا\nدوماغوي',
+    declined: 'مرحبًا {name}،\n\nللأسف لم أتمكّن من تأكيد الموعد الذي طلبته:\n\n{when}\n\n{note}يمكنك اختيار موعد آخر:\n{site}\n\nإلى اللقاء قريبًا\nدوماغوي',
     expired: 'مرحبًا {name}،\n\nللأسف لم أتمكّن من تأكيد طلبك لموعد {when} في الوقت المناسب. أنا آسف! أصبح الموعد الآن متاحًا من جديد.\n\nيمكنك اختيار موعد جديد:\n{site}\n\nإلى اللقاء قريبًا\nدوماغوي',
     rebookLabel: 'اختر موعدًا جديدًا'
   }

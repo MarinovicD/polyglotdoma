@@ -296,13 +296,6 @@ S = [
 
 # ---------- Stück 6: Kontakt & Formular ----------
 ('>Bereit für die erste Etappe?</span>', '>Ready for the first stage?</span>', '>Spreman za prvu etapu?</span>', '>مستعد للمرحلة الأولى؟</span>'),
-('>Schreib mir, welche Sprache du lernen willst und was dein Ziel ist. Ich melde mich persönlich bei dir und wir vereinbaren ein Kennenlerngespräch.</p>',
- "> Write to me which language you want to learn and what your goal is. I'll get back to you personally and we'll arrange an intro call.</p>".replace('> Write', '>Write'),
- '>Napiši mi koji jezik želiš učiti i koji ti je cilj. Javit ću ti se lično i dogovorit ćemo razgovor za upoznavanje.</p>',
- '>اكتب لي اللغة التي تريد تعلّمها وما هدفك. سأتواصل معك شخصيًا، ونحدّد موعدًا لمكالمة التعارف.</p>'),
-('>1</span>Du schreibst mir kurz dein Ziel.</li>', '>1</span>Briefly tell me your goal.</li>', '>1</span>Ukratko mi napišeš svoj cilj.</li>', '>١</span>تكتب لي هدفك باختصار.</li>'),
-('>2</span>Ich antworte dir persönlich.</li>', ">2</span>I'll reply to you personally.</li>", '>2</span>Odgovaram ti lično.</li>', '>٢</span>أردّ عليك شخصيًا.</li>'),
-('>3</span>Im Kennenlerngespräch planen wir deine Route.</li>', '>3</span>In the intro call, we plan your route.</li>', '>3</span>U razgovoru za upoznavanje planiramo tvoju rutu.</li>', '>٣</span>في مكالمة التعارف نخطّط مسارك.</li>'),
 ('aria-label="Kontaktformular"', 'aria-label="Contact form"', 'aria-label="Kontakt-formular"', 'aria-label="نموذج التواصل"'),
 ('-0.03em">Schreib mir</span>', '-0.03em">Write to me</span>', '-0.03em">Piši mi</span>', '-0.03em">راسلني</span>'),
 ('font-weight: 700">Kontakt</span>', 'font-weight: 700">Contact</span>', 'font-weight: 700">Kontakt</span>', 'font-weight: 700">تواصل</span>'),
@@ -346,6 +339,13 @@ S = [
 ('style="color: #D5DEF3">Impressum</a>', 'style="color: #D5DEF3">Legal notice</a>', 'style="color: #D5DEF3">Impresum</a>', 'style="color: #D5DEF3">بيانات الناشر</a>'),
 ('style="color: #D5DEF3">Datenschutz</a>', 'style="color: #D5DEF3">Privacy policy</a>', 'style="color: #D5DEF3">Politika privatnosti</a>', 'style="color: #D5DEF3">سياسة الخصوصية</a>'),
 ('>© 2026 polyglot.doma</span>', '>© 2026 polyglot.doma</span>', '>© 2026 polyglot.doma</span>', '>© ٢٠٢٦ <span dir="ltr">polyglot.doma</span></span>'),
+# Kontaktbereich: zwei Wege (Termin / schreiben) und Hinweis im Formular – freigegeben 08.11.2026
+('<span class="pk-t">Gleich einen Termin?</span>', '<span class="pk-t">Book a time straight away?</span>', '<span class="pk-t">Odmah termin?</span>', '<span class="pk-t">تريد موعدًا مباشرة؟</span>'),
+('<span class="pk-d">Kostenfreies Kennenlerngespräch, 30 Minuten.</span>', '<span class="pk-d">Free intro call, 30 minutes.</span>', '<span class="pk-d">Besplatan razgovor za upoznavanje, 30 minuta.</span>', '<span class="pk-d">مكالمة تعارف مجانية، ٣٠ دقيقة.</span>'),
+('<span class="pk-btn">Termin wählen ', '<span class="pk-btn">Choose a time ', '<span class="pk-btn">Izaberi termin ', '<span class="pk-btn">اختر موعدًا '),
+('<span class="pk-t">Lieber erst schreiben?</span>', '<span class="pk-t">Rather write first?</span>', '<span class="pk-t">Radije prvo poruka?</span>', '<span class="pk-t">تفضّل أن تكتب أولًا؟</span>'),
+('<span class="pk-d">Ich antworte dir persönlich.</span>', '<span class="pk-d">I’ll reply to you personally.</span>', '<span class="pk-d">Odgovorit ću ti lično.</span>', '<span class="pk-d">سأردّ عليك بنفسي.</span>'),
+('<span>Lieber direkt einen Termin? <b>Termin wählen</b></span>', '<span>Prefer to book directly? <b>Choose a time</b></span>', '<span>Radije odmah termin? <b>Izaberi termin</b></span>', '<span>تفضّل حجز موعد مباشرة؟ <b>اختر موعدًا</b></span>'),
 ]
 
 # Nur Arabisch: Ziffern in Etappen-Kreisen
