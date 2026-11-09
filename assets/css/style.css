@@ -677,3 +677,69 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pd-cta{transition:opacity .35s ease,transform .35s ease,visibility 0s linear 0s}
 .pd-cta.pd-cta-off{opacity:0;transform:translateY(-6px);visibility:hidden;pointer-events:none;transition:opacity .25s ease,transform .25s ease,visibility 0s linear .25s}
 @media (prefers-reduced-motion: reduce){.pd-cta,.pd-cta.pd-cta-off{transition:none}}
+
+/* ---------- Mini-Lektion Deutsch: „Das letzte Wort entscheidet“ (.pz-) ----------
+   Artikel als Pillen mit dem Wort selbst (nicht nur Farbe): der Kobalt, die Mittelblau, das Aquarell. */
+.pg-tag[data-g="der"],.pg-pick[data-g="der"].ok{background:#1D3A9A;color:#F4F6FB}
+.pg-tag[data-g="die"],.pg-pick[data-g="die"].ok{background:#4A68C2;color:#F4F6FB}
+.pg-tag[data-g="das"],.pg-pick[data-g="das"].ok{background:#9FB3E3;color:#0E1B4D}
+.pg-pick[data-g="der"]::before{background:#1D3A9A}.pg-pick[data-g="die"]::before{background:#4A68C2}.pg-pick[data-g="das"]::before{background:#9FB3E3}
+.pg-pick[data-g="das"].ok::before{background:#0E1B4D}
+.pz-item{gap:4px;width:100%}
+.pz-pair{display:flex;align-items:flex-start;justify-content:center;gap:14px}
+.pz-part{display:flex;flex-direction:column;align-items:center;gap:2px}
+.pz-pw{display:inline-flex;align-items:center;gap:8px;font-size:34px;font-weight:800;letter-spacing:-0.03em;line-height:1.15;white-space:nowrap}
+.pz-pw .pg-tag{font-size:15px;padding:4px 11px;letter-spacing:0}
+.pz-tr{font-size:20px;color:#1D3A9A}
+.pz-plus{font-size:28px;font-weight:500;color:#4A68C2;line-height:1.4}
+.pz-route{display:block;margin:4px 0 2px}
+.pz-new{display:flex;align-items:center;justify-content:center;gap:12px}
+.pz-new .pg-w{font-size:60px}
+.pz-slot{display:inline-flex;min-width:64px;justify-content:center}
+.pz-slot .pg-tag{display:none;font-size:22px;padding:6px 16px;letter-spacing:0}
+.pz-q{display:inline-flex;align-items:center;justify-content:center;min-width:56px;height:40px;box-sizing:border-box;border:2px dashed #4A68C2;border-radius:999px;font-size:22px;font-weight:800;color:#4A68C2}
+.pg-done .pz-q{display:none}
+.pg-done .pz-slot .pg-tag{display:inline-flex;animation:pzPop .45s cubic-bezier(.2,.8,.2,1.3) both}
+.pz-lit{visibility:hidden;margin-top:6px;background:#D5DEF3;border-radius:999px;padding:6px 16px;font-family:'Instrument Serif',serif;font-style:italic;font-size:21px;color:#0E1B4D}
+.pg-done .pz-lit{visibility:visible;animation:pzPop .5s cubic-bezier(.2,.8,.2,1.2) .25s both}
+@keyframes pzPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+/* Schritt „Regel“: Artikel wandert vom letzten Teil vor das ganze Wort (Versatz setzt lektion-wort.js) */
+.pz-rows{display:flex;flex-direction:column;align-items:flex-start;gap:30px;margin:0 auto 4px;padding-top:30px}
+.pz-row{display:flex;align-items:center;gap:12px}
+.pz-row .pg-tag{font-size:20px;padding:6px 15px;letter-spacing:0;min-width:58px;justify-content:center;box-sizing:border-box}
+.pz-word{font-size:46px;font-weight:800;letter-spacing:-0.035em;line-height:1.15;color:#0E1B4D;white-space:nowrap}
+.pz-last{border-radius:0.2em;padding:0 0.05em;transition:background-color .5s,color .5s}
+.pz-on .pz-last[data-g="der"]{background:#1D3A9A;color:#F4F6FB}
+.pz-on .pz-last[data-g="die"]{background:#4A68C2;color:#F4F6FB}
+.pz-on .pz-last[data-g="das"]{background:#9FB3E3;color:#0E1B4D}
+.pz-mv{transition:transform .8s cubic-bezier(.5,0,.2,1),opacity .3s}
+.pz-still .pz-mv{transition:none}
+.pz-rule{margin:6px 0 0;font-size:clamp(23px,2.6vw,30px);font-weight:800;letter-spacing:-0.025em;line-height:1.2;color:#1D3A9A;max-width:620px}
+.pz-wait .pz-rule,.pz-wait .pz-rule-hint{opacity:0}
+.pz-rule,.pz-rule-hint{transition:opacity .5s ease}
+/* Schritt „Riesenwort“: Laufschrift. Alle Teile liegen in .pz-world (Schrift 100px), lektion-wort.js setzt Lage und Maßstab. */
+.pz-giant{position:relative;align-self:stretch;margin:0 -32px;height:150px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.pz-world{position:absolute;left:0;top:0;transform-origin:0 0;font-size:100px;line-height:1;font-weight:800;letter-spacing:-0.035em;color:#0E1B4D;white-space:nowrap;will-change:transform;visibility:hidden}
+.pz-ready .pz-world{visibility:visible}
+.pz-g{position:absolute;left:0;top:0;transform-origin:0 50%}
+.pz-plus2{font-weight:500;color:#4A68C2}
+.pz-tart{font-size:.72em;font-weight:700;letter-spacing:0;padding:.04em .32em .1em;border-radius:999px;background:#4A68C2;color:#F4F6FB}
+.pz-cap{transition:color .6s}
+.pz-cap.pz-flash{color:#4A68C2;transition:none}
+.pz-again{font-family:inherit;font-size:15px;font-weight:700;min-height:40px;padding:0 18px;border-radius:999px;border:1.5px solid #0E1B4D;background:none;color:#0E1B4D;cursor:pointer;margin-top:-4px}
+.pz-wait .pz-again{visibility:hidden}
+.pz-after{display:flex;flex-direction:column;align-items:center;gap:10px;transition:opacity .5s ease}
+.pz-wait .pz-after{opacity:0;pointer-events:none}
+.pz-end{font-weight:800;letter-spacing:-0.02em}
+.pz-end-tr{margin-top:-6px}
+@media (max-width:560px){
+  .pz-pair{gap:8px}.pz-pw{font-size:25px;gap:6px}.pz-pw .pg-tag{font-size:13px;padding:3px 9px}
+  .pz-tr{font-size:17px}.pz-plus{font-size:22px}
+  .pz-new{gap:8px}.pz-new .pg-w{font-size:40px}
+  .pz-slot{min-width:52px}.pz-slot .pg-tag{font-size:18px;padding:5px 12px}.pz-q{min-width:48px;height:34px;font-size:18px}
+  .pz-lit{font-size:18px;padding:5px 14px}
+  .pz-word{font-size:34px}.pz-row .pg-tag{font-size:17px;padding:5px 12px;min-width:50px}.pz-row{gap:10px}
+  .pz-giant{margin:0 -14px;height:110px}
+}
+html[lang="ar"] .pl-lesson [lang="de"],html[lang="ar"] .pz-pw,html[lang="ar"] .pz-word,html[lang="ar"] .pz-giant{font-family:'Bricolage Grotesque',sans-serif;direction:ltr;unicode-bidi:isolate}
+@media (prefers-reduced-motion: reduce){.pz-mv{transition:none}.pg-done .pz-slot .pg-tag,.pg-done .pz-lit{animation:none}}

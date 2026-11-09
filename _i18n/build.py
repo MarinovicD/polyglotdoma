@@ -16,6 +16,7 @@ from arabisch_strings import A
 from bosnisch_strings import B
 from ueber_strings import U
 from termin_strings import T
+from deutsch_strings import D
 
 # Vollständige Adresse der Website mit / am Ende, z. B. 'https://polyglotdoma.com/'.
 # Solange leer, werden keine hreflang-Links gesetzt (Google verlangt absolute Adressen).
@@ -290,12 +291,53 @@ def build_termin():
 def build_bosnisch():
     build_page(BS_SLUG, B, BS_PAGE_LANGS, extra=A)
 
+# Deutsch-Seite (seit 09.11.2026, Vorschau, noindex, noch nicht verlinkt). Quelle: _i18n/deutsch_quelle.html.
+# Die deutsche Fassung wird noch nicht erzeugt (bekäme keine Mini-Lektion, Lernwege fehlen noch).
+# Erzeugt werden nur die Sprachen in DE_PAGE_LANGS; Sprachen ohne Fassung führen im Umschalter zur Startseite.
+DE_SLUG = {'de': 'deutsch', 'en': 'german', 'bs': 'njemacki', 'ar': 'german'}
+DE_PAGE_LANGS = ['en']  # nach Freigabe der Übersetzungen: 'bs', 'ar' ergänzen
+DE_COL = {'de': 0, 'en': 1, 'bs': 2, 'ar': 3}
+
+def build_deutsch():
+    src = open(os.path.join(ROOT, '_i18n', 'deutsch_quelle.html'), encoding='utf-8').read()
+    missing = [r[0] for r in D if r[0] not in src]
+    if missing:
+        sys.exit('Nicht in _i18n/deutsch_quelle.html gefunden:\n  ' + '\n  '.join(m[:90] for m in missing))
+    shared = shared_rows()
+    de_text = text_nodes(src)
+    for lang in DE_PAGE_LANGS:
+        out = nde(src)
+        for row in sorted(D, key=lambda r: -len(r[0])):
+            if row[DE_COL[lang]] is None:
+                sys.exit('Deutsch-Seite: Übersetzung fehlt (%s): %s' % (lang, row[0][:80]))
+            out = out.replace(row[0], row[DE_COL[lang]])
+        for row in sorted(shared, key=lambda r: -len(r[0])):
+            out = out.replace(row[0], row[COL[lang]])
+        out = re.sub(r'<!--NO%s-->.*?<!--/NO%s-->' % (lang.upper(), lang.upper()), '', out, flags=re.S)
+        out = out.replace('<html lang="de">', '<html lang="%s"%s>' % (lang, ' dir="rtl"' if lang == 'ar' else ''), 1)
+        for a in ('href="../assets/', 'src="../assets/', 'href="../favicon.svg"'):
+            out = out.replace(a, a.replace('="../', '="../../', 1))
+        out = untermin(out, lang)
+        items = [(l, page_href(DE_SLUG, lang, l) if l in DE_PAGE_LANGS else '../../' + ('' if l == 'de' else l + '/'))
+                 for l in LANGS]
+        out = fill(out, 'LANGSW', lang_dropdown(lang, items))
+        out = fill(out, 'LANGMENU', lang_menu(lang, items))
+        out = fill(out, 'ALT', '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s/%s/">' % (l, BASE_URL, l, DE_SLUG[l])
+                                         for l in DE_PAGE_LANGS))
+        left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
+        if left:
+            print('[%s/%s] noch deutsch?' % (lang, DE_SLUG[lang]), left)
+        os.makedirs(os.path.join(ROOT, lang, DE_SLUG[lang]), exist_ok=True)
+        open(os.path.join(ROOT, lang, DE_SLUG[lang], 'index.html'), 'w', encoding='utf-8').write(out)
+        print('%s/%s/index.html geschrieben' % (lang, DE_SLUG[lang]))
+
 if __name__ == '__main__':
     build_index()
     build_arabisch()
     build_bosnisch()
     build_ueber()
     build_termin()
+    build_deutsch()
     build_redirects()
     build_legal('impressum.html', IMPRESSUM, 'impressum')
     build_legal('datenschutz.html', DATENSCHUTZ, 'datenschutz')
