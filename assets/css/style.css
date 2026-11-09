@@ -753,3 +753,9 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 }
 html[lang="ar"] .pl-lesson [lang="de"],html[lang="ar"] .pz-pw,html[lang="ar"] .pz-word,html[lang="ar"] .pz-giant{font-family:'Bricolage Grotesque',sans-serif;direction:ltr;unicode-bidi:isolate}
 @media (prefers-reduced-motion: reduce){.pz-mv,.pz-dst{transition:none}}
+html[lang="ar"] .pl-lesson .pg-tag{font-family:'Bricolage Grotesque',sans-serif}
+html[lang="ar"] .pl-lesson .pz-tr.serif,html[lang="ar"] .pl-lesson .pz-lit{font-family:'Markazi Text','Alexandria',serif !important;font-style:normal !important;font-weight:500 !important}
+html[lang="ar"] .pl-lesson .pz-tr.serif{font-size:24px}
+html[lang="ar"] .pl-lesson .pz-lit{font-size:24px}
+html[lang="ar"] .pl-lesson .pz-end-tr.serif{font-size:26px}
+@media (max-width:560px){.pl-glyph-lat[lang="de"]{font-size:44px}html[lang="ar"] .pl-lesson .pz-end-tr.serif{font-size:22px}}

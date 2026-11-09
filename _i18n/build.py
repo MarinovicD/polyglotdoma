@@ -300,7 +300,7 @@ def build_bosnisch():
 # Die deutsche Fassung wird noch nicht erzeugt (bekäme keine Mini-Lektion, Lernwege fehlen noch).
 # Erzeugt werden nur die Sprachen in DE_PAGE_LANGS; Sprachen ohne Fassung führen im Umschalter zur Startseite.
 DE_SLUG = {'de': 'deutsch', 'en': 'german', 'bs': 'njemacki', 'ar': 'german'}
-DE_PAGE_LANGS = ['en']  # nach Freigabe der Übersetzungen: 'bs', 'ar' ergänzen
+DE_PAGE_LANGS = ['en', 'bs', 'ar']  # Deutsch bewusst nicht (s. o.)
 DE_COL = {'de': 0, 'en': 1, 'bs': 2, 'ar': 3}
 
 def build_deutsch():

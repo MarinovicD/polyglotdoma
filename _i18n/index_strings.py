@@ -85,11 +85,11 @@ S = [
 ('>Ich unterrichte</li>', '>I teach</li>', '>Predajem</li>', '>أُدرّس</li>'),
 ('>Ich spreche außerdem</li>', '>I also speak</li>', '>Također govorim</li>', '>أتحدث أيضًا</li>'),
 ('-->Deutsch<!--/NOT-->', '-->German<!--/NOT-->', '-->Njemački<!--/NOT-->', '-->الألمانية<!--/NOT-->'),
-# Deutsch-Seite mit Mini-Lektion (seit 09.11.2026, vorerst nur EN; BS/AR-Spalten Platzhalter, dort per <!--ONLY:en:…--> ausgeblendet)
+# Deutsch-Seite mit Mini-Lektion (seit 09.11.2026; auf der deutschen Startseite per <!--ONLY:en,bs,ar:…--> ausgeblendet)
 ('<a href="deutsch/"><span class="pd-lang-name">Deutsch <small>', '<a href="deutsch/"><span class="pd-lang-name">German <small>', '<a href="deutsch/"><span class="pd-lang-name">Njemački <small>', '<a href="deutsch/"><span class="pd-lang-name">الألمانية <small>'),
-('</span>Neu: Der, die oder das? Das letzte Wort entscheidet →</a>', '</span>New: Der, die or das? The last word decides →</a>', '</span>Neu: Der, die oder das? Das letzte Wort entscheidet →</a>', '</span>Neu: Der, die oder das? Das letzte Wort entscheidet →</a>'),
+('</span>Neu: Der, die oder das? Das letzte Wort entscheidet →</a>', '</span>New: Der, die or das? The last word decides →</a>', '</span>Novo: Der, die ili das? Zadnja riječ odlučuje →</a>', '</span>جديد: <span dir="ltr">der</span> أو <span dir="ltr">die</span> أو <span dir="ltr">das</span>؟ الكلمة الأخيرة هي التي تقرّر ←</a>'),
 ('<a href="bosnisch/"><span class="pd-lang-name">Bosnisch <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosnian <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosanski <small>', '<a href="bosnisch/"><span class="pd-lang-name">البوسنية <small>'),
-('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Pogledaj puteve učenja</small>', '<small>جرّب الدرس القصير</small>'),
+('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Isprobaj mini-lekciju</small>', '<small>جرّب الدرس القصير</small>'),
 ('>Bosnisch lernen</a>', '>Learn Bosnian</a>', '>Uči bosanski</a>', '>تعلّم البوسنية</a>'),
 ('>Deutsch lernen</a>', '>Learn German</a>', '>Uči njemački</a>', '>تعلّم الألمانية</a>'),
 ('<span class="pd-menu-h pd-menu-sec">Sprachen lernen</span>', '<span class="pd-menu-h pd-menu-sec">Learn a language</span>', '<span class="pd-menu-h pd-menu-sec">Uči jezike</span>', '<span class="pd-menu-h pd-menu-sec">تعلّم اللغات</span>'),
