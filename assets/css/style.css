@@ -764,3 +764,9 @@ html[lang="ar"] .pl-lesson .pz-end-tr.serif{font-size:26px}
 html.pd-menu-open{overflow:hidden}
 /* Sprachwahl im Handy-Menü immer ganz sichtbar: klebt unten im Menü, die Links scrollen darunter durch */
 .pd-menu .pd-menu-lang{position:sticky;bottom:-12px;z-index:1;background:#F4F6FB;margin-bottom:-12px;padding-bottom:18px;box-shadow:0 -14px 14px -10px rgba(244,246,251,.95)}
+/* Handy-Menü kompakter, damit alles ohne Scrollen passt (Abstände wachsen mit der Bildschirmhöhe) */
+.pd-menu{gap:0 !important;padding-top:8px !important}
+.pd-menu > a{padding:clamp(7px,1.25vh,14px) 14px !important;font-size:19px !important;line-height:1.25}
+.pd-menu .pd-menu-h{padding:clamp(6px,1.2vh,12px) 14px 0}
+.pd-menu-sec{margin-top:4px;padding-top:clamp(8px,1.6vh,16px)}
+.pd-menu .pd-menu-lang{margin-top:4px}
