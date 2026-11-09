@@ -167,7 +167,8 @@ function createRequest_(d) {
     'Neue Anfrage für ein Kennenlerngespräch:\n\n' + whenOwner + ' (deine Zeit)\n\n' +
       ownerSummary_(name, email, langs, art, lernweg, msg, lang, tz) +
       '\n\nBestätigen oder ablehnen:\n' + reviewUrl +
-      '\n\nDas Zeitfenster ist ' + CFG.HOLD_HOURS + ' Stunden für die Anfrage reserviert.',
+      '\n\nDas Zeitfenster ist ' + CFG.HOLD_HOURS + ' Stunden für die Anfrage reserviert.' +
+      '\n\nNicht erschienen? Nach Beginn des Termins kannst du die Person über denselben Link als No-Show markieren. Heb diese Mail also auf.',
     { replyTo: email, button: { url: reviewUrl, label: 'Anfrage ansehen' } }
   );
   var m = MAIL[lang];
@@ -217,8 +218,7 @@ function confirmRequest(id, t, note) {
     var name = prop_(ev, 'pdName'), email = prop_(ev, 'pdEmail'), lang = prop_(ev, 'pdLang') || 'de', tz = prop_(ev, 'pdTz') || CFG.TZ;
     var upd = Calendar.Events.patch({
       summary: 'Kennenlerngespräch – ' + name,
-      description: (ev.description || '').split('\n\nNoch nicht bestätigt')[0] + '\n\nBestätigt am ' + fmtWhen_(Date.now(), CFG.TZ, 'de') + '.' +
-        '\n\nNicht erschienen? Hier als No-Show markieren:\n' + reviewUrl_(ev.id, prop_(ev, 'pdToken')),
+      description: (ev.description || '').split('\n\nNoch nicht bestätigt')[0] + '\n\nBestätigt am ' + fmtWhen_(Date.now(), CFG.TZ, 'de') + '.',  // kein interner Link: Gäste können die Beschreibung sehen
       colorId: '9',                                                // Heidelbeere: bestätigt
       attendees: [{ email: email, displayName: name }],
       reminders: { useDefault: true },
