@@ -25,12 +25,11 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
   var LANG_DE = { de: 'Deutsch', en: 'Englisch', bs: 'Bosnisch', ar: 'Arabisch' };
 
   /* ---------- Menü (schmale Bildschirme) ---------- */
-  /* Sprachumschalter (details.pd-lsw): schließen bei Klick daneben oder mit Escape */
-  var lsw = document.querySelector('.pd-lsw');
-  if (lsw) {
+  /* Sprachumschalter (details.pd-lsw, Kopfzeile und Handy-Menü): schließen bei Klick daneben oder mit Escape */
+  [].forEach.call(document.querySelectorAll('.pd-lsw'), function (lsw) {
     document.addEventListener('click', function (e) { if (lsw.open && !lsw.contains(e.target)) lsw.open = false; });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lsw.open) { lsw.open = false; lsw.querySelector('summary').focus(); } });
-  }
+  });
 
   var menuBtn = document.querySelector('.pd-menubtn');
   var menu = document.getElementById('pd-menu');

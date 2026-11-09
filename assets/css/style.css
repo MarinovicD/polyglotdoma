@@ -668,3 +668,8 @@ html[lang="ar"] .pk-or{font-family:'Alexandria',sans-serif;font-style:normal;fon
 .pd-lsw-list a[aria-current="page"]{background:#0E1B4D;color:#F4F6FB}
 html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:12px}
 .pd-menu-sec{border-top:1.5px dashed #9FB3E3;margin-top:6px;padding-top:16px}
+.pd-menu-lang{border-top:1.5px dashed #9FB3E3;margin-top:6px;padding:4px 0 6px}
+.pd-lsw-m{margin:6px 14px 4px;font-size:16px}
+.pd-lsw-m>summary{min-height:48px;padding:0 16px;letter-spacing:0;gap:10px}
+.pd-lsw-m>summary>span{flex:1}
+.pd-lsw-m .pd-lsw-list{position:static;margin-top:8px;box-shadow:none;min-width:0}

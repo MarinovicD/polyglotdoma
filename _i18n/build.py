@@ -57,15 +57,13 @@ def lang_dropdown(lang, items):
             SW_LABEL[lang], NAMES[lang], GLOBE, lang.upper(), CHEV, SW_LABEL[lang], SW_LABEL[lang], links)
 
 def lang_menu(lang, items):
-    """Sprachumschalter im Handy-Menü, mit Überschrift „Sprache der Website“."""
-    a = []
-    for l, h in items:
-        cur = ' aria-current="page"' if l == lang else ''
-        a.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (
-            h, l, l, FLAG[l], cur, PILL_ON if l == lang else PILL_OFF, NAMES[l]))
-    return ('<span role="group" aria-label="%s" style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 15px; '
-            'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">'
-            '<span class="pd-menu-h">%s</span>%s</span>') % (SW_LABEL[lang], SW_LABEL[lang], ''.join(a))
+    """Sprachumschalter im Handy-Menü: wie am Desktop ein Knopf (Weltkugel + Name), Liste klappt im Menü auf."""
+    links = ''.join('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s>%s</a>' % (
+        h, l, l, FLAG[l], ' aria-current="page"' if l == lang else '', NAMES[l]) for l, h in items)
+    return ('<div class="pd-menu-lang"><span class="pd-menu-h">%s</span>'
+            '<details class="pd-lsw pd-lsw-m"><summary aria-label="%s: %s">%s<span>%s</span>%s</summary>'
+            '<div class="pd-lsw-list" role="group" aria-label="%s">%s</div></details></div>') % (
+            SW_LABEL[lang], SW_LABEL[lang], NAMES[lang], GLOBE, NAMES[lang], CHEV, SW_LABEL[lang], links)
 
 def switcher(lang, page):
     return lang_dropdown(lang, [(l, rel(lang, l, page)) for l in LANGS])
