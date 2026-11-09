@@ -70,7 +70,7 @@ A = [
 ('>Diesen Weg anfragen</a>', '>Ask about this path</a>', '>Zatraži ovaj put</a>'),
 ('color: #1D3A9A">Unsicher, wo du stehst?</span><br>Das klären wir gemeinsam im kostenfreien <a href="../termin/?sprache=Arabisch" data-termin data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">Kennenlerngespräch</a>.',
  'color: #1D3A9A">Not sure where you stand?</span><br>We\'ll figure it out together in the free <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">intro call</a>.',
- 'color: #1D3A9A">Nisi siguran gdje si?</span><br>To ćemo zajedno razjasniti u besplatnom <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">razgovoru za upoznavanje</a>.'),
+ 'color: #1D3A9A">Nisi siguran gdje si?</span><br>To ćemo zajedno razjasniti u besplatnom <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">razgovoru</a>.'),
 
 # ---------- 02 Mini-Lektion ----------
 ('<span>02 — Ausprobieren</span><span>Mini-Lektion · 2 Minuten</span>', '<span>02 — Try it</span><span>Mini-lesson · 2 minutes</span>', '<span>02 — Isprobaj</span><span>Mini-lekcija · 2 minute</span>'),

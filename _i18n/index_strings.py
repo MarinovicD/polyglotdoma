@@ -158,7 +158,7 @@ S = [
  '>Ideal for beginners and anyone who wants to make structured progress.</p>',
  '>Idealno za početnike i sve koji žele sistematski napredovati.</p>',
  '>مثالي للمبتدئين ولكل من يريد التقدّم بشكل<span class="pd-kern"> </span>منهجي.</p>'),
-('>Kennenlerngespräch anfragen</a>', '>Request an intro call</a>', '>Zatraži razgovor za upoznavanje</a>', '>اطلب مكالمة تعارف</a>'),
+('>Kennenlerngespräch anfragen</a>', '>Request an intro call</a>', '>Zakaži razgovor</a>', '>اطلب مكالمة تعارف</a>'),
 ('>Konversation</span>', '>Conversation</span>', '>Konverzacija</span>', '>محادثة</span>'),
 ('>Sprechen, das dich weiterbringt</h3>', '>Speaking that takes you further</h3>', '>Govor koji te vodi naprijed</h3>', '>محادثة تدفعك إلى الأمام</h3>'),
 ('>Du sprichst mit jemandem, der die Sprache fließend beherrscht – auf deinem Niveau und so, dass du alles verstehst. Jede Stunde macht dich im freien Sprechen sicherer.</p>',
@@ -356,7 +356,7 @@ S = [
 ('>© 2026 polyglot.doma</span>', '>© 2026 polyglot.doma</span>', '>© 2026 polyglot.doma</span>', '>© ٢٠٢٦ <span dir="ltr">polyglot.doma</span></span>'),
 # Kontaktbereich: zwei Wege (Termin / schreiben) und Hinweis im Formular – freigegeben 08.11.2026
 ('<span class="pk-t">Vereinbare einen Termin</span>', '<span class="pk-t">Book a call</span>', '<span class="pk-t">Zakaži termin</span>', '<span class="pk-t">احجز موعدًا</span>'),
-('<span class="pk-d">Kostenfreies Kennenlerngespräch, 30 Minuten.</span>', '<span class="pk-d">Free intro call, 30 minutes.</span>', '<span class="pk-d">Besplatan razgovor za upoznavanje, 30 minuta.</span>', '<span class="pk-d">مكالمة تعارف مجانية، ٣٠ دقيقة.</span>'),
+('<span class="pk-d">Kostenfreies Kennenlerngespräch, 30 Minuten.</span>', '<span class="pk-d">Free intro call, 30 minutes.</span>', '<span class="pk-d">Besplatan razgovor, 30 minuta.</span>', '<span class="pk-d">مكالمة تعارف مجانية، ٣٠ دقيقة.</span>'),
 ('<span class="pk-btn">Termin wählen ', '<span class="pk-btn">Choose a time ', '<span class="pk-btn">Izaberi termin ', '<span class="pk-btn">اختر موعدًا '),
 ('<span class="pk-or">oder</span>', '<span class="pk-or">or</span>', '<span class="pk-or">ili</span>', '<span class="pk-or">أو</span>'),
 ('<span class="pk-d">Schreib mir, ich antworte dir persönlich.</span>', '<span class="pk-d">Write to me and I’ll reply to you personally.</span>', '<span class="pk-d">Piši mi, odgovorit ću ti lično.</span>', '<span class="pk-d">راسلني، وسأردّ عليك بنفسي.</span>'),

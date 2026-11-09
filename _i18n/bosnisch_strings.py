@@ -308,7 +308,7 @@ B = [
 ('<span class="serif" style="font-size: 24px; color: #1D3A9A">Unsicher, welcher Weg passt?</span><br>Das klären wir gemeinsam im kostenfreien <a href="../termin/?sprache=Bosnisch" data-termin data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">Kennenlerngespräch</a>.',
  '<span class="serif" style="font-size: 24px; color: #1D3A9A">Not sure which path fits?</span><br>We\'ll figure it out together in the free <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">intro call</a>.',
  '<span class="serif" style="font-size: 24px; color: #1D3A9A">لست متأكدًا أيّ طريق يناسبك؟</span><br>نوضّح ذلك معًا في <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">مكالمة التعارف</a> المجانية.',
- '<span class="serif" style="font-size: 24px; color: #1D3A9A">Nisi siguran koji put ti odgovara?</span><br>To ćemo zajedno razjasniti u besplatnom <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">razgovoru za upoznavanje</a>.'),
+ '<span class="serif" style="font-size: 24px; color: #1D3A9A">Nisi siguran koji put ti odgovara?</span><br>To ćemo zajedno razjasniti u besplatnom <a href="#kontakt" data-topic="kennenlernen" data-lernweg="Weiß ich noch nicht" style="font-weight: 700">razgovoru</a>.'),
 ('>Diesen Weg anfragen</a>',
  '>Ask about this path</a>',
  '>اطلب هذا الطريق</a>',
