@@ -31,6 +31,17 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lsw.open) { lsw.open = false; lsw.querySelector('summary').focus(); } });
   });
 
+  /* Kopfzeilen-Button „Kennenlerngespräch vereinbaren“: nur einblenden, solange der gleiche Button
+     im Hero nicht zu sehen ist (sonst stünden zwei gleiche Buttons übereinander) */
+  var ctaHead = document.querySelector('.pd-cta');
+  var ctaHero = document.querySelector('#top a.pd-btn[data-termin]');
+  if (ctaHead && ctaHero && 'IntersectionObserver' in window) {
+    ctaHead.classList.add('pd-cta-off');
+    new IntersectionObserver(function (en) {
+      ctaHead.classList.toggle('pd-cta-off', en[0].isIntersecting);
+    }, { rootMargin: '-80px 0px 0px 0px' }).observe(ctaHero);
+  }
+
   var menuBtn = document.querySelector('.pd-menubtn');
   var menu = document.getElementById('pd-menu');
   function setMenu(open) {

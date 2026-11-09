@@ -673,3 +673,7 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pd-lsw-m>summary{min-height:48px;padding:0 16px;letter-spacing:0;gap:10px}
 .pd-lsw-m>summary>span{flex:1}
 .pd-lsw-m .pd-lsw-list{position:static;margin-top:8px;box-shadow:none;min-width:0}
+/* Kopfzeilen-Button blendet sich ein, sobald der Hero-Button aus dem Bild ist (main.js) */
+.pd-cta{transition:opacity .35s ease,transform .35s ease,max-width .45s ease,padding .45s ease,margin .45s ease,visibility 0s linear 0s;max-width:420px;overflow:hidden}
+.pd-cta.pd-cta-off{opacity:0;transform:translateY(-6px);max-width:0;padding-left:0 !important;padding-right:0 !important;margin-inline-start:-12px;visibility:hidden;pointer-events:none;transition:opacity .25s ease,transform .25s ease,max-width .45s ease,padding .45s ease,margin .45s ease,visibility 0s linear .45s}
+@media (prefers-reduced-motion: reduce){.pd-cta,.pd-cta.pd-cta-off{transition:none}}
