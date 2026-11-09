@@ -87,7 +87,7 @@ S = [
 ('-->Deutsch<!--/NOT-->', '-->German<!--/NOT-->', '-->Njemački<!--/NOT-->', '-->الألمانية<!--/NOT-->'),
 # Deutsch-Seite mit Mini-Lektion (seit 09.11.2026; auf der deutschen Startseite per <!--ONLY:en,bs,ar:…--> ausgeblendet)
 ('<a href="deutsch/"><span class="pd-lang-name">Deutsch <small>', '<a href="deutsch/"><span class="pd-lang-name">German <small>', '<a href="deutsch/"><span class="pd-lang-name">Njemački <small>', '<a href="deutsch/"><span class="pd-lang-name">الألمانية <small>'),
-('</span>Neu: Der, die oder das? Das letzte Wort entscheidet →</a>', '</span>New: Der, die or das? The last word decides →</a>', '</span>Novo: Der, die ili das? Zadnja riječ odlučuje →</a>', '</span>جديد: <span dir="ltr">der</span> أم <span dir="ltr">die</span> أم <span dir="ltr">das</span>؟ الكلمة الأخيرة هي التي تقرّر ←</a>'),
+('<span>Neu: Der, die oder das? Das letzte Wort entscheidet →</span></a>', '<span>New: Der, die or das? The last word decides →</span></a>', '<span>Novo: Der, die ili das? Zadnja riječ odlučuje →</span></a>', '<span>جديد: <span dir="ltr">der</span> أم <span dir="ltr">die</span> أم <span dir="ltr">das</span>؟ الكلمة الأخيرة هي التي تقرّر ←</span></a>'),
 ('<a href="bosnisch/"><span class="pd-lang-name">Bosnisch <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosnian <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosanski <small>', '<a href="bosnisch/"><span class="pd-lang-name">البوسنية <small>'),
 ('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Isprobaj mini-lekciju</small>', '<small>جرّب الدرس القصير</small>'),
 ('>Bosnisch lernen</a>', '>Learn Bosnian</a>', '>Uči bosanski</a>', '>تعلّم البوسنية</a>'),
