@@ -62,7 +62,18 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
     window.addEventListener('resize', function () { if (window.innerWidth > 1320) setMenu(false); else fitMenu(); });
-    menu.addEventListener('toggle', fitMenu, true);
+    /* Aufgeklappte Liste im Menü (z. B. Sprache der Website) automatisch ganz ins Bild scrollen */
+    menu.addEventListener('toggle', function (e) {
+      fitMenu();
+      var d = e.target;
+      if (!d.open) return;
+      requestAnimationFrame(function () {
+        var mb = menu.getBoundingClientRect(), db = d.getBoundingClientRect();
+        var delta = db.bottom - mb.bottom + 12;
+        if (db.top - delta < mb.top) delta = db.top - mb.top - 12;   // Kopf der Liste nicht aus dem Bild schieben
+        if (delta > 0) menu.scrollBy({ top: delta, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      });
+    }, true);
   }
 
   /* ---------- Video: eigener Play-Knopf, lädt erst beim Klick ---------- */
