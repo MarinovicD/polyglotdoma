@@ -35,7 +35,8 @@ var CFG = {
   BOOK_PATH: { de: 'termin/', en: 'en/book/', bs: 'bs/termin/', ar: 'ar/book/' },
   MAX_PENDING_PER_EMAIL: 2,
   MAX_PENDING_TOTAL: 30,
-  CACHE_SECONDS: 20             // freie Zeiten werden höchstens 20 Sekunden zwischengespeichert
+  CACHE_SECONDS: 20,            // freie Zeiten werden höchstens 20 Sekunden zwischengespeichert
+  NOSHOW_MONTHS: 6              // so lange bleibt eine Adresse nach „Nicht erschienen“ gesperrt
 };
 
 /* ============================================================
@@ -128,6 +129,7 @@ function createRequest_(d) {
   if (msg.length < 3) return { ok: false, error: 'msg' };
   if (!d.consent) return { ok: false, error: 'consent' };
   if (!start) return { ok: false, error: 'slot' };
+  if (isBlocked_(email)) return { ok: false, error: 'blocked' };
 
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(15000)) return { ok: false, error: 'busy' };
@@ -158,7 +160,7 @@ function createRequest_(d) {
     lock.releaseLock();
   }
 
-  var reviewUrl = ScriptApp.getService().getUrl() + '?a=review&id=' + encodeURIComponent(ev.id) + '&t=' + token;
+  var reviewUrl = reviewUrl_(ev.id, token);
   var whenOwner = fmtWhen_(start, CFG.TZ, 'de');
   sendOwnerMail_(
     'Neue Terminanfrage: ' + name + ' · ' + whenOwner,
@@ -192,10 +194,12 @@ function reviewPage_(id, t) {
   var tpl = HtmlService.createTemplate(REVIEW_HTML);
   tpl.id = id || ''; tpl.t = t || '';
   tpl.state = !ev ? 'missing' : prop_(ev, 'pdStatus');
+  tpl.started = ev ? Date.parse(ev.start.dateTime) <= Date.now() : false;
+  tpl.blockedUntil = ev && prop_(ev, 'pdStatus') === 'noshow' ? fmtDate_(+prop_(ev, 'pdBlockedUntil'), CFG.TZ, 'de') : '';
   tpl.info = ev ? {
     name: prop_(ev, 'pdName'), email: prop_(ev, 'pdEmail'),
     when: fmtWhen_(Date.parse(ev.start.dateTime), CFG.TZ, 'de'),
-    details: (ev.description || '').split('\n\nNoch nicht bestätigt')[0]
+    details: (ev.description || '').split(/\n\n(?:Noch nicht bestätigt|Bestätigt am)/)[0]
   } : null;
   return tpl.evaluate().setTitle('Terminanfrage – polyglot.doma')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
@@ -213,7 +217,8 @@ function confirmRequest(id, t, note) {
     var name = prop_(ev, 'pdName'), email = prop_(ev, 'pdEmail'), lang = prop_(ev, 'pdLang') || 'de', tz = prop_(ev, 'pdTz') || CFG.TZ;
     var upd = Calendar.Events.patch({
       summary: 'Kennenlerngespräch – ' + name,
-      description: (ev.description || '').split('\n\nNoch nicht bestätigt')[0] + '\n\nBestätigt am ' + fmtWhen_(Date.now(), CFG.TZ, 'de') + '.',
+      description: (ev.description || '').split('\n\nNoch nicht bestätigt')[0] + '\n\nBestätigt am ' + fmtWhen_(Date.now(), CFG.TZ, 'de') + '.' +
+        '\n\nNicht erschienen? Hier als No-Show markieren:\n' + reviewUrl_(ev.id, prop_(ev, 'pdToken')),
       colorId: '9',                                                // Heidelbeere: bestätigt
       attendees: [{ email: email, displayName: name }],
       reminders: { useDefault: true },
@@ -247,6 +252,79 @@ function declineRequest(id, t, note) {
   } finally { lock.releaseLock(); }
 }
 
+/** Wird von der Prüfseite aufgerufen: Person ist nicht erschienen → Adresse sperren. */
+function markNoShow(id, t) {
+  var lock = LockService.getScriptLock(); lock.waitLock(15000);
+  try {
+    var ev = findRequest_(id, t);
+    if (!ev) return { ok: false, error: 'Termin nicht gefunden.' };
+    if (prop_(ev, 'pdStatus') !== 'confirmed') return { ok: false, error: 'Nur bestätigte Termine können als No-Show markiert werden.' };
+    var start = Date.parse(ev.start.dateTime);
+    if (start > Date.now()) return { ok: false, error: 'Der Termin hat noch nicht begonnen.' };
+    var until = addMonths_(Date.now(), CFG.NOSHOW_MONTHS);
+    noShowSheet_().appendRow([prop_(ev, 'pdEmail'), prop_(ev, 'pdName'), new Date(start), new Date(), new Date(until), '']);
+    var p = JSON.parse(JSON.stringify(ev.extendedProperties.private));
+    p.pdStatus = 'noshow'; p.pdBlockedUntil = String(until);
+    Calendar.Events.patch({ colorId: '11', summary: 'Nicht erschienen: ' + prop_(ev, 'pdName'), extendedProperties: { private: p } },
+      CFG.BOOK_CALENDAR, ev.id, { sendUpdates: 'none' });
+    return { ok: true, until: fmtDate_(until, CFG.TZ, 'de') };
+  } finally { lock.releaseLock(); }
+}
+
+/* ---------- No-Show-Liste (Google-Tabelle in Domagojs Drive) ----------
+   Spalten: E-Mail | Name | Verpasster Termin | Eingetragen am | Gesperrt bis | Notiz
+   Einträge können auch von Hand ergänzt oder gelöscht werden. Fehlt „Gesperrt bis“,
+   setzt das Skript es auf „Eingetragen am“ (oder heute) + NOSHOW_MONTHS. */
+
+var NOSHOW_HEAD = ['E-Mail', 'Name', 'Verpasster Termin', 'Eingetragen am', 'Gesperrt bis', 'Notiz'];
+
+function noShowSheet_() {
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('NOSHOW_SHEET_ID'), ss = null;
+  if (id) { try { ss = SpreadsheetApp.openById(id); } catch (err) { ss = null; } }
+  if (!ss) {
+    ss = SpreadsheetApp.create('polyglot.doma No-Show-Liste');
+    var sh0 = ss.getSheets()[0];
+    sh0.setName('No-Shows');
+    sh0.getRange(1, 1, 1, NOSHOW_HEAD.length).setValues([NOSHOW_HEAD]).setFontWeight('bold');
+    sh0.setFrozenRows(1);
+    sh0.setColumnWidths(1, 6, 180);
+    props.setProperty('NOSHOW_SHEET_ID', ss.getId());
+  }
+  return ss.getSheets()[0];
+}
+
+/** Räumt die Liste auf (abgelaufene Einträge löschen, fehlende Daten ergänzen) und liefert die gesperrten Adressen. */
+function cleanNoShows_() {
+  var sh = noShowSheet_(), now = Date.now();
+  var last = sh.getLastRow(); if (last < 2) return [];
+  var rows = sh.getRange(2, 1, last - 1, NOSHOW_HEAD.length).getValues(), blocked = [];
+  for (var i = rows.length - 1; i >= 0; i--) {
+    var r = rows[i], mail = String(r[0] || '').trim().toLowerCase();
+    if (!mail) { if (!r.join('')) sh.deleteRow(i + 2); continue; }
+    var added = r[3] instanceof Date ? r[3].getTime() : now;
+    if (!(r[3] instanceof Date)) sh.getRange(i + 2, 4).setValue(new Date(added));
+    var until = r[4] instanceof Date ? r[4].getTime() : addMonths_(added, CFG.NOSHOW_MONTHS);
+    if (!(r[4] instanceof Date)) sh.getRange(i + 2, 5).setValue(new Date(until));
+    if (until <= now) { sh.deleteRow(i + 2); continue; }
+    blocked.push(mail);
+  }
+  return blocked;
+}
+
+function isBlocked_(email) {
+  var cache = CacheService.getScriptCache(), hit = cache.get('noshow');
+  var list = hit ? JSON.parse(hit) : cleanNoShows_();
+  if (!hit) cache.put('noshow', JSON.stringify(list), 300);
+  return list.indexOf(email) >= 0;
+}
+
+function addMonths_(ms, n) { var d = new Date(ms); d.setMonth(d.getMonth() + n); return d.getTime(); }
+
+function reviewUrl_(id, token) {
+  return ScriptApp.getService().getUrl() + '?a=review&id=' + encodeURIComponent(id) + '&t=' + token;
+}
+
 /* ============================================================
    Offene Anfragen automatisch freigeben (stündlicher Auslöser)
    ============================================================ */
@@ -260,6 +338,8 @@ function expirePending() {
       var start = Date.parse(ev.start.dateTime);
       if (now - created >= CFG.HOLD_HOURS * 3600000 || start <= now) releaseRequest_(ev, 'expired');
     });
+    cleanNoShows_();
+    CacheService.getScriptCache().remove('noshow');
   } finally { lock.releaseLock(); }
 }
 
@@ -288,6 +368,8 @@ function setup() {
     if (tr.getHandlerFunction() === 'expirePending') ScriptApp.deleteTrigger(tr);
   });
   ScriptApp.newTrigger('expirePending').timeBased().everyHours(1).create();
+  var sheet = noShowSheet_();
+  console.log('No-Show-Liste: ' + sheet.getParent().getUrl());
   console.log('Fertig. Freie Zeitfenster in den nächsten Tagen: ' + computeSlots_().length);
 }
 
@@ -522,6 +604,14 @@ var REVIEW_HTML = '<!doctype html><html lang="de"><head><meta charset="utf-8"><b
 '.withFailureHandler(function(e){var r=document.getElementById("r");r.hidden=false;r.textContent="Fehler: "+e.message;bs.forEach(function(b){b.disabled=false})})' +
 '[fn](id,t,document.getElementById("n").value)}' +
 'document.getElementById("ok").onclick=function(){go("confirmRequest")};document.getElementById("no").onclick=function(){go("declineRequest")};</script>' +
-'<? } else if (state === "confirmed") { ?><h1>Schon bestätigt</h1><p class="msg"><?= info.when ?>: Dieser Termin ist bereits bestätigt.</p>' +
+'<? } else if (state === "confirmed" && started) { ?><h1>Termin vorbei?</h1><p class="when"><?= info.when ?></p><pre><?= info.details ?></pre>' +
+'<div id="f"><p class="msg">Ist <?= info.name ?> nicht erschienen? Dann wird die Adresse für 6 Monate für Online-Buchungen gesperrt.</p>' +
+'<div class="b"><button class="no" id="ns">Nicht erschienen – Adresse sperren</button></div></div><p class="msg" id="r" hidden></p>' +
+'<script>var id=<?!= JSON.stringify(id) ?>,t=<?!= JSON.stringify(t) ?>;document.getElementById("ns").onclick=function(){var b=this;b.disabled=true;' +
+'google.script.run.withSuccessHandler(function(res){var r=document.getElementById("r");r.hidden=false;if(!res.ok){r.textContent=res.error;b.disabled=false;return}' +
+'document.getElementById("f").hidden=true;r.textContent="Erledigt. Die Adresse ist bis "+res.until+" gesperrt und steht in deiner No-Show-Liste."})' +
+'.withFailureHandler(function(e){var r=document.getElementById("r");r.hidden=false;r.textContent="Fehler: "+e.message;b.disabled=false}).markNoShow(id,t)};</script>' +
+'<? } else if (state === "confirmed") { ?><h1>Schon bestätigt</h1><p class="msg"><?= info.when ?>: Dieser Termin ist bereits bestätigt. Nach Beginn des Termins kannst du ihn hier als „nicht erschienen“ markieren.</p>' +
+'<? } else if (state === "noshow") { ?><h1>Nicht erschienen</h1><p class="msg"><?= info.when ?>: Als No-Show markiert. Die Adresse ist bis <?= blockedUntil ?> gesperrt.</p>' +
 '<? } else { ?><h1>Nicht mehr offen</h1><p class="msg">Diese Anfrage gibt es nicht mehr. Sie wurde abgelehnt, automatisch freigegeben oder der Link ist unvollständig.</p><? } ?>' +
 '</div></body></html>';
