@@ -679,11 +679,11 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 @media (prefers-reduced-motion: reduce){.pd-cta,.pd-cta.pd-cta-off{transition:none}}
 
 /* ---------- Mini-Lektion Deutsch: „Das letzte Wort entscheidet“ (.pz-) ----------
-   Artikel als Pillen mit dem Wort selbst (nicht nur Farbe): der Kobalt, die Mittelblau, das Aquarell. */
+   Artikel als Pillen mit dem Wort selbst, Farben wie bei Bosnisch (Wunsch des Gründers): der Kobalt, die Messing, das Aquarell. */
 .pg-tag[data-g="der"],.pg-pick[data-g="der"].ok{background:#1D3A9A;color:#F4F6FB}
-.pg-tag[data-g="die"],.pg-pick[data-g="die"].ok{background:#4A68C2;color:#F4F6FB}
+.pg-tag[data-g="die"],.pg-pick[data-g="die"].ok{background:#B88A4A;color:#0E1B4D}
 .pg-tag[data-g="das"],.pg-pick[data-g="das"].ok{background:#9FB3E3;color:#0E1B4D}
-.pg-pick[data-g="der"]::before{background:#1D3A9A}.pg-pick[data-g="die"]::before{background:#4A68C2}.pg-pick[data-g="das"]::before{background:#9FB3E3}
+.pg-pick[data-g="der"]::before{background:#1D3A9A}.pg-pick[data-g="die"]::before{background:#B88A4A}.pg-pick[data-g="das"]::before{background:#9FB3E3}
 .pg-pick[data-g="das"].ok::before{background:#0E1B4D}
 .pz-item{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
 .pz-pair{display:flex;align-items:flex-start;justify-content:center;gap:14px}
@@ -718,7 +718,7 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pz-word{font-size:46px;font-weight:800;letter-spacing:-0.035em;line-height:1.15;color:#0E1B4D;white-space:nowrap}
 .pz-last{border-radius:0.2em;padding:0 0.05em;transition:background-color .5s,color .5s}
 .pz-on .pz-last[data-g="der"]{background:#1D3A9A;color:#F4F6FB}
-.pz-on .pz-last[data-g="die"]{background:#4A68C2;color:#F4F6FB}
+.pz-on .pz-last[data-g="die"]{background:#B88A4A;color:#0E1B4D}
 .pz-on .pz-last[data-g="das"]{background:#9FB3E3;color:#0E1B4D}
 .pz-mv{transition:transform .8s cubic-bezier(.5,0,.2,1),opacity .3s}
 .pz-still .pz-mv{transition:none}
@@ -731,7 +731,7 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pz-ready .pz-world{visibility:visible}
 .pz-g{position:absolute;left:0;top:0;transform-origin:0 50%}
 .pz-plus2{font-weight:500;color:#4A68C2}
-.pz-tart{font-size:.72em;font-weight:700;letter-spacing:0;padding:.04em .32em .1em;border-radius:999px;background:#4A68C2;color:#F4F6FB}
+.pz-tart{font-size:.72em;font-weight:700;letter-spacing:0;padding:.04em .32em .1em;border-radius:999px;background:#B88A4A;color:#0E1B4D}
 .pz-cap{transition:color .6s}
 .pz-cap.pz-flash{color:#4A68C2;transition:none}
 .pz-again{font-family:inherit;font-size:15px;font-weight:700;min-height:40px;padding:0 18px;border-radius:999px;border:1.5px solid #0E1B4D;background:none;color:#0E1B4D;cursor:pointer;margin-top:-4px}
@@ -753,3 +753,7 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 }
 html[lang="ar"] .pl-lesson [lang="de"],html[lang="ar"] .pz-pw,html[lang="ar"] .pz-word,html[lang="ar"] .pz-giant{font-family:'Bricolage Grotesque',sans-serif;direction:ltr;unicode-bidi:isolate}
 @media (prefers-reduced-motion: reduce){.pz-mv,.pz-dst{transition:none}}
+/* Startseite: Banner „Neu · Mini-Lektion“ zur Deutsch-Lektion (vorerst nur EN) */
+.pz-tw{display:inline-flex;align-items:center;gap:14px;font-size:64px;font-weight:800;letter-spacing:-0.035em;line-height:1.25;color:#F4F6FB;white-space:nowrap}
+.pz-tw .pg-tag{font-size:26px;padding:6px 16px;letter-spacing:0}
+@media (max-width:560px){.pz-tw{font-size:46px;gap:10px}.pz-tw .pg-tag{font-size:19px;padding:5px 12px}}
