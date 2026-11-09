@@ -23,26 +23,38 @@
   }
 
   /* 1) Überschriften: Wort für Wort */
+  /* Überschrift in Wörter zerlegen. Alles, was ohne Leerzeichen zusammenhängt, bleibt EIN Wort –
+     auch über Elementgrenzen hinweg (z. B. polyglot<span>.</span><span>doma</span>? ). Sonst bricht der
+     Name um oder ein Satzzeichen steht allein in einer Zeile. */
   function splitWords(el) {
     var i = 0;
-    (function walk(node) {
-      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+    function word(nodes) {
+      var w = document.createElement('span');
+      w.className = 'pd-wd'; w.style.setProperty('--i', i++);
+      nodes.forEach(function (n) { w.appendChild(n); });
+      return w;
+    }
+    (function walk(parent) {
+      var kids = Array.prototype.slice.call(parent.childNodes), frag = document.createDocumentFragment(), cl = null;
+      function flush() { if (cl) { frag.appendChild(word(cl)); cl = null; } }
+      kids.forEach(function (n) {
         if (n.nodeType === 3) {
-          var parts = n.textContent.split(/(\s+)/);
-          if (parts.length < 2 && !n.textContent.trim()) return;
-          var frag = document.createDocumentFragment();
-          parts.forEach(function (p) {
+          parent.removeChild(n);
+          n.textContent.split(/(\s+)/).forEach(function (p) {
             if (!p) return;
-            if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(p)); return; }
-            var w = document.createElement('span');
-            w.className = 'pd-wd'; w.style.setProperty('--i', i++); w.textContent = p;
-            frag.appendChild(w);
+            if (/^\s+$/.test(p)) { flush(); frag.appendChild(document.createTextNode(p)); }
+            else (cl = cl || []).push(document.createTextNode(p));
           });
-          n.parentNode.replaceChild(frag, n);
-        } else if (n.nodeType === 1 && !/^(SVG|BR)$/i.test(n.tagName) && !n.classList.contains('sr-only')) {
-          walk(n);
+        } else if (n.nodeType === 1 && (/^(SVG|BR)$/i.test(n.tagName) || n.classList.contains('sr-only'))) {
+          flush(); frag.appendChild(n);
+        } else if (n.nodeType === 1 && /\s/.test(n.textContent.trim())) {
+          flush(); walk(n); frag.appendChild(n);          /* mehrere Wörter: darin weiter zerlegen */
+        } else if (n.nodeType === 1) {
+          (cl = cl || []).push(n);                         /* ein Wort: hängt am Nachbarn ohne Leerzeichen */
         }
       });
+      flush();
+      parent.appendChild(frag);
     })(el);
   }
   all('h2').forEach(function (h) { if (h.closest('[data-r]')) return; splitWords(h); mark(h, 'words'); });
