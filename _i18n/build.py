@@ -41,24 +41,37 @@ def rel(from_lang, to_lang, page):
 PILL_ON = 'text-decoration: none; color: #F4F6FB; background: #0E1B4D; border-radius: 999px; padding: 6px 10px'
 PILL_OFF = 'text-decoration: none; color: #0E1B4D; border: 1.5px solid #0E1B4D; border-radius: 999px; padding: 4.5px 9px'
 
-def switcher(lang, page):
-    a = []
-    for l in LANGS:
-        cur = ' aria-current="page"' if l == lang else ''
-        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s" data-flag="%s"%s style="%s">%s</a>' % (
-            rel(lang, l, page), l, l, NAMES[l], FLAG[l], cur, PILL_ON if l == lang else PILL_OFF, l.upper()))
-    return ('<span class="pd-switch" role="group" aria-label="%s" style="display: flex; gap: 4px; font-size: 13px; '
-            'font-weight: 700; letter-spacing: 0.06em; direction: ltr">%s</span>') % (SW_LABEL[lang], ''.join(a))
+GLOBE = ('<svg class="pd-lsw-globe" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+         'stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12 H21"/>'
+         '<path d="M12 3 C 8 7, 8 17, 12 21 C 16 17, 16 7, 12 3"/></svg>')
+CHEV = ('<svg class="pd-lsw-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9 L12 15 L18 9"/></svg>')
 
-def menu_switcher(lang, page):
+def lang_dropdown(lang, items):
+    """Sprachumschalter in der Kopfzeile: ein Knopf (Weltkugel + Kürzel), Liste „Sprache der Website“.
+    items: [(sprache, href), …]"""
+    links = ''.join('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s>%s</a>' % (
+        h, l, l, FLAG[l], ' aria-current="page"' if l == lang else '', NAMES[l]) for l, h in items)
+    return ('<details class="pd-switch pd-lsw"><summary aria-label="%s: %s">%s<span>%s</span>%s</summary>'
+            '<div class="pd-lsw-list" role="group" aria-label="%s"><span class="pd-lsw-h">%s</span>%s</div></details>') % (
+            SW_LABEL[lang], NAMES[lang], GLOBE, lang.upper(), CHEV, SW_LABEL[lang], SW_LABEL[lang], links)
+
+def lang_menu(lang, items):
+    """Sprachumschalter im Handy-Menü, mit Überschrift „Sprache der Website“."""
     a = []
-    for l in LANGS:
+    for l, h in items:
         cur = ' aria-current="page"' if l == lang else ''
         a.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (
-            rel(lang, l, page), l, l, FLAG[l], cur, PILL_ON if l == lang else PILL_OFF, NAMES[l]))
+            h, l, l, FLAG[l], cur, PILL_ON if l == lang else PILL_OFF, NAMES[l]))
     return ('<span role="group" aria-label="%s" style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 15px; '
-            'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">%s</span>') % (
-            SW_LABEL[lang], ''.join(a))
+            'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">'
+            '<span class="pd-menu-h">%s</span>%s</span>') % (SW_LABEL[lang], SW_LABEL[lang], ''.join(a))
+
+def switcher(lang, page):
+    return lang_dropdown(lang, [(l, rel(lang, l, page)) for l in LANGS])
+
+def menu_switcher(lang, page):
+    return lang_menu(lang, [(l, rel(lang, l, page)) for l in LANGS])
 
 def alternates(lang, page):
     if not BASE_URL:
@@ -190,16 +203,9 @@ def page_href(slug, from_lang, to_lang):
     return ('../' if from_lang == 'de' else '../../') + ('' if to_lang == 'de' else to_lang + '/') + slug_of(slug, to_lang) + '/'
 
 def page_switchers(html, slug, langs, lang):
-    a, m = [], []
-    for l in langs:
-        cur = ' aria-current="page"' if l == lang else ''
-        st = PILL_ON if l == lang else PILL_OFF
-        a.append('<a href="%s" hreflang="%s" lang="%s" title="%s" data-flag="%s"%s style="%s">%s</a>' % (page_href(slug, lang, l), l, l, NAMES[l], FLAG[l], cur, st, l.upper()))
-        m.append('<a href="%s" hreflang="%s" lang="%s" data-flag="%s"%s style="%s">%s</a>' % (page_href(slug, lang, l), l, l, FLAG[l], cur, st, NAMES[l]))
-    sw = ('<span class="pd-switch" role="group" aria-label="%s" style="display: flex; gap: 4px; font-size: 13px; '
-          'font-weight: 700; letter-spacing: 0.06em; direction: ltr">%s</span>') % (SW_LABEL[lang], ''.join(a))
-    mn = ('<span role="group" aria-label="%s" style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 15px; '
-          'font-weight: 700; padding: 12px 14px 8px; border-top: 1.5px dashed #9FB3E3; margin-top: 6px">%s</span>') % (SW_LABEL[lang], ''.join(m))
+    items = [(l, page_href(slug, lang, l)) for l in langs]
+    sw = lang_dropdown(lang, items)
+    mn = lang_menu(lang, items)
     alt = ''
     if BASE_URL:
         alt = '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s%s/">' % (l, BASE_URL, '' if l == 'de' else l + '/', slug_of(slug, l)) for l in langs)

@@ -87,7 +87,8 @@ S = [
 ('-0.02em">Deutsch</li>', '-0.02em">German</li>', '-0.02em">Njemački</li>', '-0.02em">الألمانية</li>'),
 ('<a href="bosnisch/"><span class="pd-lang-name">Bosnisch <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosnian <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosanski <small>', '<a href="bosnisch/"><span class="pd-lang-name">البوسنية <small>'),
 ('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Pogledaj puteve učenja</small>', '<small>جرّب الدرس القصير</small>'),
-('>Bosnisch</a>', '>Bosnian</a>', '>Bosanski</a>', '>البوسنية</a>'),
+('>Bosnisch lernen</a>', '>Learn Bosnian</a>', '>Uči bosanski</a>', '>تعلّم البوسنية</a>'),
+('<span class="pd-menu-h pd-menu-sec">Sprachen lernen</span>', '<span class="pd-menu-h pd-menu-sec">Learn a language</span>', '<span class="pd-menu-h pd-menu-sec">Uči jezike</span>', '<span class="pd-menu-h pd-menu-sec">تعلّم اللغات</span>'),
 ('<a href="arabisch/"><span class="pd-lang-name">Arabisch <small>', '<a href="arabisch/"><span class="pd-lang-name">Arabic <small>', '<a href="arabisch/"><span class="pd-lang-name">Arapski <small>', '<a href="arabisch/"><span class="pd-lang-name">العربية <small>'),
 ('-0.02em">Englisch</li>', '-0.02em">English</li>', '-0.02em">Engleski</li>', '-0.02em">الإنجليزية</li>'),
 ('-0.02em">Türkisch</li>', '-0.02em">Turkish</li>', '-0.02em">Turski</li>', '-0.02em">التركية</li>'),
@@ -361,7 +362,7 @@ AR_EXTRA += [
 # ---------- Hinweise auf die Arabisch-Seite (07.11.2026, siehe claude/uebersetzungen-arabisch-seite.md) ----------
 # In der arabischen Fassung werden diese Stellen entfernt (<!--NOAR--> … <!--/NOAR--> in index.html).
 S += [
-('>Arabisch</a><!--/NOAR-->', '>Arabic</a><!--/NOAR-->', '>Arapski</a><!--/NOAR-->', '>Arabisch</a><!--/NOAR-->'),
+('>Arabisch lernen</a><!--/NOAR-->', '>Learn Arabic</a><!--/NOAR-->', '>Uči arapski</a><!--/NOAR-->', '>Arabisch lernen</a><!--/NOAR-->'),
 ('<small>Lernwege ansehen</small>', '<small>See learning paths</small>', '<small>Pogledaj puteve učenja</small>', '<small>Lernwege ansehen</small>'),
 ('</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>', '</span>New: Read your first Arabic word – in two minutes →</a>', '</span>Novo: Pročitaj svoju prvu arapsku riječ – za dvije minute →</a>', '</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>'),
 ('>Im Fokus: Arabisch</span>', '>In focus: Arabic</span>', '>U fokusu: arapski</span>', '>Im Fokus: Arabisch</span>'),

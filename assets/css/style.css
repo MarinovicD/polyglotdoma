@@ -651,3 +651,20 @@ html[lang="ar"] .pk-or{font-family:'Alexandria',sans-serif;font-style:normal;fon
 .pk-way-form:hover{background:rgba(74,104,194,.18);border-color:#9FB3E3}
 .pk-way-form:focus-visible{outline:3px solid #B88A4A;outline-offset:3px}
 .pd-formcard{scroll-margin-top:96px}
+/* ===== Sprachumschalter als ein Knopf (Weltkugel) ===== */
+.pd-lsw{position:relative;font-size:14px;font-weight:700}
+.pd-lsw>summary{list-style:none;display:flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1.5px solid #0E1B4D;border-radius:999px;color:#0E1B4D;cursor:pointer;letter-spacing:.06em;user-select:none;transition:background-color .2s}
+.pd-lsw>summary::-webkit-details-marker{display:none}
+.pd-lsw>summary:hover,.pd-lsw[open]>summary{background:#D5DEF3}
+.pd-lsw>summary:focus-visible{outline:3px solid #B88A4A;outline-offset:2px}
+.pd-lsw-chev{transition:transform .2s}
+.pd-lsw[open] .pd-lsw-chev{transform:rotate(180deg)}
+.pd-lsw-list{position:absolute;top:calc(100% + 8px);inset-inline-end:0;z-index:60;min-width:200px;background:#F4F6FB;border:1.5px solid #0E1B4D;border-radius:22px;padding:10px;display:flex;flex-direction:column;gap:2px;box-shadow:0 24px 48px -24px rgba(14,27,77,.6)}
+.pd-lsw-h,.pd-menu-h{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1D3A9A}
+.pd-lsw-h{padding:6px 10px 8px}
+.pd-menu-h{flex-basis:100%;padding:12px 14px 2px}
+.pd-lsw-list a{display:flex !important;align-items:center;gap:10px;padding:10px;border-radius:14px;color:#0E1B4D;text-decoration:none;font-size:16px;letter-spacing:0}
+.pd-lsw-list a:hover{background:#D5DEF3}
+.pd-lsw-list a[aria-current="page"]{background:#0E1B4D;color:#F4F6FB}
+html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:12px}
+.pd-menu-sec{border-top:1.5px dashed #9FB3E3;margin-top:6px;padding-top:16px}
