@@ -135,7 +135,7 @@ A = [
 ('<p class="pl-hint">Du hast eben dein erstes arabisches Wort gelesen. Im Unterricht geht es genau so weiter, Buchstabe für Buchstabe, und schon in der ersten Stunde liest du deine ersten Wörter.</p>',
  "<p class=\"pl-hint\">You've just read your first Arabic word. Lessons continue exactly like this, letter by letter – and in the very first lesson you'll already be reading your first words.</p>",
  '<p class="pl-hint">Upravo si pročitao svoju prvu arapsku riječ. Na času se nastavlja upravo ovako, slovo po slovo, i već na prvom času čitaš svoje prve riječi.</p>'),
-('>Kennenlerngespräch anfragen</a><button', '>Request an intro call</a><button', '>Zatraži razgovor za upoznavanje</a><button'),
+('>Kennenlerngespräch anfragen</a><button', '>Request an intro call</a><button', '>Zakaži razgovor</a><button'),
 ('>Lektion neu starten</button>', '>Restart lesson</button>', '>Počni lekciju ispočetka</button>'),
 ('>← Zurück</button>', '>← Back</button>', '>← Nazad</button>'),
 ('>Weiter →</button>', '>Next →</button>', '>Dalje →</button>'),
