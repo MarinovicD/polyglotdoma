@@ -175,7 +175,7 @@ D = [
 ('>Der, die oder das? <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">Das letzte Wort entscheidet.</span></h2>',
  '>Der, die or das? <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">The last word decides.</span></h2>',
  '>Der, die ili das? <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">Zadnja riječ odlučuje.</span></h2>',
- '><span class="pz-arts" dir="ltr">der</span> أو <span class="pz-arts" dir="ltr">die</span> أو <span class="pz-arts" dir="ltr">das</span>؟ <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">الكلمة الأخيرة هي التي تقرّر.</span></h2>'),
+ '><span class="pz-arts" dir="ltr">der</span> أم <span class="pz-arts" dir="ltr">die</span> أم <span class="pz-arts" dir="ltr">das</span>؟ <span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">الكلمة الأخيرة هي التي تقرّر.</span></h2>'),
 ('>Deutsch klebt gern Wörter zu langen Wörtern zusammen. Ein Blick verrät dir ihren Artikel.</p>',
  '>German glues words together into long ones. One look tells you their article.</p>',
  '>Njemački rado spaja riječi u dugačke riječi. Jedan pogled ti otkriva njihov član.</p>',
