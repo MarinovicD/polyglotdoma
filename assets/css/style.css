@@ -759,3 +759,6 @@ html[lang="ar"] .pl-lesson .pz-tr.serif{font-size:24px}
 html[lang="ar"] .pl-lesson .pz-lit{font-size:24px}
 html[lang="ar"] .pl-lesson .pz-end-tr.serif{font-size:26px}
 @media (max-width:560px){.pl-glyph-lat[lang="de"]{font-size:44px}html[lang="ar"] .pl-lesson .pz-end-tr.serif{font-size:22px}}
+/* Handy-Menü scrollt selbst, die Seite darunter nicht (max-height setzt main.js) */
+.pd-menu{max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;box-sizing:border-box}
+html.pd-menu-open{overflow:hidden}

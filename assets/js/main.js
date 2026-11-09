@@ -44,16 +44,25 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
 
   var menuBtn = document.querySelector('.pd-menubtn');
   var menu = document.getElementById('pd-menu');
+  /* Handy-Menü: Es scrollt selbst (max. bis zum unteren Bildschirmrand), die Seite darunter bleibt stehen. */
+  function fitMenu() {
+    if (!menu || menu.hidden) return;
+    var top = menu.getBoundingClientRect().top;
+    menu.style.maxHeight = Math.max(160, window.innerHeight - top - 12) + 'px';
+  }
   function setMenu(open) {
     if (!menuBtn || !menu) return;
     menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     menu.hidden = !open;
+    document.documentElement.classList.toggle('pd-menu-open', open);
+    if (open) { menu.scrollTop = 0; fitMenu(); }
   }
   if (menuBtn && menu) {
     menuBtn.addEventListener('click', function () { setMenu(menu.hidden); });
     menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
-    window.addEventListener('resize', function () { if (window.innerWidth > 1320) setMenu(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 1320) setMenu(false); else fitMenu(); });
+    menu.addEventListener('toggle', fitMenu, true);
   }
 
   /* ---------- Video: eigener Play-Knopf, lädt erst beim Klick ---------- */
