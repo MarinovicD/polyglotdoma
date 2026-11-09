@@ -106,6 +106,19 @@ var CONTACT_EMAIL = 'info@talaqa-lab.com';
     return true;
   }
 
+  /* Kontaktbereich, Karte „oder – Schreib mir“: Formular in die Bildmitte holen (passt es nicht, an den Anfang) */
+  document.addEventListener('click', function (e) {
+    var w = e.target.closest('a.pk-way-form');
+    if (!w) return;
+    var fc = document.querySelector('.pd-formcard');
+    if (!fc || (dlg && dlg.contains(fc))) return;
+    e.preventDefault();
+    var smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    fc.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: fc.offsetHeight < window.innerHeight - 100 ? 'center' : 'start' });
+    var first = form.querySelector('input:not([type="hidden"]):not([tabindex="-1"])');
+    if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, smooth ? 700 : 0);
+  });
+
   /* Anfrage-Buttons: Anliegen (und auf Sprachseiten den Lernweg) vorwählen, dann Pop-up öffnen */
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href="#kontakt"]');

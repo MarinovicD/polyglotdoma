@@ -340,11 +340,11 @@ S = [
 ('style="color: #D5DEF3">Datenschutz</a>', 'style="color: #D5DEF3">Privacy policy</a>', 'style="color: #D5DEF3">Politika privatnosti</a>', 'style="color: #D5DEF3">سياسة الخصوصية</a>'),
 ('>© 2026 polyglot.doma</span>', '>© 2026 polyglot.doma</span>', '>© 2026 polyglot.doma</span>', '>© ٢٠٢٦ <span dir="ltr">polyglot.doma</span></span>'),
 # Kontaktbereich: zwei Wege (Termin / schreiben) und Hinweis im Formular – freigegeben 08.11.2026
-('<span class="pk-t">Gleich einen Termin?</span>', '<span class="pk-t">Book a time straight away?</span>', '<span class="pk-t">Odmah termin?</span>', '<span class="pk-t">تريد موعدًا مباشرة؟</span>'),
+('<span class="pk-t">Vereinbare einen Termin</span>', '<span class="pk-t">Book a call</span>', '<span class="pk-t">Zakaži termin</span>', '<span class="pk-t">احجز موعدًا</span>'),
 ('<span class="pk-d">Kostenfreies Kennenlerngespräch, 30 Minuten.</span>', '<span class="pk-d">Free intro call, 30 minutes.</span>', '<span class="pk-d">Besplatan razgovor za upoznavanje, 30 minuta.</span>', '<span class="pk-d">مكالمة تعارف مجانية، ٣٠ دقيقة.</span>'),
 ('<span class="pk-btn">Termin wählen ', '<span class="pk-btn">Choose a time ', '<span class="pk-btn">Izaberi termin ', '<span class="pk-btn">اختر موعدًا '),
-('<span class="pk-t">Lieber erst schreiben?</span>', '<span class="pk-t">Rather write first?</span>', '<span class="pk-t">Radije prvo poruka?</span>', '<span class="pk-t">تفضّل أن تكتب أولًا؟</span>'),
-('<span class="pk-d">Ich antworte dir persönlich.</span>', '<span class="pk-d">I’ll reply to you personally.</span>', '<span class="pk-d">Odgovorit ću ti lično.</span>', '<span class="pk-d">سأردّ عليك بنفسي.</span>'),
+('<span class="pk-or">oder</span>', '<span class="pk-or">or</span>', '<span class="pk-or">ili</span>', '<span class="pk-or">أو</span>'),
+('<span class="pk-d">Schreib mir, ich antworte dir persönlich.</span>', '<span class="pk-d">Write to me and I’ll reply to you personally.</span>', '<span class="pk-d">Piši mi, odgovorit ću ti lično.</span>', '<span class="pk-d">راسلني، وسأردّ عليك بنفسي.</span>'),
 ('<span>Lieber direkt einen Termin? <b>Termin wählen</b></span>', '<span>Prefer to book directly? <b>Choose a time</b></span>', '<span>Radije odmah termin? <b>Izaberi termin</b></span>', '<span>تفضّل حجز موعد مباشرة؟ <b>اختر موعدًا</b></span>'),
 ]
 
