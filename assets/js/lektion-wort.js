@@ -1,12 +1,13 @@
 /* polyglot.doma – Mini-Lektion „Das letzte Wort entscheidet“ (Deutsch, zusammengesetzte Wörter)
-   Blättern übernimmt lektion.js, das Raten (der/die/das) lektion-rod.js. Hier nur:
+   Blättern übernimmt lektion.js. Hier nur:
+   0. Vorführen (.pz-demo): Der Artikel des letzten Worts wandert vor das ganze Wort.
    1. Schritt „Regel“: Der Artikel wandert vom letzten Teil vor das ganze Wort (.pz-rows).
    2. Schritt „Riesenwort“: Laufschrift Kraftfahrzeughaftpflicht + die Versicherung (.pz-giant).
    Alle Texte stehen im HTML (Übersetzungen). Bei „Bewegung reduzieren“ nur die Zustände ohne Laufbewegung. */
 (function () {
   'use strict';
   var box = document.getElementById('pl-lesson');
-  if (!box || !box.querySelector('.pz-giant, .pz-rows')) return;
+  if (!box || !box.querySelector('.pz-giant, .pz-rows, .pz-demo')) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var steps = Array.prototype.slice.call(box.querySelectorAll('.pl-step'));
   var active = null, timers = [], raf = 0;
@@ -21,12 +22,37 @@
     active = s;
     clear();
     if (!s) return;
-    if (s.classList.contains('pz-rulestep')) rule(s);
+    if (s.classList.contains('pz-demo')) demo(s);
+    else if (s.classList.contains('pz-rulestep')) rule(s);
     else if (s.classList.contains('pz-giantstep')) giant(s);
   }
   var mo = new MutationObserver(check);
   steps.forEach(function (s) { mo.observe(s, { attributes: true, attributeFilter: ['hidden'] }); });
   check();
+
+  /* ---------- 0. Vorführen: Artikel des letzten Worts wandert vor das ganze Wort ---------- */
+  function demo(step) {
+    var src = step.querySelector('.pz-src'), dst = step.querySelector('.pz-dst');
+    step.classList.remove('pz-on', 'pz-shown');
+    step.classList.add('pz-still');
+    dst.style.transform = '';
+    if (reduce) {
+      step.classList.remove('pz-still');
+      step.classList.add('pz-on', 'pz-shown');
+      return;
+    }
+    later(function () {
+      var a = src.getBoundingClientRect(), b = dst.getBoundingClientRect();
+      var k = a.width / b.width;
+      dst.style.transform = 'translate(' + (a.left - b.left + (a.width - b.width) / 2).toFixed(1) + 'px,' +
+        (a.top - b.top + (a.height - b.height) / 2).toFixed(1) + 'px) scale(' + k.toFixed(3) + ')';
+      step.classList.add('pz-on');
+      void dst.offsetWidth;
+      step.classList.remove('pz-still');
+      dst.style.transform = '';
+    }, 700);
+    later(function () { step.classList.add('pz-shown'); }, 1700);
+  }
 
   /* ---------- 1. Regel: Artikel wandert vom letzten Wort nach vorn ---------- */
   function rule(step) {
@@ -122,6 +148,7 @@
     function tracks(m) {
       return {
         cx: [[0, m.x0], [1500, m.xR, easeRun], [1850, m.x2], [4300, m.x2], [5500, m.x3]],
+        cy: [[0, .6], [4300, .6], [5500, .8]],
         cs: [[0, m.sR], [1500, m.sR], [1850, m.s2], [4300, m.s2], [5500, m.s3]],
         plusO: [[0, 0], [1750, 0], [1950, 1, lin], [3300, 1], [3500, 0, lin]],
         plusS: [[0, .5], [1750, .5], [1950, 1], [3300, 1], [3500, .5]],
@@ -135,7 +162,7 @@
 
     function render(t) {
       var s = at(K.cs, t), x = at(K.cx, t);
-      var y = M.H * 0.6 - s * M.hW / 2;
+      var y = M.H * at(K.cy, t) - s * M.hW / 2;
       world.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + s.toFixed(4) + ')';
       plus.style.opacity = at(K.plusO, t);
       plus.style.transform = 'translateX(' + M.xPlus + 'px) scale(' + at(K.plusS, t).toFixed(3) + ')';

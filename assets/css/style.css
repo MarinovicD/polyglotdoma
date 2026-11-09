@@ -685,7 +685,7 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pg-tag[data-g="das"],.pg-pick[data-g="das"].ok{background:#9FB3E3;color:#0E1B4D}
 .pg-pick[data-g="der"]::before{background:#1D3A9A}.pg-pick[data-g="die"]::before{background:#4A68C2}.pg-pick[data-g="das"]::before{background:#9FB3E3}
 .pg-pick[data-g="das"].ok::before{background:#0E1B4D}
-.pz-item{gap:4px;width:100%}
+.pz-item{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
 .pz-pair{display:flex;align-items:flex-start;justify-content:center;gap:14px}
 .pz-part{display:flex;flex-direction:column;align-items:center;gap:2px}
 .pz-pw{display:inline-flex;align-items:center;gap:8px;font-size:34px;font-weight:800;letter-spacing:-0.03em;line-height:1.15;white-space:nowrap}
@@ -695,13 +695,21 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pz-route{display:block;margin:4px 0 2px}
 .pz-new{display:flex;align-items:center;justify-content:center;gap:12px}
 .pz-new .pg-w{font-size:60px}
-.pz-slot{display:inline-flex;min-width:64px;justify-content:center}
-.pz-slot .pg-tag{display:none;font-size:22px;padding:6px 16px;letter-spacing:0}
-.pz-q{display:inline-flex;align-items:center;justify-content:center;min-width:56px;height:40px;box-sizing:border-box;border:2px dashed #4A68C2;border-radius:999px;font-size:22px;font-weight:800;color:#4A68C2}
-.pg-done .pz-q{display:none}
-.pg-done .pz-slot .pg-tag{display:inline-flex;animation:pzPop .45s cubic-bezier(.2,.8,.2,1.3) both}
-.pz-lit{visibility:hidden;margin-top:6px;background:#D5DEF3;border-radius:999px;padding:6px 16px;font-family:'Instrument Serif',serif;font-style:italic;font-size:21px;color:#0E1B4D}
-.pg-done .pz-lit{visibility:visible;animation:pzPop .5s cubic-bezier(.2,.8,.2,1.2) .25s both}
+.pz-slot{display:inline-grid;align-items:center;justify-items:center;min-width:64px}
+.pz-slot>*{grid-area:1/1}
+.pz-slot .pg-tag{font-size:22px;padding:6px 16px;letter-spacing:0;opacity:0}
+.pz-q{display:inline-flex;align-items:center;justify-content:center;min-width:56px;height:40px;box-sizing:border-box;border:2px dashed #4A68C2;border-radius:999px;font-size:22px;font-weight:800;color:#4A68C2;transition:opacity .3s}
+/* Vorführen: Artikel des letzten Worts wandert vor das ganze Wort (Versatz setzt lektion-wort.js) */
+.pz-on .pz-q{opacity:0}
+.pz-on .pz-slot .pg-tag{opacity:1}
+.pz-dst{transition:transform .9s cubic-bezier(.5,0,.2,1)}
+.pz-still .pz-dst{transition:none}
+.pz-src{transition:opacity .5s}
+.pz-on .pz-src{opacity:.35}
+.pz-out{opacity:0;transition:opacity .5s ease}
+.pz-shown .pz-out{opacity:1}
+.pz-demo .pz-rule{margin-top:10px}
+.pz-lit{margin-top:6px;background:#D5DEF3;border-radius:999px;padding:6px 16px;font-family:'Instrument Serif',serif;font-style:italic;font-size:21px;color:#0E1B4D}
 @keyframes pzPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
 /* Schritt „Regel“: Artikel wandert vom letzten Teil vor das ganze Wort (Versatz setzt lektion-wort.js) */
 .pz-rows{display:flex;flex-direction:column;align-items:flex-start;gap:30px;margin:0 auto 4px;padding-top:30px}
@@ -731,7 +739,8 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
 .pz-after{display:flex;flex-direction:column;align-items:center;gap:10px;transition:opacity .5s ease}
 .pz-wait .pz-after{opacity:0;pointer-events:none}
 .pz-end{font-weight:800;letter-spacing:-0.02em}
-.pz-end-tr{margin-top:-6px}
+.pz-end-tr{margin-top:-18px;font-size:26px;transition:opacity .5s ease}
+.pz-wait .pz-end-tr{opacity:0}
 @media (max-width:560px){
   .pz-pair{gap:8px}.pz-pw{font-size:25px;gap:6px}.pz-pw .pg-tag{font-size:13px;padding:3px 9px}
   .pz-tr{font-size:17px}.pz-plus{font-size:22px}
@@ -740,6 +749,7 @@ html[lang="ar"] .pd-lsw-h,html[lang="ar"] .pd-menu-h{letter-spacing:0;font-size:
   .pz-lit{font-size:18px;padding:5px 14px}
   .pz-word{font-size:34px}.pz-row .pg-tag{font-size:17px;padding:5px 12px;min-width:50px}.pz-row{gap:10px}
   .pz-giant{margin:0 -14px;height:110px}
+  .pz-end-tr{margin-top:-12px;font-size:22px}
 }
 html[lang="ar"] .pl-lesson [lang="de"],html[lang="ar"] .pz-pw,html[lang="ar"] .pz-word,html[lang="ar"] .pz-giant{font-family:'Bricolage Grotesque',sans-serif;direction:ltr;unicode-bidi:isolate}
-@media (prefers-reduced-motion: reduce){.pz-mv{transition:none}.pg-done .pz-slot .pg-tag,.pg-done .pz-lit{animation:none}}
+@media (prefers-reduced-motion: reduce){.pz-mv,.pz-dst{transition:none}}
