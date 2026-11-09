@@ -91,6 +91,7 @@ S = [
 ('<a href="bosnisch/"><span class="pd-lang-name">Bosnisch <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosnian <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosanski <small>', '<a href="bosnisch/"><span class="pd-lang-name">البوسنية <small>'),
 ('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Pogledaj puteve učenja</small>', '<small>جرّب الدرس القصير</small>'),
 ('>Bosnisch lernen</a>', '>Learn Bosnian</a>', '>Uči bosanski</a>', '>تعلّم البوسنية</a>'),
+('>Deutsch lernen</a>', '>Learn German</a>', '>Uči njemački</a>', '>تعلّم الألمانية</a>'),
 ('<span class="pd-menu-h pd-menu-sec">Sprachen lernen</span>', '<span class="pd-menu-h pd-menu-sec">Learn a language</span>', '<span class="pd-menu-h pd-menu-sec">Uči jezike</span>', '<span class="pd-menu-h pd-menu-sec">تعلّم اللغات</span>'),
 ('<a href="arabisch/"><span class="pd-lang-name">Arabisch <small>', '<a href="arabisch/"><span class="pd-lang-name">Arabic <small>', '<a href="arabisch/"><span class="pd-lang-name">Arapski <small>', '<a href="arabisch/"><span class="pd-lang-name">العربية <small>'),
 ('-0.02em">Englisch</li>', '-0.02em">English</li>', '-0.02em">Engleski</li>', '-0.02em">الإنجليزية</li>'),
