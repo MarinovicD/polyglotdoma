@@ -1,13 +1,12 @@
 /* polyglot.doma – Mini-Lektion „Das letzte Wort entscheidet“ (Deutsch, zusammengesetzte Wörter)
    Blättern übernimmt lektion.js. Hier nur:
    0. Vorführen (.pz-demo): Der Artikel des letzten Worts wandert vor das ganze Wort.
-   1. Schritt „Regel“: Der Artikel wandert vom letzten Teil vor das ganze Wort (.pz-rows).
    2. Schritt „Riesenwort“: Laufschrift Kraftfahrzeughaftpflicht + die Versicherung (.pz-giant).
    Alle Texte stehen im HTML (Übersetzungen). Bei „Bewegung reduzieren“ nur die Zustände ohne Laufbewegung. */
 (function () {
   'use strict';
   var box = document.getElementById('pl-lesson');
-  if (!box || !box.querySelector('.pz-giant, .pz-rows, .pz-demo')) return;
+  if (!box || !box.querySelector('.pz-giant, .pz-demo')) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var steps = Array.prototype.slice.call(box.querySelectorAll('.pl-step'));
   var active = null, timers = [], raf = 0;
@@ -23,7 +22,6 @@
     clear();
     if (!s) return;
     if (s.classList.contains('pz-demo')) demo(s);
-    else if (s.classList.contains('pz-rulestep')) rule(s);
     else if (s.classList.contains('pz-giantstep')) giant(s);
   }
   var mo = new MutationObserver(check);
@@ -52,32 +50,6 @@
       dst.style.transform = '';
     }, 700);
     later(function () { step.classList.add('pz-shown'); }, 1700);
-  }
-
-  /* ---------- 1. Regel: Artikel wandert vom letzten Wort nach vorn ---------- */
-  function rule(step) {
-    var rows = Array.prototype.slice.call(step.querySelectorAll('.pz-row'));
-    step.classList.add('pz-still', 'pz-wait');
-    rows.forEach(function (r) { r.classList.remove('pz-on'); r.querySelector('.pz-mv').style.transform = ''; });
-    if (reduce) {
-      rows.forEach(function (r) { r.classList.add('pz-on'); });
-      step.classList.remove('pz-still', 'pz-wait');
-      return;
-    }
-    /* Start: die Pille steht klein über dem letzten Teil */
-    rows.forEach(function (r) {
-      var tag = r.querySelector('.pz-mv'), last = r.querySelector('.pz-last');
-      var a = tag.getBoundingClientRect(), b = last.getBoundingClientRect();
-      var dx = (b.left + b.width / 2) - (a.left + a.width / 2);
-      var dy = b.top - a.top - a.height * 0.82;
-      tag.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(.75)';
-    });
-    void step.offsetWidth;
-    step.classList.remove('pz-still');
-    rows.forEach(function (r, i) {
-      later(function () { r.classList.add('pz-on'); r.querySelector('.pz-mv').style.transform = ''; }, 650 + i * 420);
-    });
-    later(function () { step.classList.remove('pz-wait'); }, 650 + rows.length * 420 + 450);
   }
 
   /* ---------- 2. Riesenwort ---------- */
