@@ -7,6 +7,7 @@
 SER = '<span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">'
 
 A = [
+('>Welcher Lernweg passt zu dir? ↑</a>', '>Which learning path suits you? ↑</a>', '>Koji put učenja ti odgovara? ↑</a>'),
 # ---------- Kopf / Meta ----------
 ('<title>Arabisch lernen – polyglot.doma</title>', '<title>Learn Arabic – polyglot.doma</title>', '<title>Nauči arapski – polyglot.doma</title>'),
 ('content="Arabisch lernen mit Domagoj: von Null an, die Grundlagen der Sprache oder Begleitung im Studium. Online, persönlich, mit selbst erstellten Materialien. Mini-Lektion: Lies dein erstes arabisches Wort."',

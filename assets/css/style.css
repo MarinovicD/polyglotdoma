@@ -770,3 +770,45 @@ html.pd-menu-open{overflow:hidden}
 .pd-menu .pd-menu-h{padding:clamp(6px,1.2vh,12px) 14px 0}
 .pd-menu-sec{margin-top:4px;padding-top:clamp(8px,1.6vh,16px)}
 .pd-menu .pd-menu-lang{margin-top:4px}
+/* Startseite: Hero rechts – Mini-Lektionen als Kartenstapel (.pd-hc-) */
+.pd-hc{flex:1 1 380px;min-width:0;max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.pd-hc-card{position:relative;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center;text-decoration:none;color:#0E1B4D;background:#FFFFFF;border:1.5px solid #0E1B4D;border-radius:32px;padding:22px 26px;box-shadow:0 18px 36px -24px rgba(14,27,77,.55);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.pd-hc-card + .pd-hc-card{margin-top:-14px}
+.pd-hc-card:nth-of-type(1){transform:rotate(-2deg);background:#D5DEF3;z-index:1}
+.pd-hc-card:nth-of-type(2){transform:rotate(1.5deg) translateX(18px);background:#1D3A9A;color:#F4F6FB;border-color:#1D3A9A;z-index:2}
+.pd-hc-card:nth-of-type(3){transform:rotate(-1deg) translateX(-8px);z-index:3}
+.pd-hc-card:hover{transform:rotate(0) translateY(-6px) scale(1.02);z-index:4}
+.pd-hc-k{grid-column:1/-1;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;opacity:.85}
+.pd-hc-new{font-size:11px;letter-spacing:.08em;background:#B88A4A;color:#0E1B4D;border-radius:999px;padding:3px 9px}
+.pd-hc-word{grid-column:1/-1;display:flex;align-items:center;gap:12px;font-size:44px;font-weight:800;letter-spacing:-0.035em;line-height:1.15;white-space:nowrap}
+.pd-hc-arw{font-family:'Markazi Text','Alexandria',serif;font-weight:500;font-size:64px;line-height:1.1;letter-spacing:0;direction:rtl}
+.pd-hc-tr{font-size:22px;font-weight:400;letter-spacing:0;color:#1D3A9A}
+.pd-hc-word .pg-tag{font-size:20px;padding:5px 14px;letter-spacing:0}
+.pd-hc-last{background:#B88A4A;color:#0E1B4D;border-radius:.2em;padding:0 .05em}
+.pd-hc-e{border-radius:.2em;padding:0 .06em}
+.pd-hc-e[data-g="m"]{background:#1D3A9A;color:#F4F6FB}.pd-hc-e[data-g="f"]{background:#B88A4A;color:#0E1B4D}.pd-hc-e[data-g="n"]{background:#9FB3E3;color:#0E1B4D}
+.pd-hc-t{font-size:17px;line-height:1.35;font-weight:500}
+.pd-hc-go{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700;white-space:nowrap;border-bottom:1.5px solid #B88A4A;padding-bottom:2px}
+
+@media (max-width:560px){
+  .pd-hc{max-width:none}
+  .pd-hc-card{padding:18px 20px;border-radius:26px}
+  .pd-hc-card:nth-of-type(2){transform:rotate(1.2deg) translateX(8px)}
+  .pd-hc-word{font-size:32px}.pd-hc-arw{font-size:50px}.pd-hc-word .pg-tag{font-size:16px}
+  .pd-hc-t{font-size:16px}
+}
+@media (prefers-reduced-motion: reduce){.pd-hc-card{transition:none}}
+.pd-hc-k{white-space:nowrap}
+html[dir="rtl"] .pd-hc-word[dir="ltr"]{justify-content:flex-end}
+.pd-hc-card:nth-of-type(2) .pd-hc-e[data-g="m"]{background:#F4F6FB;color:#1D3A9A}
+.pd-hc-card:nth-of-type(2) .pd-hc-tr,.pd-hc-card:nth-of-type(2) .pd-hc-k{color:#D5DEF3}
+html[dir="rtl"] .pd-hc-go svg{transform:scaleX(-1)}
+/* Ende der Mini-Lektionen: leiser Link zurück zu den Lernwegen */
+.pl-pathlink{display:inline-block;margin-top:2px;font-size:15px;font-weight:600;color:#1D3A9A;text-decoration:none;border-bottom:1.5px solid #9FB3E3;padding-bottom:2px}
+.pl-pathlink:hover{border-bottom-color:#1D3A9A}
+/* Wortzeile skaliert mit der Kartenbreite, damit nichts überläuft (z. B. Tablet 1024 px, Handy 320 px) */
+.pd-hc-card{container-type:inline-size}
+.pd-hc-word{font-size:32px;font-size:clamp(22px,9.5cqi,44px)}
+.pd-hc-arw{font-size:1.45em}
+.pd-hc-word .pg-tag{font-size:.45em}
+.pd-hc-tr{font-size:clamp(17px,.5em,22px)}

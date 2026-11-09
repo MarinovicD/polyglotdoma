@@ -85,9 +85,19 @@ S = [
 ('>Ich unterrichte</li>', '>I teach</li>', '>Predajem</li>', '>أُدرّس</li>'),
 ('>Ich spreche außerdem</li>', '>I also speak</li>', '>Također govorim</li>', '>أتحدث أيضًا</li>'),
 ('-->Deutsch<!--/NOT-->', '-->German<!--/NOT-->', '-->Njemački<!--/NOT-->', '-->الألمانية<!--/NOT-->'),
+# Hero-Karten (10.11.2026)
+('aria-label="Mini-Lektionen"', 'aria-label="Mini-lessons"', 'aria-label="Mini-lekcije"', 'aria-label="دروس قصيرة"'),
+('<span class="pd-hc-k">Arabisch · Mini-Lektion</span>', '<span class="pd-hc-k">Arabic · Mini-lesson</span>', '<span class="pd-hc-k">Arapski · Mini-lekcija</span>', '<span class="pd-hc-k">العربية · درس قصير</span>'),
+('serif pd-hc-tr">balad · Land</span>', 'serif pd-hc-tr">balad · country</span>', 'serif pd-hc-tr">balad · zemlja</span>', 'serif pd-hc-tr">balad · بلد</span>'),
+('<span class="pd-hc-t">Lies dein erstes arabisches Wort.</span>', '<span class="pd-hc-t">Read your first Arabic word.</span>', '<span class="pd-hc-t">Pročitaj svoju prvu arapsku riječ.</span>', '<span class="pd-hc-t">اقرأ أول كلمة عربية لك.</span>'),
+('<span class="pd-hc-k">Deutsch · Mini-Lektion <b class="pd-hc-new">Neu</b></span>', '<span class="pd-hc-k">German · Mini-lesson <b class="pd-hc-new">New</b></span>', '<span class="pd-hc-k">Njemački · Mini-lekcija <b class="pd-hc-new">Novo</b></span>', '<span class="pd-hc-k"><span>الألمانية · درس قصير</span> <b class="pd-hc-new">جديد</b></span>'),
+('<span class="pd-hc-t">Der, die oder das? Das letzte Wort entscheidet.</span>', '<span class="pd-hc-t">Der, die or das? The last word decides.</span>', '<span class="pd-hc-t">Der, die ili das? Zadnja riječ odlučuje.</span>', '<span class="pd-hc-t"><span dir="ltr">der</span> أم <span dir="ltr">die</span> أم <span dir="ltr">das</span>؟ الكلمة الأخيرة هي التي تقرّر.</span>'),
+('<span class="pd-hc-k">Bosnisch · Mini-Lektion</span>', '<span class="pd-hc-k">Bosnian · Mini-lesson</span>', '<span class="pd-hc-k">Bosanski · Mini-lekcija</span>', '<span class="pd-hc-k">البوسنية · درس قصير</span>'),
+('<span class="pd-hc-t">Der, die, das? Das Wort verrät es dir.</span>', '<span class="pd-hc-t">He, she or it? The word tells you.</span>', '<span class="pd-hc-t">Der, die, das? Das Wort verrät es dir.</span>', '<span class="pd-hc-t">مذكّر أم مؤنّث؟ الكلمة تخبرك.</span>'),
+('<span class="pd-hc-go">Ausprobieren ', '<span class="pd-hc-go">Try it ', '<span class="pd-hc-go">Isprobaj ', '<span class="pd-hc-go">جرّب '),
+
 # Deutsch-Seite mit Mini-Lektion (seit 09.11.2026; auf der deutschen Startseite per <!--ONLY:en,bs,ar:…--> ausgeblendet)
 ('<a href="deutsch/"><span class="pd-lang-name">Deutsch <small>', '<a href="deutsch/"><span class="pd-lang-name">German <small>', '<a href="deutsch/"><span class="pd-lang-name">Njemački <small>', '<a href="deutsch/"><span class="pd-lang-name">الألمانية <small>'),
-('<span>Neu: Der, die oder das? Das letzte Wort entscheidet →</span></a>', '<span>New: Der, die or das? The last word decides →</span></a>', '<span>Novo: Der, die ili das? Zadnja riječ odlučuje →</span></a>', '<span>جديد: <span dir="ltr">der</span> أم <span dir="ltr">die</span> أم <span dir="ltr">das</span>؟ الكلمة الأخيرة هي التي تقرّر ←</span></a>'),
 ('<a href="bosnisch/"><span class="pd-lang-name">Bosnisch <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosnian <small>', '<a href="bosnisch/"><span class="pd-lang-name">Bosanski <small>', '<a href="bosnisch/"><span class="pd-lang-name">البوسنية <small>'),
 ('<small>Mini-Lektion ausprobieren</small>', '<small>Try the mini-lesson</small>', '<small>Isprobaj mini-lekciju</small>', '<small>جرّب الدرس القصير</small>'),
 ('>Bosnisch lernen</a>', '>Learn Bosnian</a>', '>Uči bosanski</a>', '>تعلّم البوسنية</a>'),
@@ -368,7 +378,6 @@ AR_EXTRA += [
 S += [
 ('>Arabisch lernen</a><!--/NOAR-->', '>Learn Arabic</a><!--/NOAR-->', '>Uči arapski</a><!--/NOAR-->', '>Arabisch lernen</a><!--/NOAR-->'),
 ('<small>Lernwege ansehen</small>', '<small>See learning paths</small>', '<small>Pogledaj puteve učenja</small>', '<small>Lernwege ansehen</small>'),
-('</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>', '</span>New: Read your first Arabic word – in two minutes →</a>', '</span>Novo: Pročitaj svoju prvu arapsku riječ – za dvije minute →</a>', '</span>Neu: Lies dein erstes arabisches Wort, in zwei Minuten →</a>'),
 ('>Im Fokus: Arabisch</span>', '>In focus: Arabic</span>', '>U fokusu: arapski</span>', '>Im Fokus: Arabisch</span>'),
 ('>Drei Wege ins Arabische – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">vom ersten Buchstaben bis zum fließenden Sprechen.</span>',
  '>Three paths into Arabic – <span class="serif" style="color: #9FB3E3; letter-spacing: -0.01em">from the first letter to speaking fluently.</span>',

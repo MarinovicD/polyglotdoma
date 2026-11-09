@@ -8,6 +8,7 @@
 SER = '<span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">'
 
 B = [
+('>Welcher Lernweg passt zu dir? ↑</a>', '>Which learning path suits you? ↑</a>', '>أيّ طريق تعلّم يناسبك؟ ↑</a>', '>Koji put učenja ti odgovara? ↑</a>'),
 ('<title>Bosnisch lernen – polyglot.doma</title>',
  '<title>Learn Bosnian – polyglot.doma</title>',
  '<title>تعلّم البوسنية – polyglot.doma</title>',
