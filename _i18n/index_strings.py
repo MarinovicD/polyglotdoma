@@ -358,8 +358,6 @@ S = [
 ('<span class="pk-t">Vereinbare einen Termin</span>', '<span class="pk-t">Book a call</span>', '<span class="pk-t">Zakaži termin</span>', '<span class="pk-t">احجز موعدًا</span>'),
 ('<span class="pk-d">Kostenfreies Kennenlerngespräch, 30 Minuten.</span>', '<span class="pk-d">Free intro call, 30 minutes.</span>', '<span class="pk-d">Besplatan razgovor, 30 minuta.</span>', '<span class="pk-d">مكالمة تعارف مجانية، ٣٠ دقيقة.</span>'),
 ('<span class="pk-btn">Termin wählen ', '<span class="pk-btn">Choose a time ', '<span class="pk-btn">Izaberi termin ', '<span class="pk-btn">اختر موعدًا '),
-('<span class="pk-or">oder</span>', '<span class="pk-or">or</span>', '<span class="pk-or">ili</span>', '<span class="pk-or">أو</span>'),
-('<span class="pk-d">Schreib mir, ich antworte dir persönlich.</span>', '<span class="pk-d">Write to me and I’ll reply to you personally.</span>', '<span class="pk-d">Piši mi, odgovorit ću ti lično.</span>', '<span class="pk-d">راسلني، وسأردّ عليك بنفسي.</span>'),
 ('<span>Lieber direkt einen Termin? <b>Termin wählen</b></span>', '<span>Prefer to book directly? <b>Choose a time</b></span>', '<span>Radije odmah termin? <b>Izaberi termin</b></span>', '<span>تفضّل حجز موعد مباشرة؟ <b>اختر موعدًا</b></span>'),
 ]
 
