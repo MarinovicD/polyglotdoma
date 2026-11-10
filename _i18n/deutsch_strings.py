@@ -8,6 +8,27 @@
 SER = '<span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">'
 
 D = [
+# ---------- Hero (seit 10.11.2026, Entwurf) ----------
+('padding: 7px 16px">Deutsch <span class="serif" lang="de"',
+ 'padding: 7px 16px">German <span class="serif" lang="de"',
+ 'padding: 7px 16px">Njemački <span class="serif" lang="de"',
+ 'padding: 7px 16px">الألمانية <span class="serif" lang="de"'),
+('<span class="pd-w d1">Deutsch,</span> <span class="pd-w d3">so</span> <span class="pd-w d4">wie</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">du es</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">brauchst.</span>',
+ '<span class="pd-w d1">German,</span> <span class="pd-w d3">the</span> <span class="pd-w d4">way</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">you need</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">it.</span>',
+ '<span class="pd-w d1">Njemački,</span> <span class="pd-w d3">baš</span> <span class="pd-w d4">onako</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">kako ti</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">treba.</span>',
+ '<span class="pd-w d1">الألمانية،</span> <span class="pd-w d3">كما</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">تحتاجها</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">أنت.</span>'),
+('>Ob du bald nach Deutschland gehst, gerade angekommen bist oder beim Sprechen hängen bleibst: Ich hole dich genau da ab, wo du gerade stehst.</p>',
+ ">Whether you're moving to Germany soon, have just arrived or get stuck when speaking: I'll meet you exactly where you are.</p>",
+ '>Bilo da uskoro ideš u Njemačku, tek počinješ život tamo ili zapinješ kad govoriš: krećemo tačno odatle gdje si sada.</p>',
+ '>سواء كنتَ ستنتقل قريبًا إلى ألمانيا، أو وصلتَ إليها حديثًا، أو تتعثّر حين تتكلّم: أبدأ معك من حيث أنت الآن.</p>'),
+('>Deinen Lernweg finden ↓</a>',
+ '>Find your learning path ↓</a>',
+ '>Pronađi svoj put učenja ↓</a>',
+ '>اعثر على طريق تعلّمك ↓</a>'),
+('>Der, die oder das? ↓</a>',
+ '>Der, die or das? ↓</a>',
+ '>Der, die ili das? ↓</a>',
+ '><span dir="ltr">der</span> أم <span dir="ltr">die</span> أم <span dir="ltr">das</span>؟ ↓</a>'),
 ('>Welcher Lernweg passt zu dir? ↑</a>',
  '>Which learning path suits you? ↑</a>',
  '>Koji put učenja ti odgovara? ↑</a>',
