@@ -8,6 +8,21 @@
 SER = '<span class="serif" style="color: #1D3A9A; letter-spacing: -0.01em">'
 
 B = [
+# ---------- Hero (seit 10.11.2026, Entwurf) ----------
+('padding: 7px 16px">Bosnisch <span class="serif" lang="bs"',
+ 'padding: 7px 16px">Bosnian <span class="serif" lang="bs"',
+ 'padding: 7px 16px">البوسنية <span class="serif" lang="bs" dir="ltr"',
+ 'padding: 7px 16px">Bosanski <span class="serif" lang="bs" hidden'),
+('<span class="pd-w d1">Bosnisch,</span> <span class="pd-w d3">so</span> <span class="pd-w d4">wie</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">du es</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">brauchst.</span>',
+ '<span class="pd-w d1">Bosnian,</span> <span class="pd-w d3">the</span> <span class="pd-w d4">way</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">you need</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">it.</span>',
+ '<span class="pd-w d1">البوسنية،</span> <span class="pd-w d3">كما</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">تحتاجها</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">أنت.</span>',
+ '<span class="pd-w d1">Bosanski,</span> <span class="pd-w d3">baš</span> <span class="pd-w d4">onako</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">kako ti</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">treba.</span>'),
+('>Ob du bei null anfängst, mit bosnischen Wurzeln aufgewachsen bist oder bald in Bosnien ankommst: Ich hole dich genau da ab, wo du gerade stehst.</p>',
+ ">Whether you're starting from zero, grew up with Bosnian roots or are about to settle in Bosnia: I'll meet you exactly where you are.</p>",
+ '>سواء بدأتَ من الصفر، أو نشأتَ بجذور بوسنية، أو ستستقرّ قريبًا في البوسنة: أبدأ معك من حيث أنت الآن.</p>',
+ '>Bilo da počinješ od nule, imaš bosanske korijene ili uskoro dolaziš u Bosnu: krećemo tačno odatle gdje si sada.</p>'),
+('>Deinen Lernweg finden ↓</a>', '>Find your learning path ↓</a>', '>اعثر على طريق تعلّمك ↓</a>', '>Pronađi svoj put učenja ↓</a>'),
+('>Der, die, das? ↓</a>', '>He, she or it? ↓</a>', '>مذكّر أم مؤنّث أم محايد؟ ↓</a>', '>Der, die, das? ↓</a>'),
 ('>Welcher Lernweg passt zu dir? ↑</a>', '>Which learning path suits you? ↑</a>', '>أيّ طريق تعلّم يناسبك؟ ↑</a>', '>Koji put učenja ti odgovara? ↑</a>'),
 ('<title>Bosnisch lernen – polyglot.doma</title>',
  '<title>Learn Bosnian – polyglot.doma</title>',
