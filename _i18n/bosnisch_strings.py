@@ -20,7 +20,7 @@ B = [
 ('>Ob du bei null anfängst, mit bosnischen Wurzeln aufgewachsen bist oder bald in Bosnien ankommst: Ich hole dich genau da ab, wo du gerade stehst.</p>',
  ">Whether you're starting from zero, grew up with Bosnian roots or are about to settle in Bosnia: I'll meet you exactly where you are.</p>",
  '>سواء بدأتَ من الصفر، أو نشأتَ بجذور بوسنية، أو ستستقرّ قريبًا في البوسنة: أبدأ معك من حيث أنت الآن.</p>',
- '>Bilo da počinješ od nule, imaš bosanske korijene ili uskoro dolaziš u Bosnu: krećemo tačno odatle gdje si sada.</p>'),
+ '>Počinješ od nule, imaš bosanske korijene ili dolaziš u Bosnu? Krećemo odatle gdje si sada.</p>'),
 ('>Deinen Lernweg finden ↓</a>', '>Find your learning path ↓</a>', '>اعثر على طريق تعلّمك ↓</a>', '>Pronađi svoj put učenja ↓</a>'),
 ('>Der, die, das? ↓</a>', '>He, she or it? ↓</a>', '>مذكّر أم مؤنّث أم محايد؟ ↓</a>', '>Der, die, das? ↓</a>'),
 ('>Welcher Lernweg passt zu dir? ↑</a>', '>Which learning path suits you? ↑</a>', '>أيّ طريق تعلّم يناسبك؟ ↑</a>', '>Koji put učenja ti odgovara? ↑</a>'),

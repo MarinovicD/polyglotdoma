@@ -19,7 +19,7 @@ D = [
  '<span class="pd-w d1">الألمانية،</span> <span class="pd-w d3">كما</span> <span class="pd-w d5 serif" style="color: #1D3A9A; letter-spacing: -0.01em">تحتاجها</span> <span class="pd-w d6 serif" style="color: #1D3A9A; letter-spacing: -0.01em">أنت.</span>'),
 ('>Ob du bald nach Deutschland gehst, gerade angekommen bist oder beim Sprechen hängen bleibst: Ich hole dich genau da ab, wo du gerade stehst.</p>',
  ">Whether you're moving to Germany soon, have just arrived or get stuck when speaking: I'll meet you exactly where you are.</p>",
- '>Bilo da uskoro ideš u Njemačku, tek počinješ život tamo ili zapinješ kad govoriš: krećemo tačno odatle gdje si sada.</p>',
+ '>Uskoro ideš u Njemačku, tek si stigao ili zapinješ u govoru? Krećemo odatle gdje si sada.</p>',
  '>سواء كنتَ ستنتقل قريبًا إلى ألمانيا، أو وصلتَ إليها حديثًا، أو تتعثّر حين تتكلّم: أبدأ معك من حيث أنت الآن.</p>'),
 ('>Deinen Lernweg finden ↓</a>',
  '>Find your learning path ↓</a>',
