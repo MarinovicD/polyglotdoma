@@ -336,6 +336,55 @@ def build_deutsch():
         open(os.path.join(ROOT, lang, DE_SLUG[lang], 'index.html'), 'w', encoding='utf-8').write(out)
         print('%s/%s/index.html geschrieben' % (lang, DE_SLUG[lang]))
 
+# ---- SEO: Canonical-Tags, sitemap.xml, robots.txt (seit 10.11.2026) ----
+# Läuft nach allen anderen Schritten über ALLE ausgelieferten HTML-Seiten.
+# Canonical = eigene Adresse (Ordner mit / statt …/index.html). Weiterleitungsseiten
+# (meta refresh) behalten ihren Canonical aufs Ziel. Die Sitemap enthält jede Seite
+# ohne noindex – noindex entfernen genügt, die Sitemap zieht beim nächsten Bauen nach.
+CANON_RE = re.compile(r'<link rel="canonical"[^>]*>\n?')
+
+def page_url(rel):
+    rel = rel.replace(os.sep, '/')
+    if rel == 'index.html':
+        return BASE_URL
+    if rel.endswith('/index.html'):
+        return BASE_URL + rel[:-len('index.html')]
+    return BASE_URL + rel
+
+def build_seo():
+    urls = []
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = sorted(d for d in dirnames if not d.startswith(('.', '_')))
+        for fn in sorted(filenames):
+            if not fn.endswith('.html'):
+                continue
+            path = os.path.join(dirpath, fn)
+            rel = os.path.relpath(path, ROOT)
+            html = open(path, encoding='utf-8').read()
+            if 'http-equiv="refresh"' in html:
+                continue
+            url = page_url(rel)
+            new = CANON_RE.sub('', html)
+            tag = '<link rel="canonical" href="%s">\n' % url
+            if '<!--ALT-->' in new:
+                new = new.replace('<!--ALT-->', tag + '<!--ALT-->', 1)
+            else:
+                new = new.replace('</head>', tag + '</head>', 1)
+            if new != html:
+                open(path, 'w', encoding='utf-8').write(new)
+            if 'name="robots" content="noindex"' not in new:
+                urls.append(url)
+    order = {'de': 0, 'en': 1, 'bs': 2, 'ar': 3}
+    urls.sort(key=lambda u: (order.get(u[len(BASE_URL):].split('/')[0], 0), u))
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    xml += ['  <url><loc>%s</loc></url>' % u for u in urls]
+    xml.append('</urlset>')
+    open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(xml) + '\n')
+    open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8').write(
+        'User-agent: *\nAllow: /\n\nSitemap: %ssitemap.xml\n' % BASE_URL)
+    print('sitemap.xml (%d Seiten) und robots.txt geschrieben' % len(urls))
+
 if __name__ == '__main__':
     build_index()
     build_arabisch()
@@ -346,3 +395,4 @@ if __name__ == '__main__':
     build_redirects()
     build_legal('impressum.html', IMPRESSUM, 'impressum')
     build_legal('datenschutz.html', DATENSCHUTZ, 'datenschutz')
+    build_seo()
