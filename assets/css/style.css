@@ -812,3 +812,6 @@ html[dir="rtl"] .pd-hc-go svg{transform:scaleX(-1)}
 .pd-hc-arw{font-size:1.45em}
 .pd-hc-word .pg-tag{font-size:.45em}
 .pd-hc-tr{font-size:clamp(17px,.5em,22px)}
+/* „Lieber direkt einen Termin?“ nur im Pop-up-Formular; unten auf der Seite steht die Terminkarte direkt daneben/darüber */
+#kontakt .pk-hint{display:none}
+.pd-dialog .pk-hint{display:flex}
