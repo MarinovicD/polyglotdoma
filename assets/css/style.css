@@ -826,7 +826,8 @@ html[dir="rtl"] .pd-hc-go svg{transform:scaleX(-1)}
 .pv-card{min-width:0}
 .pv-init{flex:none;width:44px;height:44px;border-radius:50%;color:#F4F6FB;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px}
 .pv-name{display:block;font-weight:700;font-size:18px}
-.pv-lang{display:inline-flex;flex-wrap:wrap;align-items:center;gap:.2em .45em;font-size:14px;margin-top:2px}
+.pv-lang{display:flex;align-items:center;gap:.5em;font-size:14px;margin-top:2px;white-space:nowrap}
+.pv-l{display:inline-flex;align-items:center;gap:.4em}
 @media (max-width: 900px){.pv-grid{display:flex;align-items:flex-start;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -32px;padding:0 32px 4px;scroll-padding:0 32px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pv-grid::-webkit-scrollbar{display:none}.pv-card{flex:0 0 min(80vw,520px);scroll-snap-align:start}}
 @media (max-width: 560px){.pv-grid{margin:0 -20px;padding:0 20px 4px;scroll-padding:0 20px}}
-@media (max-width: 560px){.pv-card{padding:22px 22px 24px;border-radius:28px}.pv-card blockquote{font-size:17px}}
+@media (max-width: 560px){.pv-card{padding:22px 22px 24px;border-radius:28px}.pv-card figcaption{gap:12px}.pv-init{width:40px;height:40px;font-size:18px}.pv-q{width:26px;height:20px}.pv-card blockquote{font-size:17px}}
