@@ -823,6 +823,9 @@ html[dir="rtl"] .pd-hc-go svg{transform:scaleX(-1)}
 .pv-card mark{color:inherit;font-weight:700;background:linear-gradient(transparent 60%,rgba(159,179,227,.6) 60%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .08em}
 .pv-card figcaption{display:flex;align-items:center;gap:14px;border-bottom:1.5px dashed #9FB3E3;padding-bottom:16px}
 .pv-q{flex:none;margin-inline-start:auto}
+[dir="rtl"] .pv-q{transform:scaleX(-1)}
+[dir="rtl"] .pv-ridge{transform:scaleX(-1)}
+.pv-note{margin:20px 0 0;font-size:13px;color:#9FB3E3}
 .pv-card figcaption>span:not(.pv-init){min-width:0}
 .pv-card{min-width:0}
 .pv-init{flex:none;width:44px;height:44px;border-radius:50%;color:#F4F6FB;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px}
