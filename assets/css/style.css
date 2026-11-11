@@ -819,7 +819,8 @@ html[dir="rtl"] .pd-hc-go svg{transform:scaleX(-1)}
 .pv-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start}
 .pv-card{box-sizing:border-box;margin:0;background:#F4F6FB;color:#0E1B4D;border-radius:32px;padding:26px 32px 30px;display:flex;flex-direction:column;gap:18px}
 .pv-card blockquote{margin:0;font-size:19px;line-height:1.6}
-.pv-card blockquote .serif{font-size:1.3em;line-height:1.1;color:#1D3A9A}
+.pv-card blockquote .serif{display:block;margin:.3em 0 .35em;font-size:1.75em;line-height:1.1;letter-spacing:-.01em;color:#1D3A9A}
+.pv-card mark{color:inherit;font-weight:700;background:linear-gradient(transparent 60%,rgba(159,179,227,.6) 60%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .08em}
 .pv-card figcaption{display:flex;align-items:center;gap:14px;border-bottom:1.5px dashed #9FB3E3;padding-bottom:16px}
 .pv-q{flex:none;margin-inline-start:auto}
 .pv-card figcaption>span:not(.pv-init){min-width:0}
