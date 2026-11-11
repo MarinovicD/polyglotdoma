@@ -22,7 +22,7 @@ B = [
  '>سواء بدأتَ من الصفر، أو نشأتَ بجذور بوسنية، أو ستستقرّ قريبًا في البوسنة: أبدأ معك من حيث أنت الآن.</p>',
  '>Počinješ od nule, imaš bosanske korijene ili dolaziš u Bosnu? Krećemo odatle gdje si sada.</p>'),
 ('>Deinen Lernweg finden ↓</a>', '>Find your learning path ↓</a>', '>اعثر على طريق تعلّمك ↓</a>', '>Pronađi svoj put učenja ↓</a>'),
-('>Der, die, das? ↓</a>', '>He, she or it? ↓</a>', '>اعرف جنس الكلمات في دقيقتين ↓</a>', '>Der, die, das? ↓</a>'),
+('>Erkenne das Geschlecht der Wörter in zwei Minuten ↓</a>', '>Spot the gender of words in two minutes ↓</a>', '>اعرف جنس الكلمات في دقيقتين ↓</a>', '>Erkenne das Geschlecht der Wörter in zwei Minuten ↓</a>'),
 ('>Welcher Lernweg passt zu dir? ↑</a>', '>Which learning path suits you? ↑</a>', '>أيّ طريق تعلّم يناسبك؟ ↑</a>', '>Koji put učenja ti odgovara? ↑</a>'),
 ('<title>Bosnisch lernen – polyglot.doma</title>',
  '<title>Learn Bosnian – polyglot.doma</title>',
