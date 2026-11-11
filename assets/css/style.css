@@ -815,3 +815,15 @@ html[dir="rtl"] .pd-hc-go svg{transform:scaleX(-1)}
 /* „Lieber direkt einen Termin?“ nur im Pop-up-Formular; unten auf der Seite steht die Terminkarte direkt daneben/darüber */
 #kontakt .pk-hint{display:none}
 .pd-dialog .pk-hint{display:flex}
+/* Stimmen (Startseite, seit 11.11.2026, vorerst nur Deutsch) */
+.pv-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:start}
+.pv-grid>.pv-card:nth-child(2){margin-top:140px}
+.pv-card{margin:0;background:#F4F6FB;color:#0E1B4D;border-radius:32px;padding:36px 36px 30px;display:flex;flex-direction:column;gap:22px}
+.pv-card blockquote{margin:0;font-size:19px;line-height:1.6}
+.pv-card blockquote .serif{font-size:1.3em;line-height:1.1;color:#1D3A9A}
+.pv-card figcaption{display:flex;align-items:center;gap:14px;border-top:1.5px dashed #9FB3E3;padding-top:18px}
+.pv-init{flex:none;width:48px;height:48px;border-radius:50%;color:#F4F6FB;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.pv-name{display:block;font-weight:700;font-size:18px}
+.pv-lang{display:inline-flex;align-items:center;gap:.45em;font-size:14px;margin-top:2px}
+@media (max-width: 900px){.pv-grid{grid-template-columns:1fr;gap:20px}.pv-grid>.pv-card:nth-child(2){margin-top:0}.pv-route{display:none}}
+@media (max-width: 560px){.pv-card{padding:28px 24px 24px;border-radius:28px}.pv-card blockquote{font-size:17px}}

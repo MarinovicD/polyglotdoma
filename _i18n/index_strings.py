@@ -251,7 +251,7 @@ S = [
 ('uppercase">Ziel</div>', 'uppercase">Destination</div>', 'uppercase">Cilj</div>', 'uppercase">الوجهة</div>'),
 
 # ---------- Stück 5: FAQ ----------
-('<span>03 — FAQ</span><span>Gut zu wissen</span>',
+('<span>04 — FAQ</span><span>Gut zu wissen</span>',
  '<span>03 — FAQ</span><span>Good to know</span>',
  '<span>03 — Česta pitanja</span><span>Dobro je znati</span>',
  '<span>٠٣ — أسئلة شائعة</span><span>من المفيد أن تعرف</span>'),
