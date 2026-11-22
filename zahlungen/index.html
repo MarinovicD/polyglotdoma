@@ -138,6 +138,25 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .lessons{border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto;margin-bottom:10px}
 .lessons div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--line);font-size:14px}
 .lessons div:first-child{border-top:0}
+/* Datumsfeld (deutsch) */
+.dwrap{position:relative;display:block}
+.dwrap input.dinp{width:100%;padding:10px 44px 10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-variant-numeric:tabular-nums}
+.dwrap input.dinp:focus{outline:2px solid var(--aqua);border-color:var(--mid)}
+.dwrap input.dinp.bad{border-color:var(--red);outline-color:#F1B8B2}
+.dbtn{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:9px;background:none;color:var(--cobalt);cursor:pointer;display:grid;place-items:center}
+.dbtn:hover{background:var(--blue-bg)}
+.cal{position:absolute;z-index:30;top:calc(100% + 6px);left:0;width:286px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px rgba(14,27,77,.18);padding:12px}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700}
+.cal-h button{width:32px;height:32px;border:0;border-radius:50%;background:none;cursor:pointer;font-size:18px;color:var(--ink)}
+.cal-h button:hover{background:var(--blue-bg)}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal-g span{font-size:12px;color:var(--muted);padding:4px 0;font-weight:600}
+.cal-g button{height:34px;border:0;border-radius:9px;background:none;cursor:pointer;font-size:14px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.cal-g button:hover{background:var(--blue-bg)}
+.cal-g button.out{color:#B5BDD6}
+.cal-g button.today{box-shadow:inset 0 0 0 1.5px var(--aqua);font-weight:700}
+.cal-g button.sel{background:var(--ink);color:#fff}
+.cal-f{display:flex;justify-content:space-between;margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
 /* Schülerkarten */
 .stools{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
 .filters{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;overflow-x:auto;max-width:100%}
@@ -240,7 +259,7 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
     <label class="f"><span>Status</span><select name="status">
       <option value="aktiv">Aktiv</option><option value="bald">Startet bald</option><option value="pausiert">Pausiert</option>
     </select></label>
-    <label class="f"><span>Einstieg (erste Stunde)</span><input type="date" name="start"></label>
+    <label class="f"><span>Einstieg (erste Stunde)</span><input type="hidden" name="start"><input type="text" class="dinp" data-for="start" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
   </div>
   <div class="f"><span>Abrechnung</span>
     <div class="seg">
@@ -271,7 +290,7 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
   <h2>Stunde eintragen</h2>
   <p class="sub" id="lessonWho" style="margin-top:-10px"></p>
   <div class="row3">
-    <label class="f"><span>Datum</span><input type="date" name="date"></label>
+    <label class="f"><span>Datum</span><input type="hidden" name="date"><input type="text" class="dinp" data-for="date" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
     <label class="f"><span>Dauer (Min.)</span><input type="number" name="minutes" min="0" step="5"></label>
     <label class="f"><span>Betrag</span><input type="number" name="price" min="0" step="0.01" inputmode="decimal"></label>
   </div>
@@ -688,10 +707,67 @@ function toast(msg,undo){
 }
 toastEl.querySelector('button').addEventListener('click',function(){if(undoFn){undoFn();undoFn=null;}toastEl.classList.remove('on');});
 
+/* ---------- Datumsfeld TT.MM.JJJJ mit Kalender ---------- */
+// sichtbares Textfeld (deutsch) + verstecktes Feld mit JJJJ-MM-TT für die Rechnungen
+function toIso(txt){
+  var m=String(txt).trim().match(/^(\d{1,2})[.\/\-\s](\d{1,2})[.\/\-\s](\d{2}|\d{4})$/); if(!m) return '';
+  var d=+m[1], mo=+m[2], y=+m[3]; if(y<100) y+=2000;
+  if(mo<1||mo>12||d<1||d>new Date(y,mo,0).getDate()) return '';
+  return y+'-'+pad(mo)+'-'+pad(d);
+}
+function hiddenOf(inp){return inp.form.elements[inp.dataset.for];}
+function syncDates(form){form.querySelectorAll('.dinp').forEach(function(i){var v=hiddenOf(i).value; i.value=v?fmtDate(v):''; i.classList.remove('bad');});}
+var calEl=null;
+function closeCal(){if(calEl){calEl.remove();calEl=null;}}
+function openCal(inp){
+  closeCal();
+  var cur=hiddenOf(inp).value||today(), view=ymOf(cur);
+  calEl=document.createElement('div'); calEl.className='cal';
+  function draw(){
+    var p=parts(view), first=new Date(p[0],p[1]-1,1), off=(first.getDay()+6)%7, start=addDays(view+'-01',-off), sel=hiddenOf(inp).value, t=today();
+    var h='<div class="cal-h"><button type="button" data-m="-1" aria-label="Voriger Monat">‹</button><span>'+fmtYm(view)+'</span><button type="button" data-m="1" aria-label="Nächster Monat">›</button></div><div class="cal-g">'+
+      ['Mo','Di','Mi','Do','Fr','Sa','So'].map(function(w){return '<span>'+w+'</span>';}).join('');
+    for(var k=0;k<42;k++){var d=addDays(start,k);
+      h+='<button type="button" data-d="'+d+'" class="'+(ymOf(d)!==view?'out ':'')+(d===t?'today ':'')+(d===sel?'sel':'')+'">'+parts(d)[2]+'</button>';}
+    h+='</div><div class="cal-f"><button type="button" class="link" data-d="'+t+'">Heute</button><button type="button" class="link" data-x>Schließen</button></div>';
+    calEl.innerHTML=h;
+  }
+  draw();
+  calEl.addEventListener('mousedown',function(e){e.preventDefault();});
+  calEl.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.m){view=ymAdd(view,+b.dataset.m); draw(); return;}
+    if(b.dataset.d){hiddenOf(inp).value=b.dataset.d; inp.value=fmtDate(b.dataset.d); inp.classList.remove('bad');
+      inp.dispatchEvent(new Event('input',{bubbles:true}));}
+    closeCal();
+  });
+  inp.parentNode.appendChild(calEl);
+}
+document.querySelectorAll('.dinp').forEach(function(inp){
+  var w=document.createElement('span'); w.className='dwrap'; inp.parentNode.insertBefore(w,inp); w.appendChild(inp);
+  var b=document.createElement('button'); b.type='button'; b.className='dbtn'; b.setAttribute('aria-label','Kalender öffnen');
+  b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+  b.addEventListener('click',function(e){e.preventDefault(); if(calEl&&calEl.parentNode===w) closeCal(); else openCal(inp);});
+  w.appendChild(b);
+  inp.addEventListener('input',function(e){
+    // Punkte beim Tippen automatisch setzen: 22112026 -> 22.11.2026
+    if(e.inputType&&e.inputType.indexOf('insert')===0){
+      var dg=inp.value.replace(/\D/g,'').slice(0,8);
+      if(/^\d+$/.test(inp.value.replace(/\./g,''))) inp.value=dg.slice(0,2)+(dg.length>2?'.'+dg.slice(2,4):'')+(dg.length>4?'.'+dg.slice(4):'');
+    }
+    var iso=toIso(inp.value); hiddenOf(inp).value=iso;
+    inp.classList.toggle('bad',!!inp.value && !iso && inp.value.length>=8);
+  });
+  inp.addEventListener('blur',function(){ var iso=toIso(inp.value); if(iso) inp.value=fmtDate(iso); inp.classList.toggle('bad',!!inp.value&&!iso); });
+  inp.addEventListener('keydown',function(e){ if(e.key==='Escape'&&calEl){e.preventDefault();e.stopPropagation();closeCal();} });
+});
+document.addEventListener('mousedown',function(e){ if(calEl && !e.target.closest('.dwrap')) closeCal(); });
+
 /* ---------- Dialoge ---------- */
 function openDlg(d){ if(d.showModal) d.showModal(); else d.setAttribute('open',''); }
-function closeDlg(d){ if(d.close) d.close(); else d.removeAttribute('open'); }
+function closeDlg(d){ closeCal(); if(d.close) d.close(); else d.removeAttribute('open'); }
 document.querySelectorAll('dialog').forEach(function(d){
+  d.addEventListener('close',closeCal);
   d.addEventListener('click',function(e){ if(e.target===d || e.target.closest('[data-close]')) closeDlg(d); });
 });
 function find(id){for(var i=0;i<S.students.length;i++) if(S.students[i].id===id) return S.students[i]; return null;}
@@ -765,7 +841,7 @@ function openStudent(st){
   var E=fS.elements;
   E.name.value=st?st.name:''; E.otherLangs.value='';
   E.status.value=st?st.status:'aktiv';
-  E.start.value=st?st.start:today();
+  E.start.value=st?st.start:today(); syncDates(fS);
   fS.querySelector('input[name=type][value='+(st?st.type:'monat')+']').checked=true;
   E.from.value='now'; document.getElementById('optNow').textContent='diesem Monat ('+fmtYm(ymOf(today()))+')';
   vals={}; origParts=null;
@@ -800,7 +876,7 @@ fS.addEventListener('submit',function(e){
   var type=typeSel();
   if(!name){err.textContent='Bitte einen Namen eintragen.';return;}
   if(!langs.length){err.textContent='Bitte mindestens eine Sprache wählen.';return;}
-  if(!E.start.value){err.textContent='Bitte das Einstiegsdatum eintragen.';return;}
+  if(!E.start.value){err.textContent='Bitte das Einstiegsdatum als TT.MM.JJJJ eintragen.';return;}
   var miss=langs.filter(function(l){var v=vals[l]||{}; return !(+v.min>0) || (type==='monat'?(v.fee===''||v.fee==null||!(+v.per>0)):(v.price===''||v.price==null));});
   if(miss.length){err.textContent=(type==='monat'?'Bitte Betrag, Stunden pro Monat und Dauer eintragen für: ':'Bitte Preis und Dauer eintragen für: ')+miss.join(', ')+'.';return;}
   var st=editId?find(editId):null, isNew=!st;
@@ -834,7 +910,7 @@ function openLesson(st){
   lessonId=st.id; var E=fL.elements;
   document.getElementById('lessonWho').textContent=st.name;
   document.getElementById('errLesson').textContent='';
-  E.date.value=today(); E.minutes.value=st.minutes||60; E.price.value=st.price||''; E.paid.checked=false;
+  E.date.value=today(); syncDates(fL); E.minutes.value=st.minutes||60; E.price.value=st.price||''; E.paid.checked=false;
   E.lang.innerHTML=st.langs.map(function(l){return '<option>'+esc(l)+'</option>';}).join('');
   var pr=function(){var l=E.lang.value; E.price.value=st.prices&&st.prices[l]!=null?st.prices[l]:(st.price||''); E.minutes.value=durOf(st,l);};
   pr(); E.lang.onchange=pr;
@@ -843,7 +919,7 @@ function openLesson(st){
 }
 fL.addEventListener('submit',function(e){
   e.preventDefault(); var st=find(lessonId), E=fL.elements; if(!st) return;
-  if(!E.date.value){document.getElementById('errLesson').textContent='Bitte ein Datum wählen.';return;}
+  if(!E.date.value){document.getElementById('errLesson').textContent='Bitte das Datum als TT.MM.JJJJ eintragen.';return;}
   st.lessons=st.lessons||[];
   st.lessons.push({id:uid(),date:E.date.value,minutes:+E.minutes.value||0,price:+E.price.value||0,lang:E.lang.value||st.langs[0],paid:E.paid.checked?today():null});
   save(); closeDlg(dL); render(); toast('Stunde für '+st.name+' eingetragen');
