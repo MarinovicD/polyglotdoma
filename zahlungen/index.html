@@ -137,6 +137,45 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .lessons{border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto;margin-bottom:10px}
 .lessons div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--line);font-size:14px}
 .lessons div:first-child{border-top:0}
+/* Schülerkarten */
+.stools{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.filters{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;overflow-x:auto;max-width:100%}
+.filters button{border:0;background:none;border-radius:999px;padding:7px 14px;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;color:var(--muted)}
+.filters button span{font-weight:500;opacity:.7;margin-left:4px}
+.filters button.on{background:var(--ink);color:#fff}
+.search{position:relative;flex:0 1 260px}
+.search input{width:100%;padding:9px 14px 9px 36px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.scard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:14px;position:relative;transition:box-shadow .2s,transform .2s}
+.scard:hover{box-shadow:0 10px 30px rgba(14,27,77,.08)}
+.scard.st-pausiert{background:#FAFBFD}
+.scard.st-pausiert .ava{background:var(--aqua)}
+.scard.st-bald{border-style:dashed;border-color:var(--aqua)}
+.sc-top{display:flex;gap:12px;align-items:center}
+.ava{flex:none;width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:16px;letter-spacing:.02em;position:relative}
+.ava::after{content:"";position:absolute;right:1px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 2px #fff}
+.st-pausiert .ava::after,.st-bald .ava::after{display:none}
+.sc-id{flex:1;min-width:0}
+.sc-id h3{margin:0 0 4px;font-size:18px;line-height:1.2;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-pills{display:flex;gap:6px;flex-wrap:wrap}
+.sc-pills .pill{font-size:12px;padding:2px 9px}
+.sc-tools{display:flex;gap:2px;align-self:flex-start}
+.ib{width:34px;height:34px;border-radius:50%;border:0;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center}
+.ib:hover{background:var(--porc);color:var(--ink)}
+.ib.del:hover{background:var(--red-bg);color:var(--red)}
+.sc-price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;padding:12px 14px;background:var(--porc);border-radius:14px}
+.sc-price b{font-size:26px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sc-price .per{color:var(--muted);font-size:14px}
+.sc-price .rh{margin-left:auto;font-size:14px;font-weight:600;color:var(--cobalt);white-space:nowrap}
+.sc-langs{display:flex;gap:6px;flex-wrap:wrap}
+.lchip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 6px;font-size:14px;font-weight:500}
+.lchip i{width:20px;height:15px;border-radius:3px;background:var(--mist) center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(14,27,77,.14);flex:none}
+.lchip em{font-style:normal;color:var(--muted);font-size:13px}
+.sc-foot{display:flex;gap:18px;align-items:flex-end;border-top:1px dashed var(--mist);padding-top:12px;margin-top:auto;font-size:14px}
+.sc-foot small{display:block;font-size:12px;color:var(--muted)}
+.sc-foot .btn{margin-left:auto}
+.snone{grid-column:1/-1;text-align:center;color:var(--muted);padding:30px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:15px;opacity:0;transition:.25s;pointer-events:none;z-index:50;display:flex;gap:12px;align-items:center;width:max-content;max-width:calc(100vw - 24px);border-radius:18px}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 .toast button{background:none;border:0;color:var(--aqua);font-weight:700;cursor:pointer;text-decoration:underline}
@@ -160,16 +199,12 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
   .count{flex-direction:column;align-items:flex-start;gap:4px;padding:14px}
   .count .n{font-size:28px}
   .row3{grid-template-columns:1fr 1fr}
-  /* Schülertabelle als Karten */
-  table.students thead{display:none}
-  table.students,table.students tbody,table.students tr,table.students td{display:block;width:100%}
-  table.students tr{border-bottom:1px solid var(--line);padding:12px 0}
-  table.students tr:last-child{border-bottom:0}
-  table.students td{border:0;padding:3px 0}
-  table.students td[data-l]::before{content:attr(data-l) ": ";color:var(--muted);font-size:13px}
-  table.students td.num{text-align:left}
-  table.students .actions{justify-content:flex-start;margin-top:4px}
-  .card.tablecard{padding:6px 16px}
+  .sgrid{grid-template-columns:1fr;gap:10px}
+  .filters button{padding:7px 10px}
+  .stools{flex-direction:column;align-items:stretch}
+  .search{flex:1 1 auto}
+  .scard{padding:16px 14px 12px;gap:12px}
+  .head .btn[data-act=add]{width:100%;justify-content:center}
   table.per td,table.per th{padding:10px 6px;font-size:14px}
   table.per .hide-m{display:none}
 }
@@ -537,26 +572,50 @@ function modelText(st){
   return (st.langs.length>1?st.langs.map(function(l,k){return esc(l)+' '+money(pr[k]);}).join(' · '):money(pr[0]))+' pro Stunde<br><span class="muted small">'+(+st.minutes||0)+' Min. · '+(st.lessons||[]).length+' eingetragen</span>';
 }
 var STATUS={aktiv:'Aktiv',bald:'Startet bald',pausiert:'Pausiert'};
+var FLAG={Deutsch:'de',Bosnisch:'ba',Arabisch:'ar',Englisch:'en','Französisch':'fr','Türkisch':'tr',Libanesisch:'lb'};
+var stFilter='alle', stQuery='';
+var IC_EDIT='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+var IC_DEL='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>';
+function initials(n){var p=n.trim().split(/\s+/);return ((p[0]||'')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+function studentCard(st){
+  var ps=currentPayStatus(st), m=st.type==='monat', h='<article class="scard st-'+st.status+'">';
+  h+='<div class="sc-top"><span class="ava">'+esc(initials(st.name))+'</span><div class="sc-id"><h3 title="'+esc(st.name)+'">'+esc(st.name)+'</h3><div class="sc-pills">'+
+    '<span class="pill '+st.status+'">'+STATUS[st.status]+'</span>'+(ps?'<span class="pill '+ps+'">'+(ps==='bezahlt'?'✓ bezahlt':'offen')+'</span>':'')+'</div></div>'+
+    '<div class="sc-tools"><button class="ib" data-act="edit" data-id="'+st.id+'" title="Bearbeiten" aria-label="Bearbeiten">'+IC_EDIT+'</button>'+
+    '<button class="ib del" data-act="del" data-id="'+st.id+'" title="Löschen" aria-label="Löschen">'+IC_DEL+'</button></div></div>';
+  var amt={}, tot, per, rh;
+  if(m){var pp=partsFor(st,ymOf(today())); tot=0; var n=0; pp.forEach(function(x){amt[x.lang]=x.fee; tot+=+x.fee||0; n+=+x.perMonth||0;});
+    per='pro Monat'; rh=num(n)+' × '+(+st.minutes||0)+' Min.';}
+  else{st.langs.forEach(function(l){amt[l]=st.prices&&st.prices[l]!=null?st.prices[l]:st.price;});
+    var vs=st.langs.map(function(l){return +amt[l]||0;}); var lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
+    tot=null; per='pro Stunde'; rh=(+st.minutes||0)+' Min.';
+    h+='<div class="sc-price"><b>'+money(lo)+(hi>lo?'–'+money(hi):'')+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';}
+  if(m) h+='<div class="sc-price"><b>'+money(tot)+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';
+  h+='<div class="sc-langs">'+st.langs.map(function(l){var f=FLAG[l];
+    return '<span class="lchip"><i'+(f?' style="background-image:url(../assets/img/flags/'+f+'.svg)"':'')+'></i>'+esc(l)+(st.langs.length>1?' <em>'+money(amt[l])+'</em>':'')+'</span>';}).join('')+'</div>';
+  h+='<div class="sc-foot"><div><small>'+(st.status==='bald'?'Start':'Dabei seit')+'</small>'+fmtDate(st.start)+'</div>'+
+    '<div><small>'+(m?'Stichtag':'Stunden')+'</small>'+(m?'jeden '+parts(st.start)[2]+'.':(st.lessons||[]).length+' eingetragen')+'</div>'+
+    (!m?'<button class="btn small light" data-act="lesson" data-id="'+st.id+'">+ Stunde</button>':'')+'</div>';
+  return h+'</article>';
+}
+function gridHtml(){
+  var o={aktiv:0,bald:1,pausiert:2}, q=stQuery.trim().toLowerCase();
+  var list=S.students.filter(function(s){return (stFilter==='alle'||s.status===stFilter)&&(!q||s.name.toLowerCase().indexOf(q)>=0||s.langs.join(' ').toLowerCase().indexOf(q)>=0);})
+    .sort(function(a,b){return (o[a.status]-o[b.status])||a.name.localeCompare(b.name,'de');});
+  return list.length?list.map(studentCard).join(''):'<p class="snone">Keine Schüler gefunden.</p>';
+}
 function renderStudents(){
-  var list=S.students.slice().sort(function(a,b){var o={aktiv:0,bald:1,pausiert:2};return (o[a.status]-o[b.status])||a.name.localeCompare(b.name,'de');});
-  var act=S.students.filter(function(s){return s.status==='aktiv';}).length;
-  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+S.students.length+' insgesamt · '+act+' aktiv</p></div><button class="btn" data-act="add">+ Schüler hinzufügen</button></div>';
-  h+='<div class="card tablecard"><table class="students"><thead><tr><th>Name</th><th>Sprachen</th><th>Abrechnung</th><th>Status</th><th>Zahlung</th><th>Einstieg</th><th>Stichtag</th><th></th></tr></thead><tbody>';
-  list.forEach(function(st){
-    var ps=currentPayStatus(st);
-    h+='<tr><td><b>'+esc(st.name)+'</b></td>'+
-      '<td data-l="Sprachen">'+st.langs.map(function(l){return '<span class="pill lang">'+esc(l)+'</span>';}).join('')+'</td>'+
-      '<td data-l="Abrechnung">'+modelText(st)+'</td>'+
-      '<td data-l="Status"><span class="pill '+st.status+'">'+STATUS[st.status]+'</span></td>'+
-      '<td data-l="Zahlung">'+(ps?'<span class="pill '+ps+'">'+ps+'</span>':'<span class="muted">–</span>')+'</td>'+
-      '<td data-l="Einstieg">'+fmtDate(st.start)+'</td>'+
-      '<td data-l="Stichtag">'+(st.type==='monat'?'jeden '+parts(st.start)[2]+'.':'pro Stunde')+'</td>'+
-      '<td><div class="actions">'+(st.type==='stunde'?'<button class="link" data-act="lesson" data-id="'+st.id+'">+ Stunde</button>':'')+
-      '<button class="link" data-act="edit" data-id="'+st.id+'">Bearbeiten</button><button class="link red" data-act="del" data-id="'+st.id+'">Löschen</button></div></td></tr>';
-  });
-  h+='</tbody></table></div>';
+  var c=function(s){return S.students.filter(function(x){return x.status===s;}).length;};
+  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+S.students.length+' insgesamt · '+c('aktiv')+' aktiv</p></div><button class="btn" data-act="add">+ Schüler hinzufügen</button></div>';
+  h+='<div class="stools"><div class="filters">'+[['alle','Alle',S.students.length],['aktiv','Aktiv',c('aktiv')],['bald','Startet bald',c('bald')],['pausiert','Pausiert',c('pausiert')]]
+    .filter(function(f){return f[0]==='alle'||f[0]==='aktiv'||f[2];})
+    .map(function(f){return '<button data-act="filter" data-f="'+f[0]+'" class="'+(stFilter===f[0]?'on':'')+'">'+f[1]+'<span>'+f[2]+'</span></button>';}).join('')+'</div>'+
+    '<label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'+
+    '<input type="search" id="stSearch" placeholder="Suchen …" value="'+esc(stQuery)+'" aria-label="Schüler suchen"></label></div>';
+  h+='<div class="sgrid" id="sgrid">'+gridHtml()+'</div>';
   return h;
 }
+app.addEventListener('input',function(e){ if(e.target.id==='stSearch'){stQuery=e.target.value; document.getElementById('sgrid').innerHTML=gridHtml();} });
 
 function renderDue(){
   var rows=S.students.filter(function(s){return s.status!=='bald';}).map(dueState);
@@ -874,6 +933,7 @@ app.addEventListener('click',function(e){
   else if(a==='payall'){var ra=dueState(st), its=ra.open.slice(); its.forEach(function(i){payItem(st,i);}); save(); render();
       toast(its.length+' Zahlungen von '+st.name+' erhalten ('+money(ra.sum)+')',function(){its.forEach(function(i){unpayItem(st,i);});save();render();});}
   else if(a==='unpay'){var rr=dueState(st); if(rr.lastPaid){var li=rr.lastPaid; unpayItem(st,li); save(); render(); toast('Zahlung zurückgenommen');}}
+  else if(a==='filter'){stFilter=b.dataset.f; render();}
   else if(a==='prev'){viewYm=ymAdd(viewYm,-1);render();}
   else if(a==='next'){viewYm=ymAdd(viewYm,1);render();}
   else if(a==='demo') demo();
