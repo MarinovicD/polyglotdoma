@@ -214,7 +214,8 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .sc-id h3{margin:0 0 4px;font-size:18px;line-height:1.2;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc-pills{display:flex;gap:6px;flex-wrap:wrap}
 .sc-pills .pill{font-size:12px;padding:2px 9px}
-.sc-country{font-size:12px;color:var(--muted);align-self:center}
+.sc-country{font-size:13px;color:var(--muted);margin:-2px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-country.none{color:#AEB6CF;font-style:italic}
 .sc-tools{display:flex;gap:2px;align-self:flex-start}
 .ib{width:34px;height:34px;border-radius:50%;border:0;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center}
 .ib:hover{background:var(--porc);color:var(--ink)}
@@ -640,8 +641,8 @@ var IC_DEL='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="
 function initials(n){var p=n.trim().split(/\s+/);return ((p[0]||'')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
 function studentCard(st){
   var ps=currentPayStatus(st), m=st.type==='monat', h='<article class="scard st-'+st.status+'">';
-  h+='<div class="sc-top"><span class="ava">'+esc(initials(st.name))+'</span><div class="sc-id"><h3 title="'+esc(st.name)+'">'+esc(st.name)+'</h3><div class="sc-pills">'+
-    '<span class="pill '+st.status+'">'+STATUS[st.status]+'</span>'+(ps?'<span class="pill '+ps+'">'+(ps==='bezahlt'?'✓ bezahlt':'offen')+'</span>':'')+(st.country?'<span class="sc-country">'+esc(st.country)+'</span>':'')+'</div></div>'+
+  h+='<div class="sc-top"><span class="ava">'+esc(initials(st.name))+'</span><div class="sc-id"><h3 title="'+esc(st.name)+'">'+esc(st.name)+'</h3><div class="sc-country'+(st.country?'':' none')+'">'+(st.country?esc(st.country):'Land nicht angegeben')+'</div><div class="sc-pills">'+
+    '<span class="pill '+st.status+'">'+STATUS[st.status]+'</span>'+(ps?'<span class="pill '+ps+'">'+(ps==='bezahlt'?'✓ bezahlt':'offen')+'</span>':'')+'</div></div>'+
     '<div class="sc-tools"><button class="ib" data-act="edit" data-id="'+st.id+'" title="Bearbeiten" aria-label="Bearbeiten">'+IC_EDIT+'</button>'+
     '<button class="ib del" data-act="del" data-id="'+st.id+'" title="Löschen" aria-label="Löschen">'+IC_DEL+'</button></div></div>';
   var amt={}, tot, per, rh, mins={};
