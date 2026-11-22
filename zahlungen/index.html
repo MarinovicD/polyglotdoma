@@ -127,8 +127,9 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .calc b{color:var(--ink)}
 .dlg-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
 .err{color:var(--red);font-size:14px;margin:-4px 0 10px;min-height:0}
-.prow{display:grid;grid-template-columns:110px 1fr 1fr;gap:12px;align-items:end;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
-.prow.one{grid-template-columns:110px 1fr}
+.prow{display:grid;grid-template-columns:96px 1fr 1fr 1fr;gap:10px;align-items:end;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.prow.one{grid-template-columns:96px 1fr 1fr}
+@media (max-width:520px){.prow,.prow.one{grid-template-columns:1fr 1fr 1fr}.prow.one{grid-template-columns:1fr 1fr}.prow>b{grid-column:1/-1;padding-bottom:0}}
 .prow>b{padding-bottom:10px}
 .prow label{font-size:13px;color:var(--muted);font-weight:500}
 .prow input{width:100%;margin-top:4px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff}
@@ -248,8 +249,7 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
     </div>
   </div>
   <div id="fParts"></div>
-  <div class="row2">
-    <label class="f"><span>Dauer einer Stunde (Minuten)</span><input type="number" name="minutes" min="0" step="5" inputmode="numeric"></label>
+  <div>
     <label class="f hide" id="fFrom"><span>Neue Beträge gelten ab</span><select name="from">
       <option value="now" id="optNow">diesem Monat</option><option value="start">Einstieg (alles korrigieren)</option>
     </select></label>
@@ -396,10 +396,11 @@ function items(st,uptoYm){
         var p=(st.paid||{})[ym], parts=partsFor(st,ym);
         var tot=parts.reduce(function(a,x){return a+(+x.fee||0);},0);
         var amount=p?p.amount:tot, n=0;
-        var split=parts.map(function(x){n+=+x.perMonth||0;
-          return {lang:x.lang,rev:tot?(+x.fee||0)*amount/tot:amount/parts.length,lessons:+x.perMonth||0,minutes:(+x.perMonth||0)*(+st.minutes||0)};});
+        var mn=0;
+        var split=parts.map(function(x){n+=+x.perMonth||0; var mm=(+x.perMonth||0)*(+x.minutes||+st.minutes||0); mn+=mm;
+          return {lang:x.lang,rev:tot?(+x.fee||0)*amount/tot:amount/parts.length,lessons:+x.perMonth||0,minutes:mm};});
         out.push({kind:'monat',key:ym,ym:ym,due:due,amount:amount,paid:p?p.date:null,
-          lessons:n,minutes:n*(+st.minutes||0),split:split});
+          lessons:n,minutes:mn,split:split});
       }
       ym=ymAdd(ym,1);
     }
@@ -419,6 +420,7 @@ function partsFor(st,ym){
   h.forEach(function(x){if(x.from<=ym) pick=x;});
   return pick.parts;
 }
+function durOf(st,l){return (st.durations&&st.durations[l])||st.minutes||60;}
 function monthItems(st,ym){return items(st,ym).filter(function(i){return i.ym===ym;});}
 
 function monthStats(ym){
@@ -583,16 +585,19 @@ function studentCard(st){
     '<span class="pill '+st.status+'">'+STATUS[st.status]+'</span>'+(ps?'<span class="pill '+ps+'">'+(ps==='bezahlt'?'✓ bezahlt':'offen')+'</span>':'')+'</div></div>'+
     '<div class="sc-tools"><button class="ib" data-act="edit" data-id="'+st.id+'" title="Bearbeiten" aria-label="Bearbeiten">'+IC_EDIT+'</button>'+
     '<button class="ib del" data-act="del" data-id="'+st.id+'" title="Löschen" aria-label="Löschen">'+IC_DEL+'</button></div></div>';
-  var amt={}, tot, per, rh;
-  if(m){var pp=partsFor(st,ymOf(today())); tot=0; var n=0; pp.forEach(function(x){amt[x.lang]=x.fee; tot+=+x.fee||0; n+=+x.perMonth||0;});
-    per='pro Monat'; rh=num(n)+' × '+(+st.minutes||0)+' Min.';}
-  else{st.langs.forEach(function(l){amt[l]=st.prices&&st.prices[l]!=null?st.prices[l]:st.price;});
-    var vs=st.langs.map(function(l){return +amt[l]||0;}); var lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
-    tot=null; per='pro Stunde'; rh=(+st.minutes||0)+' Min.';
+  var amt={}, tot, per, rh, mins={};
+  if(m){var pp=partsFor(st,ymOf(today())); tot=0; var n=0;
+    pp.forEach(function(x){var mm=+x.minutes||+st.minutes||60; mins[x.lang]=mm; amt[x.lang]=money(x.fee)+' · '+num(x.perMonth)+' × '+mm+' Min.'; tot+=+x.fee||0; n+=+x.perMonth||0;});
+    var mv=Object.keys(mins).map(function(k){return mins[k];});
+    per='pro Monat'; rh=mv.every(function(v){return v===mv[0];})?num(n)+' × '+mv[0]+' Min.':num(n)+' Stunden';}
+  else{var vs=st.langs.map(function(l){var pv=+(st.prices&&st.prices[l]!=null?st.prices[l]:st.price)||0; mins[l]=durOf(st,l); amt[l]=money(pv)+' · '+mins[l]+' Min.'; return pv;});
+    var lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
+    var mv2=st.langs.map(function(l){return mins[l];});
+    tot=null; per='pro Stunde'; rh=mv2.every(function(v){return v===mv2[0];})?mv2[0]+' Min.':'';
     h+='<div class="sc-price"><b>'+money(lo)+(hi>lo?'–'+money(hi):'')+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';}
   if(m) h+='<div class="sc-price"><b>'+money(tot)+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';
   h+='<div class="sc-langs">'+st.langs.map(function(l){var f=FLAG[l];
-    return '<span class="lchip"><i'+(f?' style="background-image:url(../assets/img/flags/'+f+'.svg)"':'')+'></i>'+esc(l)+(st.langs.length>1?' <em>'+money(amt[l])+'</em>':'')+'</span>';}).join('')+'</div>';
+    return '<span class="lchip"><i'+(f?' style="background-image:url(../assets/img/flags/'+f+'.svg)"':'')+'></i>'+esc(l)+(st.langs.length>1?' <em>'+esc(amt[l])+'</em>':'')+'</span>';}).join('')+'</div>';
   h+='<div class="sc-foot"><div><small>'+(st.status==='bald'?'Start':'Dabei seit')+'</small>'+fmtDate(st.start)+'</div>'+
     '<div><small>'+(m?'Stichtag':'Stunden')+'</small>'+(m?'jeden '+parts(st.start)[2]+'.':(st.lessons||[]).length+' eingetragen')+'</div>'+
     (!m?'<button class="btn small light" data-act="lesson" data-id="'+st.id+'">+ Stunde</button>':'')+'</div>';
@@ -709,11 +714,12 @@ function selLangs(){
 function renderParts(){
   var langs=selLangs(), m=typeSel()==='monat', box=document.getElementById('fParts');
   if(!langs.length){box.innerHTML='<p class="small muted" style="margin:0 0 14px">Wähle oben eine Sprache, dann kannst du die Beträge eintragen.</p>';calc();return;}
-  var h=langs.map(function(l){var v=vals[l]||(vals[l]={fee:'',per:'',price:''});
+  var h=langs.map(function(l){var v=vals[l]||(vals[l]={fee:'',per:'',price:'',min:'60'}); if(v.min==null||v.min==='') v.min='60';
     return '<div class="prow'+(m?'':' one')+'"><b>'+esc(l)+'</b>'+
       (m?'<label>Betrag pro Monat<input type="number" min="0" step="0.01" inputmode="decimal" data-l="'+esc(l)+'" data-k="fee" value="'+esc(v.fee)+'"></label>'+
          '<label>Stunden pro Monat<input type="number" min="0" step="0.5" inputmode="decimal" data-l="'+esc(l)+'" data-k="per" value="'+esc(v.per)+'"></label>'
         :'<label>Preis pro Stunde<input type="number" min="0" step="0.01" inputmode="decimal" data-l="'+esc(l)+'" data-k="price" value="'+esc(v.price)+'"></label>')+
+      '<label>Dauer (Min.)<input type="number" min="0" step="5" inputmode="numeric" data-l="'+esc(l)+'" data-k="min" value="'+esc(v.min)+'"></label>'+
       '</div>';}).join('');
   if(m && langs.length>1) h+='<div class="ptotal" id="ptotal"></div>';
   box.innerHTML=h; calc();
@@ -722,20 +728,20 @@ document.getElementById('fParts').addEventListener('input',function(e){
   var i=e.target; if(!i.dataset.l) return; (vals[i.dataset.l]=vals[i.dataset.l]||{})[i.dataset.k]=i.value; calc();
 });
 function totals(){
-  var fee=0,per=0; selLangs().forEach(function(l){var v=vals[l]||{}; fee+=+v.fee||0; per+=+v.per||0;}); return {fee:fee,per:per};
+  var fee=0,per=0,mn=0; selLangs().forEach(function(l){var v=vals[l]||{}; fee+=+v.fee||0; per+=+v.per||0; mn+=(+v.per||0)*(+v.min||0);}); return {fee:fee,per:per,min:mn};
 }
 var origParts=null;
 function partsChanged(){
   if(!origParts) return false;
   var langs=selLangs(); if(langs.length!==origParts.length) return true;
-  return origParts.some(function(p){var v=vals[p.lang]; return !v || (+v.fee||0)!==(+p.fee||0) || (+v.per||0)!==(+p.perMonth||0);});
+  return origParts.some(function(p){var v=vals[p.lang]; return !v || (+v.fee||0)!==(+p.fee||0) || (+v.per||0)!==(+p.perMonth||0) || (+v.min||0)!==(+p.minutes||0);});
 }
 function calc(){
-  var box=document.getElementById('calcBox'), E=fS.elements, m=+E.minutes.value||0;
+  var box=document.getElementById('calcBox'), E=fS.elements;
   if(typeSel()==='monat'){
     var t=totals(), pt=document.getElementById('ptotal');
     if(pt) pt.innerHTML='Zusammen <b>'+money(t.fee)+'</b> pro Monat für <b>'+num(t.per)+'</b> Stunden';
-    if(t.fee&&t.per&&m) box.innerHTML='Das sind <b>'+money(t.fee/t.per)+'</b> pro Unterrichtsstunde und <b>'+money(t.fee/(t.per*m)*60)+'</b> pro 60 Minuten.';
+    if(t.fee&&t.per&&t.min) box.innerHTML='Das sind <b>'+money(t.fee/t.per)+'</b> pro Unterrichtsstunde und <b>'+money(t.fee/t.min*60)+'</b> pro 60 Minuten.';
     else box.innerHTML='Bei Schülern alle 2 Wochen: 2 Stunden pro Monat eintragen.';
     var s=E.start.value; if(s) box.innerHTML+='<br>Fällig ist die Zahlung jeden <b>'+parts(s)[2]+'.</b> des Monats (Tag des Einstiegs). Offene Zahlungen bleiben stehen, bis du sie als erhalten markierst.';
     var ch=partsChanged(); document.getElementById('fFrom').classList.toggle('hide',!ch);
@@ -761,14 +767,13 @@ function openStudent(st){
   E.status.value=st?st.status:'aktiv';
   E.start.value=st?st.start:today();
   fS.querySelector('input[name=type][value='+(st?st.type:'monat')+']').checked=true;
-  E.minutes.value=st&&st.minutes?st.minutes:'60';
   E.from.value='now'; document.getElementById('optNow').textContent='diesem Monat ('+fmtYm(ymOf(today()))+')';
   vals={}; origParts=null;
   if(st&&st.type==='monat'){
-    origParts=partsFor(st,ymOf(today()));
-    origParts.forEach(function(p){vals[p.lang]={fee:String(Math.round(p.fee*100)/100),per:String(p.perMonth),price:''};});
+    origParts=partsFor(st,ymOf(today())).map(function(p){return {lang:p.lang,fee:p.fee,perMonth:p.perMonth,minutes:p.minutes||st.minutes||60};});
+    origParts.forEach(function(p){vals[p.lang]={fee:String(Math.round(p.fee*100)/100),per:String(p.perMonth),price:'',min:String(p.minutes)};});
   }
-  if(st&&st.type==='stunde') st.langs.forEach(function(l){vals[l]={fee:'',per:'',price:String(st.prices&&st.prices[l]!=null?st.prices[l]:st.price)};});
+  if(st&&st.type==='stunde') st.langs.forEach(function(l){vals[l]={fee:'',per:'',price:String(st.prices&&st.prices[l]!=null?st.prices[l]:st.price),min:String(durOf(st,l))};});
   renderLessonList(st);
   syncType(); openDlg(dS); setTimeout(function(){E.name.focus();},50);
 }
@@ -796,16 +801,17 @@ fS.addEventListener('submit',function(e){
   if(!name){err.textContent='Bitte einen Namen eintragen.';return;}
   if(!langs.length){err.textContent='Bitte mindestens eine Sprache wählen.';return;}
   if(!E.start.value){err.textContent='Bitte das Einstiegsdatum eintragen.';return;}
-  var miss=langs.filter(function(l){var v=vals[l]||{}; return type==='monat'?(v.fee===''||v.fee==null||!(+v.per>0)):(v.price===''||v.price==null);});
-  if(miss.length){err.textContent=(type==='monat'?'Bitte Betrag und Stunden pro Monat eintragen für: ':'Bitte den Preis pro Stunde eintragen für: ')+miss.join(', ')+'.';return;}
+  var miss=langs.filter(function(l){var v=vals[l]||{}; return !(+v.min>0) || (type==='monat'?(v.fee===''||v.fee==null||!(+v.per>0)):(v.price===''||v.price==null));});
+  if(miss.length){err.textContent=(type==='monat'?'Bitte Betrag, Stunden pro Monat und Dauer eintragen für: ':'Bitte Preis und Dauer eintragen für: ')+miss.join(', ')+'.';return;}
   var st=editId?find(editId):null, isNew=!st;
   if(!st){st={id:uid(),pauses:[],paid:{},lessons:[]};}
   var oldStatus=st.status, oldType=st.type, t=today();
   var changed=partsChanged();
   st.name=name; st.langs=langs; st.status=E.status.value; st.start=E.start.value; st.type=type;
-  st.minutes=+E.minutes.value||0;
+  st.minutes=+vals[langs[0]].min||60;
+  st.durations={}; langs.forEach(function(l){st.durations[l]=+vals[l].min||60;});
   if(type==='monat'){
-    var ps=langs.map(function(l){return {lang:l,fee:+vals[l].fee||0,perMonth:+vals[l].per||0};});
+    var ps=langs.map(function(l){return {lang:l,fee:+vals[l].fee||0,perMonth:+vals[l].per||0,minutes:+vals[l].min||60};});
     st.parts=ps; st.fee=ps.reduce(function(a,x){return a+x.fee;},0); st.perMonth=ps.reduce(function(a,x){return a+x.perMonth;},0);
     var cur=ymOf(t);
     if(isNew || oldType!=='monat' || !st.hist || E.from.value==='start') st.hist=[{from:ymOf(st.start),parts:ps}];
@@ -830,7 +836,7 @@ function openLesson(st){
   document.getElementById('errLesson').textContent='';
   E.date.value=today(); E.minutes.value=st.minutes||60; E.price.value=st.price||''; E.paid.checked=false;
   E.lang.innerHTML=st.langs.map(function(l){return '<option>'+esc(l)+'</option>';}).join('');
-  var pr=function(){var l=E.lang.value; E.price.value=st.prices&&st.prices[l]!=null?st.prices[l]:(st.price||'');};
+  var pr=function(){var l=E.lang.value; E.price.value=st.prices&&st.prices[l]!=null?st.prices[l]:(st.price||''); E.minutes.value=durOf(st,l);};
   pr(); E.lang.onchange=pr;
   document.getElementById('lessonLangF').classList.toggle('hide',st.langs.length<2);
   openDlg(dL);
