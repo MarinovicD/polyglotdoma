@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Zahlungen · polyglot.doma</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:200 800;font-display:swap;src:url(../assets/fonts/bricolage-grotesque-latin-ext-opsz-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:200 800;font-display:swap;src:url(../assets/fonts/bricolage-grotesque-latin-opsz-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{
+  --ink:#0E1B4D; --cobalt:#1D3A9A; --mid:#4A68C2; --aqua:#9FB3E3; --mist:#D5DEF3; --porc:#F4F6FB;
+  --brass:#B88A4A; --red:#B42318; --red-bg:#FDECEA; --blue-bg:#E8EEFB; --ok:#2E6B4F; --ok-bg:#E6F2EC;
+  --line:#DDE3F1; --muted:#5B6690; --r:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--porc);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+header.top .wrap{display:flex;align-items:center;gap:16px;min-height:64px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:19px;letter-spacing:-.01em;white-space:nowrap}
+.brand i{font-style:normal;color:var(--brass)}
+.brand small{font-weight:500;color:var(--aqua);margin-left:8px;font-size:15px}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs a{color:#fff;text-decoration:none;padding:8px 14px;border-radius:999px;font-weight:500;font-size:15px;opacity:.8}
+nav.tabs a:hover{opacity:1;background:rgba(255,255,255,.08)}
+nav.tabs a.on{background:#fff;color:var(--ink);opacity:1}
+.iconbtn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;width:38px;height:38px;cursor:pointer;display:grid;place-items:center}
+.iconbtn:hover{background:rgba(255,255,255,.1)}
+main{padding:28px 0 80px}
+h1{font-size:30px;line-height:1.15;margin:0 0 4px;letter-spacing:-.02em}
+h2{font-size:19px;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 22px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.head .sub{margin:0}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:10px 18px;font-weight:600;cursor:pointer;background:var(--cobalt);color:#fff;white-space:nowrap;font-size:15px}
+.btn:hover{background:#2446b3}
+.btn.light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.light:hover{background:var(--blue-bg)}
+.btn.small{padding:7px 14px;font-size:14px}
+.btn.danger{background:var(--red)}
+.btn.ok{background:var(--ok)}
+.btn.ok:hover{background:#255a42}
+.link{background:none;border:0;color:var(--cobalt);cursor:pointer;padding:4px 6px;font-weight:500;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.link.red{color:var(--red)}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.grid{display:grid;gap:14px}
+.tiles{grid-template-columns:repeat(4,1fr)}
+.tile .lab{color:var(--muted);font-size:14px;font-weight:500}
+.tile .val{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .hint{color:var(--muted);font-size:13px;margin-top:2px}
+.tile.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tile.dark .lab,.tile.dark .hint{color:var(--aqua)}
+.monthnav{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+.monthnav button{border:0;background:none;width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:18px}
+.monthnav button:hover{background:var(--blue-bg)}
+.monthnav span{min-width:140px;text-align:center;font-weight:600}
+.bar{height:10px;border-radius:99px;background:var(--mist);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--cobalt);border-radius:99px}
+.bar.ok>i{background:var(--ok)}
+.split{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.split b{color:var(--ink);font-variant-numeric:tabular-nums}
+.two{grid-template-columns:1fr 1fr;margin-top:14px}
+.langrow{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.langrow:first-of-type{border-top:0}
+.langrow .amt{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.langrow .meta{grid-column:2 / 4;font-size:13px;color:var(--muted);margin-top:-6px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font-size:13px;color:var(--muted);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap;background:var(--blue-bg);color:var(--cobalt)}
+.pill.lang{background:var(--porc);color:var(--ink);border:1px solid var(--line);font-weight:500;margin:2px 4px 2px 0}
+.pill.aktiv{background:var(--ok-bg);color:var(--ok)}
+.pill.bald{background:var(--blue-bg);color:var(--cobalt)}
+.pill.pausiert{background:#EEF0F5;color:var(--muted)}
+.pill.bezahlt{background:var(--ok-bg);color:var(--ok)}
+.pill.offen{background:var(--red-bg);color:var(--red)}
+.pill.ueber{background:var(--red);color:#fff}
+.pill.soon{background:var(--mid);color:#fff}
+.pill.done{background:var(--ok-bg);color:var(--ok)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.actions{display:flex;gap:2px;justify-content:flex-end;flex-wrap:wrap}
+.counts{grid-template-columns:repeat(3,1fr);margin-bottom:22px}
+.count{display:flex;align-items:center;gap:14px}
+.count .n{font-size:34px;font-weight:700;line-height:1;min-width:44px;font-variant-numeric:tabular-nums}
+.count.ueber .n{color:var(--red)} .count.soon .n{color:var(--mid)} .count.done .n{color:var(--ok)}
+.section-t{display:flex;align-items:center;gap:10px;margin:26px 0 10px;font-weight:700;font-size:16px}
+.section-t .line{flex:1;height:1px;background:var(--line)}
+.due{display:grid;grid-template-columns:1.4fr 1.2fr .8fr 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px}
+.due.ueber{border-left:5px solid var(--red)}
+.due.soon{border-left:5px solid var(--mid)}
+.due.done{border-left:5px solid var(--ok);background:#FBFCFE}
+.due .name{font-weight:700}
+.due .amt{font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+.due .k{font-size:12px;color:var(--muted);display:block}
+.due .end{display:flex;gap:6px;justify-content:flex-end;align-items:center}
+.empty{text-align:center;padding:48px 20px}
+.empty p{color:var(--muted);max-width:520px;margin:8px auto 20px}
+.banner{background:var(--blue-bg);border:1px solid var(--aqua);border-radius:14px;padding:12px 16px;margin-bottom:20px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:15px}
+.banner.warn{background:#FFF7EC;border-color:#E9C99A}
+/* Dialog */
+dialog{border:0;border-radius:22px;padding:0;width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 32px);color:var(--ink);box-shadow:0 30px 80px rgba(14,27,77,.3)}
+dialog::backdrop{background:rgba(14,27,77,.45)}
+.dlg{padding:24px}
+.dlg h2{font-size:22px;margin-bottom:18px}
+.f{display:block;margin-bottom:14px}
+.f>span{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.f input[type=text],.f input[type=number],.f input[type=date],.f select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.f input:focus,.f select:focus{outline:2px solid var(--aqua);border-color:var(--mid)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.checks{display:flex;gap:8px;flex-wrap:wrap}
+.chk{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;user-select:none}
+.chk:has(input:checked){background:var(--ink);color:#fff;border-color:var(--ink)}
+.chk input{accent-color:var(--cobalt)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--porc);padding:4px;border-radius:14px}
+.seg label{text-align:center;padding:9px;border-radius:10px;cursor:pointer;font-weight:600}
+.seg label:has(input:checked){background:#fff;box-shadow:0 1px 4px rgba(14,27,77,.12)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.calc{background:var(--porc);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--muted);margin-bottom:14px}
+.calc b{color:var(--ink)}
+.dlg-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+.err{color:var(--red);font-size:14px;margin:-4px 0 10px;min-height:0}
+.lessons{border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto;margin-bottom:10px}
+.lessons div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--line);font-size:14px}
+.lessons div:first-child{border-top:0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:15px;opacity:0;transition:.25s;pointer-events:none;z-index:50;display:flex;gap:12px;align-items:center;white-space:nowrap;max-width:calc(100vw - 24px)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.toast button{background:none;border:0;color:var(--aqua);font-weight:700;cursor:pointer;text-decoration:underline}
+.hide{display:none!important}
+@media (max-width:900px){
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .two{grid-template-columns:1fr}
+  .due{grid-template-columns:1fr auto;gap:6px 12px}
+  .due .c-stich{display:none}
+  .due .end{grid-column:1 / -1;justify-content:flex-start}
+}
+@media (max-width:640px){
+  .wrap{padding:0 14px}
+  header.top .wrap{padding-top:10px;padding-bottom:10px}
+  nav.tabs{order:3;width:100%;margin-left:0;justify-content:space-between}
+  nav.tabs a{flex:1;text-align:center;padding:8px 6px}
+  .iconbtn{margin-left:auto}
+  h1{font-size:25px}
+  .tile .val{font-size:23px}
+  .counts{grid-template-columns:repeat(3,1fr);gap:8px}
+  .count{flex-direction:column;align-items:flex-start;gap:4px;padding:14px}
+  .count .n{font-size:28px}
+  .row3{grid-template-columns:1fr 1fr}
+  /* Schülertabelle als Karten */
+  table.students thead{display:none}
+  table.students,table.students tbody,table.students tr,table.students td{display:block;width:100%}
+  table.students tr{border-bottom:1px solid var(--line);padding:12px 0}
+  table.students tr:last-child{border-bottom:0}
+  table.students td{border:0;padding:3px 0}
+  table.students td[data-l]::before{content:attr(data-l) ": ";color:var(--muted);font-size:13px}
+  table.students td.num{text-align:left}
+  table.students .actions{justify-content:flex-start;margin-top:4px}
+  .card.tablecard{padding:6px 16px}
+  table.per td,table.per th{padding:10px 6px;font-size:14px}
+  table.per .hide-m{display:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">polyglot<i>.</i>doma <small>Zahlungen</small></div>
+    <nav class="tabs">
+      <a href="#uebersicht" data-tab="uebersicht">Übersicht</a>
+      <a href="#schueler" data-tab="schueler">Schüler</a>
+      <a href="#faellig" data-tab="faellig">Fälligkeiten</a>
+    </nav>
+    <button class="iconbtn" id="btnSettings" title="Einstellungen und Sicherung" aria-label="Einstellungen und Sicherung">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<!-- Schüler-Formular -->
+<dialog id="dlgStudent"><form class="dlg" id="formStudent" method="dialog" novalidate>
+  <h2 id="dlgStudentTitle">Neuer Schüler</h2>
+  <label class="f"><span>Name</span><input type="text" name="name" autocomplete="off"></label>
+  <div class="f"><span>Sprachen</span>
+    <div class="checks" id="langChecks"></div>
+    <input type="text" name="otherLangs" placeholder="Andere Sprache (mehrere mit Komma)" style="margin-top:8px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+  </div>
+  <div class="row2">
+    <label class="f"><span>Status</span><select name="status">
+      <option value="aktiv">Aktiv</option><option value="bald">Startet bald</option><option value="pausiert">Pausiert</option>
+    </select></label>
+    <label class="f"><span>Einstieg (erste Stunde)</span><input type="date" name="start"></label>
+  </div>
+  <div class="f"><span>Abrechnung</span>
+    <div class="seg">
+      <label><input type="radio" name="type" value="monat" checked>Monatlich</label>
+      <label><input type="radio" name="type" value="stunde">Pro Stunde</label>
+    </div>
+  </div>
+  <div id="fMonat">
+    <div class="row3">
+      <label class="f"><span>Betrag pro Monat</span><input type="number" name="fee" min="0" step="0.01" inputmode="decimal"></label>
+      <label class="f"><span>Stunden pro Monat</span><input type="number" name="perMonth" min="0" step="0.5" inputmode="decimal"></label>
+      <label class="f"><span>Dauer (Minuten)</span><input type="number" name="minutes" min="0" step="5" inputmode="numeric"></label>
+    </div>
+  </div>
+  <div id="fStunde" class="hide">
+    <div class="row2">
+      <label class="f"><span>Preis pro Stunde</span><input type="number" name="price" min="0" step="0.01" inputmode="decimal"></label>
+      <label class="f"><span>Übliche Dauer (Minuten)</span><input type="number" name="minutesS" min="0" step="5" inputmode="numeric"></label>
+    </div>
+  </div>
+  <div class="calc" id="calcBox"></div>
+  <div id="lessonBox" class="hide">
+    <div class="f" style="margin-bottom:6px"><span>Eingetragene Stunden</span></div>
+    <div class="lessons" id="lessonList"></div>
+  </div>
+  <p class="err" id="errStudent"></p>
+  <div class="dlg-foot">
+    <button type="button" class="btn light" data-close>Abbrechen</button>
+    <button type="submit" class="btn">Speichern</button>
+  </div>
+</form></dialog>
+
+<!-- Stunde eintragen -->
+<dialog id="dlgLesson"><form class="dlg" id="formLesson" method="dialog" novalidate>
+  <h2>Stunde eintragen</h2>
+  <p class="sub" id="lessonWho" style="margin-top:-10px"></p>
+  <div class="row3">
+    <label class="f"><span>Datum</span><input type="date" name="date"></label>
+    <label class="f"><span>Dauer (Min.)</span><input type="number" name="minutes" min="0" step="5"></label>
+    <label class="f"><span>Betrag</span><input type="number" name="price" min="0" step="0.01" inputmode="decimal"></label>
+  </div>
+  <label class="f" id="lessonLangF"><span>Sprache</span><select name="lang"></select></label>
+  <label class="chk" style="margin-bottom:6px"><input type="checkbox" name="paid"> Schon bezahlt</label>
+  <p class="err" id="errLesson"></p>
+  <div class="dlg-foot">
+    <button type="button" class="btn light" data-close>Abbrechen</button>
+    <button type="submit" class="btn">Eintragen</button>
+  </div>
+</form></dialog>
+
+<!-- Bestätigen -->
+<dialog id="dlgConfirm"><div class="dlg">
+  <h2 id="confirmTitle"></h2>
+  <p id="confirmText" class="muted"></p>
+  <div class="dlg-foot">
+    <button type="button" class="btn light" data-close>Abbrechen</button>
+    <button type="button" class="btn danger" id="confirmOk">Löschen</button>
+  </div>
+</div></dialog>
+
+<!-- Einstellungen -->
+<dialog id="dlgSettings"><div class="dlg">
+  <h2>Einstellungen und Sicherung</h2>
+  <div class="row2">
+    <label class="f"><span>Währung</span><select id="setCur">
+      <option value="EUR">Euro (€)</option><option value="BAM">Konvertible Mark (KM)</option><option value="CHF">Franken (CHF)</option><option value="USD">US-Dollar ($)</option><option value="GBP">Pfund (£)</option>
+    </select></label>
+    <label class="f"><span>„Anstehend“ ab … Tage vorher</span><input type="number" id="setSoon" min="1" max="31"></label>
+  </div>
+  <div class="calc" style="margin-top:4px">
+    Deine Daten liegen <b>nur in diesem Browser auf diesem Gerät</b>. Lade ab und zu eine Sicherung herunter und leg sie z. B. in dein Google Drive. Damit kannst du die Daten auch auf ein anderes Gerät oder eine neue Adresse übertragen.
+    <div id="lastBackup" style="margin-top:6px"></div>
+  </div>
+  <div class="dlg-foot" style="justify-content:flex-start;margin-top:0">
+    <button type="button" class="btn" id="btnExport">Sicherung herunterladen</button>
+    <button type="button" class="btn light" id="btnImport">Sicherung laden</button>
+    <input type="file" id="fileImport" accept=".json,application/json" class="hide">
+  </div>
+  <div class="dlg-foot" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:16px">
+    <button type="button" class="link red" id="btnWipe">Alle Daten löschen</button>
+    <button type="button" class="btn light" data-close>Fertig</button>
+  </div>
+</div></dialog>
+
+<div class="toast" id="toast"><span></span><button type="button" class="hide">Rückgängig</button></div>
+
+<script>
+(function(){
+'use strict';
+var KEY='pd-zahlungen-v1';
+var BASE_LANGS=['Deutsch','Bosnisch','Arabisch'];
+var MONTHS=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+/* ---------- Speicher ---------- */
+function blank(){return {v:1,currency:'EUR',soonDays:7,students:[],demo:false,lastBackup:null};}
+function load(){
+  try{var raw=localStorage.getItem(KEY); if(!raw) return blank();
+    var d=JSON.parse(raw); var b=blank(); for(var k in b) if(!(k in d)) d[k]=b[k]; return d;
+  }catch(e){return blank();}
+}
+var S=load(), storageOk=true;
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S)); storageOk=true;}catch(e){storageOk=false;}
+}
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+
+/* ---------- Datum ---------- */
+function pad(n){return (n<10?'0':'')+n;}
+function ymd(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function today(){return ymd(new Date());}
+function parts(s){var p=s.split('-');return [+p[0],+p[1],+(p[2]||1)];}
+function addDays(s,n){var p=parts(s);var d=new Date(p[0],p[1]-1,p[2]+n);return ymd(d);}
+function diffDays(a,b){var x=parts(a),y=parts(b);return Math.round((Date.UTC(y[0],y[1]-1,y[2])-Date.UTC(x[0],x[1]-1,x[2]))/864e5);}
+function ymOf(s){return s.slice(0,7);}
+function ymAdd(ym,n){var p=parts(ym);var d=new Date(p[0],p[1]-1+n,1);return d.getFullYear()+'-'+pad(d.getMonth()+1);}
+function daysIn(ym){var p=parts(ym);return new Date(p[0],p[1],0).getDate();}
+function fmtDate(s){if(!s)return '–';var p=parts(s);return pad(p[2])+'.'+pad(p[1])+'.'+p[0];}
+function fmtYm(ym){var p=parts(ym);return MONTHS[p[1]-1]+' '+p[0];}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+
+/* ---------- Format ---------- */
+function money(n){
+  n=Math.round((+n||0)*100)/100;
+  try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:S.currency,minimumFractionDigits:(n%1?2:0),maximumFractionDigits:2}).format(n).replace('BAM','KM');}
+  catch(e){return n.toFixed(2)+' '+S.currency;}
+}
+function num(n,d){return (+n||0).toLocaleString('de-DE',{maximumFractionDigits:d==null?1:d});}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function mins(m){m=+m||0;var h=Math.floor(m/60),r=Math.round(m%60);return h?(h+' Std.'+(r?' '+r+' Min.':'')):(r+' Min.');}
+
+/* ---------- Rechenlogik ---------- */
+// Stichtag eines Monats: Tag des Einstiegs, bei kürzeren Monaten der letzte Tag
+function dueOf(st,ym){var day=parts(st.start)[2];return ym+'-'+pad(Math.min(day,daysIn(ym)));}
+function inPause(st,date){
+  return (st.pauses||[]).some(function(p){return date>=p.from && (!p.to || date<p.to);});
+}
+// Alle Zahlungsposten eines Schülers bis einschließlich Monat 'uptoYm'
+function items(st,uptoYm){
+  var out=[];
+  if(st.status==='bald') return out;
+  if(st.type==='monat'){
+    if(!st.start) return out;
+    var ym=ymOf(st.start), guard=0;
+    while(ym<=uptoYm && guard++<600){
+      var due=dueOf(st,ym);
+      if(!inPause(st,due)){
+        var p=(st.paid||{})[ym];
+        out.push({kind:'monat',key:ym,ym:ym,due:due,amount:p?p.amount:(+st.fee||0),paid:p?p.date:null,
+          lessons:+st.perMonth||0,minutes:(+st.perMonth||0)*(+st.minutes||0),langs:st.langs});
+      }
+      ym=ymAdd(ym,1);
+    }
+  }else{
+    (st.lessons||[]).forEach(function(l){
+      if(ymOf(l.date)<=uptoYm) out.push({kind:'stunde',key:l.id,ym:ymOf(l.date),due:l.date,amount:+l.price||0,paid:l.paid||null,
+        lessons:1,minutes:+l.minutes||0,langs:[l.lang||st.langs[0]]});
+    });
+  }
+  return out.sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0;});
+}
+function monthItems(st,ym){return items(st,ym).filter(function(i){return i.ym===ym;});}
+
+function monthStats(ym){
+  var r={rev:0,paid:0,open:0,lessons:0,minutes:0,payers:0,langs:{},per:[]};
+  S.students.forEach(function(st){
+    var its=monthItems(st,ym); if(!its.length) return;
+    var s={st:st,rev:0,paid:0,lessons:0,minutes:0};
+    its.forEach(function(i){
+      s.rev+=i.amount; s.lessons+=i.lessons; s.minutes+=i.minutes;
+      if(i.paid) s.paid+=i.amount;
+      var share=1/(i.langs.length||1);
+      i.langs.forEach(function(L){
+        var o=r.langs[L]||(r.langs[L]={rev:0,lessons:0,minutes:0});
+        o.rev+=i.amount*share; o.lessons+=i.lessons*share; o.minutes+=i.minutes*share;
+      });
+    });
+    r.rev+=s.rev; r.paid+=s.paid; r.lessons+=s.lessons; r.minutes+=s.minutes;
+    if(s.rev>0) r.payers++;
+    r.per.push(s);
+  });
+  r.open=r.rev-r.paid;
+  r.per.sort(function(a,b){return b.rev-a.rev;});
+  return r;
+}
+
+// Fälligkeiten
+function dueState(st){
+  var t=today(), lim=addDays(t,+S.soonDays||7);
+  var its=items(st,ymOf(lim));
+  var open=its.filter(function(i){return !i.paid && i.due<=lim;});
+  var over=open.filter(function(i){return i.due<t;});
+  var paidIts=its.filter(function(i){return i.paid;}).sort(function(a,b){return a.paid<b.paid?-1:1;});
+  var res={st:st,open:open,over:over,lastPaid:paidIts[paidIts.length-1]||null};
+  if(over.length){res.cat='ueber';res.item=over[0];res.days=diffDays(over[0].due,t);}
+  else if(open.length){res.cat='soon';res.item=open[0];res.days=diffDays(t,open[0].due);}
+  else{
+    res.cat='done';
+    if(st.type==='monat' && st.status==='aktiv'){
+      var all=items(st,ymAdd(ymOf(lim),2)).filter(function(i){return !i.paid && i.due>lim;});
+      res.next=all[0]||null;
+    }
+  }
+  res.sum=open.reduce(function(a,i){return a+i.amount;},0);
+  return res;
+}
+function payItem(st,item,date){
+  date=date||today();
+  if(item.kind==='monat'){st.paid=st.paid||{}; st.paid[item.key]={date:date,amount:item.amount};}
+  else{(st.lessons||[]).forEach(function(l){if(l.id===item.key) l.paid=date;});}
+}
+function unpayItem(st,item){
+  if(item.kind==='monat'){delete st.paid[item.key];}
+  else{(st.lessons||[]).forEach(function(l){if(l.id===item.key) l.paid=null;});}
+}
+function currentPayStatus(st){
+  if(st.status==='bald') return null;
+  var t=today();
+  if(st.type==='monat'){
+    var its=items(st,ymOf(t)).filter(function(i){return i.due<=t;});
+    if(!its.length) return null;
+    return its.some(function(i){return !i.paid;})?'offen':'bezahlt';
+  }
+  var ls=st.lessons||[]; if(!ls.length) return null;
+  return ls.some(function(l){return !l.paid && l.date<=t;})?'offen':'bezahlt';
+}
+
+/* ---------- Ansichten ---------- */
+var app=document.getElementById('app');
+var viewYm=ymOf(today());
+function tab(){var h=(location.hash||'#uebersicht').slice(1);return ['uebersicht','schueler','faellig'].indexOf(h)>=0?h:'uebersicht';}
+
+function banners(){
+  var h='';
+  if(!storageOk) h+='<div class="banner warn">Dein Browser lässt gerade kein Speichern zu (z. B. im privaten Fenster). Änderungen gehen beim Schließen verloren.</div>';
+  if(S.demo) h+='<div class="banner"><span><b>Beispieldaten.</b> Das sind erfundene Schüler zum Ausprobieren.</span><button class="btn small" data-act="clearDemo">Beispieldaten löschen und loslegen</button></div>';
+  else if(S.students.length){
+    var lb=S.lastBackup, old=!lb || diffDays(lb.slice(0,10),today())>30;
+    if(old) h+='<div class="banner warn"><span>'+(lb?'Deine letzte Sicherung ist über 30 Tage alt.':'Du hast noch keine Sicherung heruntergeladen.')+' Die Daten liegen nur in diesem Browser.</span><button class="btn small light" data-act="export">Sicherung herunterladen</button></div>';
+  }
+  return h;
+}
+function emptyState(){
+  return '<div class="card empty"><h1>Noch keine Schüler eingetragen</h1>'+
+  '<p>Lege deinen ersten Schüler an. Die Daten bleiben nur in diesem Browser auf diesem Gerät gespeichert.</p>'+
+  '<button class="btn" data-act="add">+ Schüler hinzufügen</button> &nbsp; <button class="btn light" data-act="demo">Mit Beispieldaten ausprobieren</button>'+
+  '<p class="small" style="margin-top:18px">Du hast eine Sicherung? <button class="link" data-act="import">Sicherung laden</button></p></div>';
+}
+
+function renderOverview(){
+  var r=monthStats(viewYm);
+  var act=S.students.filter(function(s){return s.status==='aktiv';}).length;
+  var bald=S.students.filter(function(s){return s.status==='bald';}).length;
+  var pau=S.students.filter(function(s){return s.status==='pausiert';}).length;
+  var pct=r.rev?Math.round(r.paid/r.rev*100):0;
+  var h='<div class="head"><div><h1>Übersicht</h1><p class="sub">Umsatz und Zahlungen im gewählten Monat</p></div>'+
+    '<div class="monthnav"><button data-act="prev" aria-label="Voriger Monat">‹</button><span>'+fmtYm(viewYm)+'</span><button data-act="next" aria-label="Nächster Monat">›</button></div></div>';
+  h+='<div class="grid tiles">'+
+    tile('Umsatz im Monat',money(r.rev),r.payers+' zahlende Schüler','dark')+
+    tile('Schüler',act,'aktiv'+(bald?' · '+bald+' startet bald':'')+(pau?' · '+pau+' pausiert':''))+
+    tile('Ø pro Schüler',r.payers?money(r.rev/r.payers):'–','Umsatz ÷ zahlende Schüler')+
+    tile('Unterrichtsstunden',num(r.lessons),r.minutes?mins(r.minutes)+' insgesamt':'—')+
+    tile('Ø pro Unterrichtsstunde',r.lessons?money(r.rev/r.lessons):'–','je Termin, egal wie lang')+
+    tile('Pro 60 Minuten',r.minutes?money(r.rev/r.minutes*60):'–','auf eine volle Stunde gerechnet')+
+    '<div class="card tile" style="grid-column:span 2"><div class="lab">Abgerechnet</div>'+
+      '<div class="val">'+pct+' %</div><div class="bar ok" style="margin-top:8px"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="split"><span>Bezahlt <b>'+money(r.paid)+'</b></span><span>Steht noch aus <b>'+money(r.open)+'</b></span></div></div>'+
+  '</div>';
+  // Sprachen
+  var L=Object.keys(r.langs).sort(function(a,b){return r.langs[b].rev-r.langs[a].rev;});
+  var maxL=L.length?r.langs[L[0]].rev:0;
+  var lh=L.length?L.map(function(k){var o=r.langs[k];
+    return '<div class="langrow"><b>'+esc(k)+'</b><div class="bar"><i style="width:'+(maxL?o.rev/maxL*100:0)+'%"></i></div><span class="amt">'+money(o.rev)+'</span>'+
+    '<span class="meta">'+num(o.lessons)+' Stunden · '+(o.minutes?money(o.rev/o.minutes*60)+' pro 60 Min.':'–')+' · '+(r.rev?Math.round(o.rev/r.rev*100):0)+' % vom Umsatz</span></div>';}).join('')
+    :'<p class="muted">Kein Umsatz in diesem Monat.</p>';
+  // Pro Schüler
+  var ph=r.per.length?'<table class="per"><thead><tr><th>Schüler</th><th class="num">Umsatz</th><th class="num hide-m">Stunden</th><th class="num">pro 60 Min.</th><th class="num">Zahlung</th></tr></thead><tbody>'+
+    r.per.map(function(s){var paid=s.paid>=s.rev-0.001;
+      return '<tr><td><b>'+esc(s.st.name)+'</b></td><td class="num">'+money(s.rev)+'</td><td class="num hide-m">'+num(s.lessons)+'</td><td class="num">'+(s.minutes?money(s.rev/s.minutes*60):'–')+'</td><td class="num"><span class="pill '+(paid?'bezahlt':'offen')+'">'+(paid?'bezahlt':'offen')+'</span></td></tr>';}).join('')+
+    '</tbody></table>':'<p class="muted">Keine Zahlungen in diesem Monat.</p>';
+  h+='<div class="grid two"><div class="card"><h2>Pro Sprache</h2>'+lh+
+    (L.length&&S.students.some(function(s){return s.langs.length>1&&s.type==='monat';})?'<p class="small muted" style="margin:10px 0 0">Bei Schülern mit mehreren Sprachen und Monatsbetrag wird der Betrag gleichmäßig auf die Sprachen verteilt.</p>':'')+
+    '</div><div class="card"><h2>Pro Schüler</h2>'+ph+'</div></div>';
+  return h;
+}
+function tile(lab,val,hint,cls){return '<div class="card tile '+(cls||'')+'"><div class="lab">'+lab+'</div><div class="val">'+val+'</div><div class="hint">'+hint+'</div></div>';}
+
+function modelText(st){
+  if(st.type==='monat') return money(st.fee)+' / Monat<br><span class="muted small">'+num(st.perMonth)+' × '+(+st.minutes||0)+' Min.</span>';
+  return money(st.price)+' pro Stunde<br><span class="muted small">'+(+st.minutes||0)+' Min. · '+(st.lessons||[]).length+' eingetragen</span>';
+}
+var STATUS={aktiv:'Aktiv',bald:'Startet bald',pausiert:'Pausiert'};
+function renderStudents(){
+  var list=S.students.slice().sort(function(a,b){var o={aktiv:0,bald:1,pausiert:2};return (o[a.status]-o[b.status])||a.name.localeCompare(b.name,'de');});
+  var act=S.students.filter(function(s){return s.status==='aktiv';}).length;
+  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+S.students.length+' insgesamt · '+act+' aktiv</p></div><button class="btn" data-act="add">+ Schüler hinzufügen</button></div>';
+  h+='<div class="card tablecard"><table class="students"><thead><tr><th>Name</th><th>Sprachen</th><th>Abrechnung</th><th>Status</th><th>Zahlung</th><th>Einstieg</th><th>Stichtag</th><th></th></tr></thead><tbody>';
+  list.forEach(function(st){
+    var ps=currentPayStatus(st);
+    h+='<tr><td><b>'+esc(st.name)+'</b></td>'+
+      '<td data-l="Sprachen">'+st.langs.map(function(l){return '<span class="pill lang">'+esc(l)+'</span>';}).join('')+'</td>'+
+      '<td data-l="Abrechnung">'+modelText(st)+'</td>'+
+      '<td data-l="Status"><span class="pill '+st.status+'">'+STATUS[st.status]+'</span></td>'+
+      '<td data-l="Zahlung">'+(ps?'<span class="pill '+ps+'">'+ps+'</span>':'<span class="muted">–</span>')+'</td>'+
+      '<td data-l="Einstieg">'+fmtDate(st.start)+'</td>'+
+      '<td data-l="Stichtag">'+(st.type==='monat'?'jeden '+parts(st.start)[2]+'.':'pro Stunde')+'</td>'+
+      '<td><div class="actions">'+(st.type==='stunde'?'<button class="link" data-act="lesson" data-id="'+st.id+'">+ Stunde</button>':'')+
+      '<button class="link" data-act="edit" data-id="'+st.id+'">Bearbeiten</button><button class="link red" data-act="del" data-id="'+st.id+'">Löschen</button></div></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+
+function renderDue(){
+  var rows=S.students.filter(function(s){return s.status!=='bald';}).map(dueState);
+  var over=rows.filter(function(r){return r.cat==='ueber';}).sort(function(a,b){return b.days-a.days;});
+  var soon=rows.filter(function(r){return r.cat==='soon';}).sort(function(a,b){return a.days-b.days;});
+  var done=rows.filter(function(r){return r.cat==='done';}).sort(function(a,b){return a.st.name.localeCompare(b.st.name,'de');});
+  var sumOver=over.reduce(function(a,r){return a+r.over.reduce(function(x,i){return x+i.amount;},0);},0);
+  var sumSoon=soon.reduce(function(a,r){return a+r.sum;},0);
+  var h='<div class="head"><div><h1>Fälligkeiten</h1><p class="sub">Stand heute, '+fmtDate(today())+'</p></div></div>';
+  h+='<div class="grid counts">'+
+    '<div class="card count ueber"><span class="n">'+over.length+'</span><div><b>überfällig</b><div class="small muted">'+money(sumOver)+'</div></div></div>'+
+    '<div class="card count soon"><span class="n">'+soon.length+'</span><div><b>anstehend</b><div class="small muted">'+money(sumSoon)+' in '+S.soonDays+' Tagen</div></div></div>'+
+    '<div class="card count done"><span class="n">'+done.length+'</span><div><b>erledigt</b><div class="small muted">nichts offen</div></div></div></div>';
+  if(over.length) h+=sec('Überfällig')+over.map(dueRow).join('');
+  if(soon.length) h+=sec('Anstehend')+soon.map(dueRow).join('');
+  if(done.length) h+=sec('Erledigt')+done.map(dueRow).join('');
+  if(!rows.length) h+='<div class="card empty"><p>Keine aktiven Schüler.</p></div>';
+  return h;
+}
+function sec(t){return '<div class="section-t">'+t+'<span class="line"></span></div>';}
+function stich(st){return st.type==='monat'?'jeden '+parts(st.start)[2]+'. des Monats':'bei jeder Stunde';}
+function dueRow(r){
+  var st=r.st, h='<div class="due '+r.cat+'">';
+  var what=r.item?(r.item.kind==='monat'?fmtYm(r.item.ym):'Stunde vom '+fmtDate(r.item.due)):'';
+  h+='<div><div class="name">'+esc(st.name)+(st.status==='pausiert'?' <span class="pill pausiert">pausiert</span>':'')+'</div><span class="k">'+esc(st.langs.join(', '))+'</span></div>';
+  if(r.cat==='ueber'){
+    h+='<div><span class="pill ueber">überfällig seit '+r.days+' '+(r.days===1?'Tag':'Tagen')+'</span><span class="k" style="margin-top:4px">'+what+' · fällig am '+fmtDate(r.item.due)+'</span></div>';
+  }else if(r.cat==='soon'){
+    h+='<div><span class="pill soon">'+(r.days===0?'heute fällig':'anstehend · in '+r.days+' '+(r.days===1?'Tag':'Tagen'))+'</span><span class="k" style="margin-top:4px">'+what+' · fällig am '+fmtDate(r.item.due)+'</span></div>';
+  }else{
+    h+='<div><span class="pill done">✓ erledigt</span><span class="k" style="margin-top:4px">'+(r.lastPaid?'zuletzt bezahlt am '+fmtDate(r.lastPaid.paid):'noch keine Zahlung')+'</span></div>';
+  }
+  if(r.cat==='done'){
+    h+='<div><span class="k">Nächste Zahlung</span>'+(r.next?money(r.next.amount)+' am '+fmtDate(r.next.due):'<span class="muted">–</span>')+'</div>';
+  }else{
+    var more=r.open.length-1;
+    h+='<div><span class="k">Betrag</span><span class="amt">'+money(r.item.amount)+'</span>'+(more>0?'<span class="k">+'+more+' weitere offen ('+money(r.sum)+' gesamt)</span>':'')+'</div>';
+  }
+  h+='<div class="c-stich"><span class="k">Stichtag</span>'+stich(st)+'</div>';
+  h+='<div class="end">'+(r.cat!=='done'?'<button class="btn ok small" data-act="pay" data-id="'+st.id+'">✓ Zahlung erhalten</button>':
+    (r.lastPaid?'<button class="link" data-act="unpay" data-id="'+st.id+'">Letzte Zahlung zurücknehmen</button>':''))+'</div>';
+  return h+'</div>';
+}
+
+function render(){
+  var t=tab();
+  document.querySelectorAll('nav.tabs a').forEach(function(a){a.classList.toggle('on',a.dataset.tab===t);});
+  var h=banners();
+  if(!S.students.length) h+=emptyState();
+  else h+= t==='schueler'?renderStudents(): t==='faellig'?renderDue(): renderOverview();
+  app.innerHTML=h;
+}
+window.addEventListener('hashchange',function(){render();window.scrollTo(0,0);});
+
+/* ---------- Toast ---------- */
+var toastEl=document.getElementById('toast'),toastT,undoFn=null;
+function toast(msg,undo){
+  toastEl.querySelector('span').textContent=msg;
+  var b=toastEl.querySelector('button'); undoFn=undo||null; b.classList.toggle('hide',!undo);
+  toastEl.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(function(){toastEl.classList.remove('on');undoFn=null;},5000);
+}
+toastEl.querySelector('button').addEventListener('click',function(){if(undoFn){undoFn();undoFn=null;}toastEl.classList.remove('on');});
+
+/* ---------- Dialoge ---------- */
+function openDlg(d){ if(d.showModal) d.showModal(); else d.setAttribute('open',''); }
+function closeDlg(d){ if(d.close) d.close(); else d.removeAttribute('open'); }
+document.querySelectorAll('dialog').forEach(function(d){
+  d.addEventListener('click',function(e){ if(e.target===d || e.target.closest('[data-close]')) closeDlg(d); });
+});
+function find(id){for(var i=0;i<S.students.length;i++) if(S.students[i].id===id) return S.students[i]; return null;}
+
+// Schüler-Formular
+var dS=document.getElementById('dlgStudent'), fS=document.getElementById('formStudent'), editId=null;
+function allLangs(){
+  var set=BASE_LANGS.slice();
+  S.students.forEach(function(s){s.langs.forEach(function(l){if(set.indexOf(l)<0) set.push(l);});});
+  return set;
+}
+function typeSel(){return fS.querySelector('input[name=type]:checked').value;}
+function syncType(){
+  var m=typeSel()==='monat';
+  document.getElementById('fMonat').classList.toggle('hide',!m);
+  document.getElementById('fStunde').classList.toggle('hide',m);
+  calc();
+}
+function calc(){
+  var box=document.getElementById('calcBox'), E=fS.elements;
+  if(typeSel()==='monat'){
+    var fee=+E.fee.value||0, n=+E.perMonth.value||0, m=+E.minutes.value||0;
+    if(fee&&n&&m) box.innerHTML='Das sind <b>'+money(fee/n)+'</b> pro Unterrichtsstunde und <b>'+money(fee/(n*m)*60)+'</b> pro 60 Minuten.';
+    else box.innerHTML='Bei Schülern alle 2 Wochen: 2 Stunden pro Monat eintragen.';
+    var s=E.start.value; if(s) box.innerHTML+='<br>Fällig ist die Zahlung jeden <b>'+parts(s)[2]+'.</b> des Monats (Tag des Einstiegs).';
+  }else{
+    var p=+E.price.value||0, mm=+E.minutesS.value||0;
+    box.innerHTML='Du trägst jede Stunde einzeln ein, wenn sie stattfindet. Abgesagte Stunden trägst du einfach nicht ein.'+(p&&mm?'<br>Das sind <b>'+money(p/mm*60)+'</b> pro 60 Minuten.':'');
+  }
+}
+fS.addEventListener('input',calc);
+fS.querySelectorAll('input[name=type]').forEach(function(r){r.addEventListener('change',syncType);});
+
+function openStudent(st){
+  editId=st?st.id:null;
+  document.getElementById('dlgStudentTitle').textContent=st?'Schüler bearbeiten':'Neuer Schüler';
+  document.getElementById('errStudent').textContent='';
+  var langs=allLangs(), sel=st?st.langs:[];
+  document.getElementById('langChecks').innerHTML=langs.filter(function(l){return BASE_LANGS.indexOf(l)>=0||sel.indexOf(l)>=0;})
+    .map(function(l){return '<label class="chk"><input type="checkbox" name="lang" value="'+esc(l)+'"'+(sel.indexOf(l)>=0?' checked':'')+'> '+esc(l)+'</label>';}).join('');
+  var E=fS.elements;
+  E.name.value=st?st.name:''; E.otherLangs.value='';
+  E.status.value=st?st.status:'aktiv';
+  E.start.value=st?st.start:today();
+  fS.querySelector('input[name=type][value='+(st?st.type:'monat')+']').checked=true;
+  E.fee.value=st&&st.type==='monat'?st.fee:''; E.perMonth.value=st&&st.type==='monat'?st.perMonth:'4';
+  E.minutes.value=st&&st.type==='monat'?st.minutes:'60';
+  E.price.value=st&&st.type==='stunde'?st.price:''; E.minutesS.value=st&&st.type==='stunde'?st.minutes:'60';
+  renderLessonList(st);
+  syncType(); openDlg(dS); setTimeout(function(){E.name.focus();},50);
+}
+function renderLessonList(st){
+  var box=document.getElementById('lessonBox'), ls=st&&st.type==='stunde'?(st.lessons||[]).slice().sort(function(a,b){return a.date<b.date?1:-1;}):[];
+  box.classList.toggle('hide',!ls.length);
+  document.getElementById('lessonList').innerHTML=ls.map(function(l){
+    return '<div><span>'+fmtDate(l.date)+' · '+(+l.minutes||0)+' Min. · '+money(l.price)+(st.langs.length>1?' · '+esc(l.lang):'')+'</span><span>'+
+      '<span class="pill '+(l.paid?'bezahlt':'offen')+'">'+(l.paid?'bezahlt':'offen')+'</span> '+
+      '<button type="button" class="link" data-lpay="'+l.id+'">'+(l.paid?'auf offen':'bezahlt')+'</button>'+
+      '<button type="button" class="link red" data-ldel="'+l.id+'">löschen</button></span></div>';}).join('');
+}
+document.getElementById('lessonList').addEventListener('click',function(e){
+  var st=find(editId); if(!st) return; var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.lpay){st.lessons.forEach(function(l){if(l.id===b.dataset.lpay) l.paid=l.paid?null:today();});}
+  if(b.dataset.ldel){st.lessons=st.lessons.filter(function(l){return l.id!==b.dataset.ldel;});}
+  save(); renderLessonList(st); render();
+});
+fS.addEventListener('submit',function(e){
+  e.preventDefault();
+  var E=fS.elements, err=document.getElementById('errStudent');
+  var name=E.name.value.trim();
+  var langs=[].map.call(fS.querySelectorAll('input[name=lang]:checked'),function(i){return i.value;});
+  E.otherLangs.value.split(',').forEach(function(x){x=x.trim(); if(x){x=x.charAt(0).toUpperCase()+x.slice(1); if(langs.indexOf(x)<0) langs.push(x);}});
+  var type=typeSel();
+  if(!name){err.textContent='Bitte einen Namen eintragen.';return;}
+  if(!langs.length){err.textContent='Bitte mindestens eine Sprache wählen.';return;}
+  if(!E.start.value){err.textContent='Bitte das Einstiegsdatum eintragen.';return;}
+  if(type==='monat' && !(+E.fee.value>0)){err.textContent='Bitte den Monatsbetrag eintragen.';return;}
+  if(type==='stunde' && !(+E.price.value>0)){err.textContent='Bitte den Preis pro Stunde eintragen.';return;}
+  var st=editId?find(editId):null, isNew=!st;
+  if(!st){st={id:uid(),pauses:[],paid:{},lessons:[]};}
+  var oldStatus=st.status, t=today();
+  st.name=name; st.langs=langs; st.status=E.status.value; st.start=E.start.value; st.type=type;
+  if(type==='monat'){st.fee=+E.fee.value; st.perMonth=+E.perMonth.value||0; st.minutes=+E.minutes.value||0;}
+  else{st.price=+E.price.value; st.minutes=+E.minutesS.value||0;}
+  st.pauses=st.pauses||[];
+  // Pausen merken, damit in der Pause keine Zahlungen fällig werden
+  if(!isNew && oldStatus!=='pausiert' && st.status==='pausiert') st.pauses.push({from:t,to:null});
+  if(!isNew && oldStatus==='pausiert' && st.status!=='pausiert'){var p=st.pauses[st.pauses.length-1]; if(p&&!p.to) p.to=t;}
+  if(isNew && st.status==='pausiert') st.pauses.push({from:t,to:null});
+  if(isNew) S.students.push(st);
+  save(); closeDlg(dS); render(); toast(isNew?name+' hinzugefügt':'Änderungen gespeichert');
+});
+
+// Stunde eintragen
+var dL=document.getElementById('dlgLesson'), fL=document.getElementById('formLesson'), lessonId=null;
+function openLesson(st){
+  lessonId=st.id; var E=fL.elements;
+  document.getElementById('lessonWho').textContent=st.name;
+  document.getElementById('errLesson').textContent='';
+  E.date.value=today(); E.minutes.value=st.minutes||60; E.price.value=st.price||''; E.paid.checked=false;
+  E.lang.innerHTML=st.langs.map(function(l){return '<option>'+esc(l)+'</option>';}).join('');
+  document.getElementById('lessonLangF').classList.toggle('hide',st.langs.length<2);
+  openDlg(dL);
+}
+fL.addEventListener('submit',function(e){
+  e.preventDefault(); var st=find(lessonId), E=fL.elements; if(!st) return;
+  if(!E.date.value){document.getElementById('errLesson').textContent='Bitte ein Datum wählen.';return;}
+  st.lessons=st.lessons||[];
+  st.lessons.push({id:uid(),date:E.date.value,minutes:+E.minutes.value||0,price:+E.price.value||0,lang:E.lang.value||st.langs[0],paid:E.paid.checked?today():null});
+  save(); closeDlg(dL); render(); toast('Stunde für '+st.name+' eingetragen');
+});
+
+// Bestätigen
+var dC=document.getElementById('dlgConfirm'), confirmFn=null;
+function ask(title,text,okLabel,fn){
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmText').textContent=text;
+  document.getElementById('confirmOk').textContent=okLabel; confirmFn=fn; openDlg(dC);
+}
+document.getElementById('confirmOk').addEventListener('click',function(){closeDlg(dC); if(confirmFn) confirmFn();});
+
+// Einstellungen
+var dSet=document.getElementById('dlgSettings');
+function openSettings(){
+  document.getElementById('setCur').value=S.currency; document.getElementById('setSoon').value=S.soonDays;
+  document.getElementById('lastBackup').textContent=S.lastBackup?'Letzte Sicherung: '+fmtDate(S.lastBackup.slice(0,10)):'Noch keine Sicherung heruntergeladen.';
+  openDlg(dSet);
+}
+document.getElementById('btnSettings').addEventListener('click',openSettings);
+document.getElementById('setCur').addEventListener('change',function(e){S.currency=e.target.value;save();render();});
+document.getElementById('setSoon').addEventListener('change',function(e){var v=Math.max(1,Math.min(31,+e.target.value||7));e.target.value=v;S.soonDays=v;save();render();});
+function exportData(){
+  S.lastBackup=new Date().toISOString(); save();
+  var blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='zahlungen-sicherung-'+today()+'.json';
+  document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+  document.getElementById('lastBackup').textContent='Letzte Sicherung: '+fmtDate(today());
+  render(); toast('Sicherung heruntergeladen');
+}
+document.getElementById('btnExport').addEventListener('click',exportData);
+var fileIn=document.getElementById('fileImport');
+document.getElementById('btnImport').addEventListener('click',function(){fileIn.click();});
+fileIn.addEventListener('change',function(){
+  var f=fileIn.files[0]; if(!f) return; var rd=new FileReader();
+  rd.onload=function(){
+    try{var d=JSON.parse(rd.result); if(!d||!Array.isArray(d.students)) throw 0;
+      var go=function(){var b=blank(); for(var k in b) if(!(k in d)) d[k]=b[k]; S=d; save(); closeDlg(dSet); render(); toast(d.students.length+' Schüler aus der Sicherung geladen');};
+      if(S.students.length && !S.demo) ask('Sicherung laden?','Die aktuellen Daten in diesem Browser werden durch die Sicherung ersetzt ('+d.students.length+' Schüler).','Ersetzen',go); else go();
+    }catch(e){toast('Diese Datei ist keine gültige Sicherung.');}
+    fileIn.value='';
+  };
+  rd.readAsText(f);
+});
+document.getElementById('btnWipe').addEventListener('click',function(){
+  ask('Alle Daten löschen?','Alle Schüler und Zahlungen in diesem Browser werden gelöscht. Das lässt sich nicht rückgängig machen – lade vorher eine Sicherung herunter, wenn du sie noch brauchst.','Alles löschen',function(){S=blank();save();closeDlg(dSet);render();});
+});
+
+/* ---------- Beispieldaten ---------- */
+function demo(){
+  var t=today(), d=function(n){return addDays(t,n);};
+  var m=function(off,day){var ym=ymAdd(ymOf(t),off);return ym+'-'+pad(Math.min(day,daysIn(ym)));};
+  var s=[
+    {name:'Lea Hoffmann',langs:['Arabisch'],status:'aktiv',start:m(-4,parts(d(-3))[2]),type:'monat',fee:160,perMonth:4,minutes:60},
+    {name:'Jonas Weber',langs:['Bosnisch'],status:'aktiv',start:m(-3,parts(d(4))[2]),type:'monat',fee:90,perMonth:2,minutes:60},
+    {name:'Sara Novak',langs:['Arabisch','Deutsch'],status:'aktiv',start:m(-6,parts(d(-12))[2]),type:'monat',fee:240,perMonth:8,minutes:45},
+    {name:'Mira Kovač',langs:['Deutsch'],status:'aktiv',start:m(-2,1),type:'stunde',price:35,minutes:60},
+    {name:'Tom Becker',langs:['Arabisch'],status:'bald',start:d(10),type:'monat',fee:160,perMonth:4,minutes:60},
+    {name:'Elif Yılmaz',langs:['Bosnisch'],status:'pausiert',start:m(-5,parts(d(-20))[2]),type:'monat',fee:120,perMonth:4,minutes:45}
+  ].map(function(x){x.id=uid();x.pauses=[];x.paid={};x.lessons=[];return x;});
+  // bisherige Monate bezahlt, außer den gewollt offenen
+  s.forEach(function(st){
+    if(st.type!=='monat'||st.status==='bald') return;
+    if(st.status==='pausiert') st.pauses.push({from:d(-25),to:null});
+    items(st,ymOf(t)).forEach(function(i){ if(i.due<d(-3)||(st.name==='Jonas Weber'&&i.due<t)) payItem(st,i,i.due); });
+  });
+  // Sara: aktueller Monat überfällig (bewusst offen gelassen); Lea: heute vor 3 Tagen fällig -> überfällig
+  var sara=s[2]; items(sara,ymOf(t)).forEach(function(i){ if(i.due>=d(-12)) unpayItem(sara,i); });
+  var mira=s[3];
+  [-30,-23,-16,-9,-2].forEach(function(o,k){mira.lessons.push({id:uid(),date:d(o),minutes:60,price:35,lang:'Deutsch',paid:k<4?d(o):null});});
+  S={v:1,currency:'EUR',soonDays:7,students:s,demo:true,lastBackup:null}; save(); render();
+}
+
+/* ---------- Klicks ---------- */
+app.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]'); if(!b) return;
+  var a=b.dataset.act, st=b.dataset.id?find(b.dataset.id):null;
+  if(a==='add') openStudent(null);
+  else if(a==='edit') openStudent(st);
+  else if(a==='lesson') openLesson(st);
+  else if(a==='del') ask(st.name+' löschen?','Der Schüler und alle seine Zahlungen werden aus der Übersicht entfernt.','Löschen',function(){
+      var idx=S.students.indexOf(st); S.students.splice(idx,1); save(); render();
+      toast(st.name+' gelöscht',function(){S.students.splice(idx,0,st);save();render();});});
+  else if(a==='pay'){var r=dueState(st); if(r.item){var it=r.item; payItem(st,it); save(); render();
+      toast('Zahlung von '+st.name+' erhalten ('+money(it.amount)+')',function(){unpayItem(st,it);save();render();});}}
+  else if(a==='unpay'){var rr=dueState(st); if(rr.lastPaid){var li=rr.lastPaid; unpayItem(st,li); save(); render(); toast('Zahlung zurückgenommen');}}
+  else if(a==='prev'){viewYm=ymAdd(viewYm,-1);render();}
+  else if(a==='next'){viewYm=ymAdd(viewYm,1);render();}
+  else if(a==='demo') demo();
+  else if(a==='clearDemo') ask('Beispieldaten löschen?','Die erfundenen Schüler werden entfernt. Danach kannst du deine eigenen anlegen.','Löschen',function(){S=blank();save();render();});
+  else if(a==='export') exportData();
+  else if(a==='import') fileIn.click();
+});
+
+render();
+})();
+</script>
+</body>
+</html>
