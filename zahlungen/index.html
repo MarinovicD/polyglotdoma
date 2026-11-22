@@ -375,7 +375,8 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
     <label class="f"><span>Sprache</span><select name="glang"></select></label>
   </div>
   <div class="f"><span>Mitglieder</span><div class="mchecks" id="memberChecks"></div></div>
-  <label class="f"><span id="gDateLabel">Gruppe besteht seit</span><input type="hidden" name="gdate"><input type="text" class="dinp" data-for="gdate" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
+  <div class="calc hide" id="gAuto"></div>
+  <label class="f" id="gDateF"><span id="gDateLabel">Gruppe besteht seit</span><input type="hidden" name="gdate"><input type="text" class="dinp" data-for="gdate" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
   <div class="calc" id="groupInfo" style="margin-top:-4px"></div>
   <p class="err" id="errGroup"></p>
   <div class="dlg-foot" style="justify-content:space-between">
@@ -1039,25 +1040,53 @@ function openGroup(g){
   E.glang.disabled=!!g;
   document.getElementById('memberChecks').innerHTML='';
   renderMemberChecks(g);
-  E.gdate.value=today(); syncDates(fG);
-  document.getElementById('gDateLabel').textContent=g?'Änderungen gelten ab':'Gruppe besteht seit';
-  document.getElementById('groupInfo').innerHTML=g?'Neue Mitglieder zählen <b>ab</b> diesem Datum mit, entfernte nur noch <b>bis</b> zu diesem Datum. Frühere Monate bleiben unverändert.'
-    :'Besteht die Gruppe schon länger, trag das echte Startdatum ein. Dann stimmen auch die früheren Monate.';
+  gCustom=false; E.gdate.value=today(); syncDates(fG);
+  document.getElementById('gDateLabel').textContent=g?'Änderungen gelten ab':'Alle Mitglieder zählen ab';
+  document.getElementById('gDateF').classList.toggle('hide',!g);
+  document.getElementById('groupInfo').innerHTML=g?'Neue Mitglieder zählen <b>ab</b> diesem Datum mit, entfernte nur noch <b>bis</b> zu diesem Datum. Frühere Monate bleiben unverändert. Hakst du jemanden neu an, wird sein Einstieg vorgeschlagen.':'';
+  document.getElementById('groupInfo').classList.toggle('hide',!g);
+  gAutoInfo();
   document.getElementById('btnDissolve').classList.toggle('hide',!g);
   document.getElementById('btnDelGroup').classList.toggle('hide',!g);
   openDlg(dG); if(!g) setTimeout(function(){E.gname.focus();},50);
 }
-fG.elements.glang.addEventListener('change',function(){document.getElementById('memberChecks').innerHTML=''; renderMemberChecks(gEdit?findGroup(gEdit):null);});
+var gCustom=false;
+function startOf(sid){var st=find(sid); return st&&st.start?st.start:today();}
+// Neue Gruppe: jedes Mitglied zählt ab seinem eigenen Einstieg (Vorschlag), auf Wunsch ein gemeinsames Datum
+function gAutoInfo(){
+  var box=document.getElementById('gAuto');
+  if(gEdit||gCustom){box.classList.add('hide');return;}
+  var ck=[].map.call(fG.querySelectorAll('input[name=gm]:checked'),function(i){return i.value;});
+  box.classList.remove('hide');
+  box.innerHTML=(ck.length?'Jeder zählt ab seinem Einstieg: '+ck.map(function(id){var st=find(id);return '<b>'+esc(st.name.split(' ')[0])+'</b> ab '+fmtDate(st.start);}).join(', ')+'.'
+    :'Hak die Schüler an. Jeder zählt dann automatisch ab seinem Einstieg zur Gruppe.')+
+    '<br><button type="button" class="link" id="gCustomBtn" style="padding-left:0">Anderes Datum wählen</button> <span class="small">(z. B. wenn jemand erst später in die Gruppe gewechselt ist)</span>';
+}
+document.getElementById('gAuto').addEventListener('click',function(e){
+  if(e.target.id!=='gCustomBtn') return;
+  gCustom=true; var ck=[].map.call(fG.querySelectorAll('input[name=gm]:checked'),function(i){return startOf(i.value);});
+  fG.elements.gdate.value=ck.length?ck.sort().pop():today(); syncDates(fG);
+  document.getElementById('gDateF').classList.remove('hide'); gAutoInfo();
+});
+document.getElementById('memberChecks').addEventListener('change',function(e){
+  if(e.target.name!=='gm') return;
+  if(!gEdit){ gAutoInfo(); return; }
+  // Bestehende Gruppe: beim neu Anhaken den Einstieg des Schülers vorschlagen (frühestens Gruppenbeginn)
+  var g=findGroup(gEdit), isNew=e.target.checked && !g.members.some(function(m){return m.sid===e.target.value&&!m.to;});
+  if(isNew){ var gs=g.members.reduce(function(a,m){return !a||m.from<a?m.from:a;},''), sd=startOf(e.target.value);
+    fG.elements.gdate.value=sd>gs?sd:gs; syncDates(fG); }
+});
+fG.elements.glang.addEventListener('change',function(){document.getElementById('memberChecks').innerHTML=''; renderMemberChecks(gEdit?findGroup(gEdit):null); gAutoInfo();});
 fG.addEventListener('submit',function(e){
   e.preventDefault();
   var E=fG.elements, err=document.getElementById('errGroup'), name=E.gname.value.trim(), d=E.gdate.value;
   var ck=[].map.call(fG.querySelectorAll('input[name=gm]:checked'),function(i){return i.value;});
   if(!name){err.textContent='Bitte einen Namen für die Gruppe eintragen.';return;}
-  if(!d){err.textContent='Bitte das Datum als TT.MM.JJJJ eintragen.';return;}
+  if((gEdit||gCustom) && !d){err.textContent='Bitte das Datum als TT.MM.JJJJ eintragen.';return;}
   var g=gEdit?findGroup(gEdit):null;
   if(!g && ck.length<2){err.textContent='Eine Gruppe braucht mindestens zwei Schüler.';return;}
   S.groups=S.groups||[];
-  if(!g){ S.groups.push({id:uid(),name:name,lang:E.glang.value,dissolved:null,members:ck.map(function(sid){return {sid:sid,from:d,to:null};})}); }
+  if(!g){ S.groups.push({id:uid(),name:name,lang:E.glang.value,dissolved:null,members:ck.map(function(sid){return {sid:sid,from:gCustom?d:startOf(sid),to:null};})}); }
   else{
     g.name=name;
     var open=g.members.filter(function(m){return !m.to;}), openIds=open.map(function(m){return m.sid;});
