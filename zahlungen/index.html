@@ -157,6 +157,36 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .cal-g button.today{box-shadow:inset 0 0 0 1.5px var(--aqua);font-weight:700}
 .cal-g button.sel{background:var(--ink);color:#fff}
 .cal-f{display:flex;justify-content:space-between;margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+/* Statistik */
+.sctl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.sctl .filters{flex:none}
+.chartcard{padding:18px 18px 12px}
+.chart-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.chart-h h2{margin:0}
+.legend{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:14px;margin:4px 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:12px;height:12px;border-radius:3px;flex:none}
+.legend b{font-variant-numeric:tabular-nums}
+.chartbox{position:relative;width:100%}
+.chartbox svg{display:block;width:100%;overflow:visible}
+.chartbox .ax{font-size:12px;fill:var(--muted);font-family:inherit;font-variant-numeric:tabular-nums}
+.ctip{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(14,27,77,.16);padding:10px 12px;font-size:13px;min-width:160px;opacity:0;transition:opacity .12s;z-index:5}
+.ctip.on{opacity:1}
+.ctip .tt{font-weight:600;color:var(--muted);margin-bottom:6px}
+.ctip .tr{display:flex;align-items:center;gap:8px;margin-top:3px}
+.ctip .tr i{width:12px;height:3px;border-radius:2px;flex:none}
+.ctip .tr b{font-variant-numeric:tabular-nums;margin-left:auto;padding-left:12px}
+.ctip .tr.sum{border-top:1px solid var(--line);margin-top:6px;padding-top:6px}
+.hbars .hb{display:grid;grid-template-columns:minmax(90px,170px) 1fr auto;gap:12px;align-items:center;padding:7px 0}
+.hbars .hb .nm{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbars .hb .tk{height:14px;background:var(--porc);border-radius:4px;overflow:hidden}
+.hbars .hb .tk i{display:block;height:100%;background:var(--cobalt);border-radius:0 4px 4px 0;min-width:2px}
+.hbars .hb .vl{font-size:14px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.hbars .hb .vl small{color:var(--muted);margin-left:6px}
+.stbl{margin-top:10px;max-height:340px;overflow:auto;border-top:1px solid var(--line)}
+.stbl table{font-size:14px}
+.tile .val.up{color:var(--ok)} .tile .val.down{color:var(--red)}
+@media (max-width:640px){.sctl{flex-direction:column;align-items:stretch}.sctl .filters{width:100%}.sctl .filters button{flex:1}.hbars .hb{grid-template-columns:100px 1fr auto;gap:8px}.hbars .hb .nm{white-space:normal;font-size:13px;line-height:1.25}}
 /* Schülerkarten */
 .stools{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
 .filters{display:flex;gap:4px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;overflow-x:auto;max-width:100%}
@@ -180,6 +210,7 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .sc-id h3{margin:0 0 4px;font-size:18px;line-height:1.2;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc-pills{display:flex;gap:6px;flex-wrap:wrap}
 .sc-pills .pill{font-size:12px;padding:2px 9px}
+.sc-country{font-size:12px;color:var(--muted);align-self:center}
 .sc-tools{display:flex;gap:2px;align-self:flex-start}
 .ib{width:34px;height:34px;border-radius:50%;border:0;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center}
 .ib:hover{background:var(--porc);color:var(--ink)}
@@ -238,6 +269,7 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
       <a href="#uebersicht" data-tab="uebersicht">Übersicht</a>
       <a href="#schueler" data-tab="schueler">Schüler</a>
       <a href="#faellig" data-tab="faellig">Fälligkeiten</a>
+      <a href="#statistik" data-tab="statistik">Statistik</a>
     </nav>
     <button class="iconbtn" id="btnSettings" title="Einstellungen und Sicherung" aria-label="Einstellungen und Sicherung">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -261,6 +293,8 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
     </select></label>
     <label class="f"><span>Einstieg (erste Stunde)</span><input type="hidden" name="start"><input type="text" class="dinp" data-for="start" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
   </div>
+  <label class="f"><span>Herkunftsland</span><input type="text" name="country" list="countryList" autocomplete="off" placeholder="z. B. Deutschland"></label>
+  <datalist id="countryList"></datalist>
   <div class="f"><span>Abrechnung</span>
     <div class="seg">
       <label><input type="radio" name="type" value="monat" checked>Monatlich</label>
@@ -508,7 +542,7 @@ function currentPayStatus(st){
 /* ---------- Ansichten ---------- */
 var app=document.getElementById('app');
 var viewYm=ymOf(today());
-function tab(){var h=(location.hash||'#uebersicht').slice(1);return ['uebersicht','schueler','faellig'].indexOf(h)>=0?h:'uebersicht';}
+function tab(){var h=(location.hash||'#uebersicht').slice(1);return ['uebersicht','schueler','faellig','statistik'].indexOf(h)>=0?h:'uebersicht';}
 
 function banners(){
   var h='';
@@ -601,7 +635,7 @@ function initials(n){var p=n.trim().split(/\s+/);return ((p[0]||'')[0]+(p.length
 function studentCard(st){
   var ps=currentPayStatus(st), m=st.type==='monat', h='<article class="scard st-'+st.status+'">';
   h+='<div class="sc-top"><span class="ava">'+esc(initials(st.name))+'</span><div class="sc-id"><h3 title="'+esc(st.name)+'">'+esc(st.name)+'</h3><div class="sc-pills">'+
-    '<span class="pill '+st.status+'">'+STATUS[st.status]+'</span>'+(ps?'<span class="pill '+ps+'">'+(ps==='bezahlt'?'✓ bezahlt':'offen')+'</span>':'')+'</div></div>'+
+    '<span class="pill '+st.status+'">'+STATUS[st.status]+'</span>'+(ps?'<span class="pill '+ps+'">'+(ps==='bezahlt'?'✓ bezahlt':'offen')+'</span>':'')+(st.country?'<span class="sc-country">'+esc(st.country)+'</span>':'')+'</div></div>'+
     '<div class="sc-tools"><button class="ib" data-act="edit" data-id="'+st.id+'" title="Bearbeiten" aria-label="Bearbeiten">'+IC_EDIT+'</button>'+
     '<button class="ib del" data-act="del" data-id="'+st.id+'" title="Löschen" aria-label="Löschen">'+IC_DEL+'</button></div></div>';
   var amt={}, tot, per, rh, mins={};
@@ -624,7 +658,7 @@ function studentCard(st){
 }
 function gridHtml(){
   var o={aktiv:0,bald:1,pausiert:2}, q=stQuery.trim().toLowerCase();
-  var list=S.students.filter(function(s){return (stFilter==='alle'||s.status===stFilter)&&(!q||s.name.toLowerCase().indexOf(q)>=0||s.langs.join(' ').toLowerCase().indexOf(q)>=0);})
+  var list=S.students.filter(function(s){return (stFilter==='alle'||s.status===stFilter)&&(!q||s.name.toLowerCase().indexOf(q)>=0||s.langs.join(' ').toLowerCase().indexOf(q)>=0||(s.country||'').toLowerCase().indexOf(q)>=0);})
     .sort(function(a,b){return (o[a.status]-o[b.status])||a.name.localeCompare(b.name,'de');});
   return list.length?list.map(studentCard).join(''):'<p class="snone">Keine Schüler gefunden.</p>';
 }
@@ -693,10 +727,179 @@ function render(){
   document.querySelectorAll('nav.tabs a').forEach(function(a){a.classList.toggle('on',a.dataset.tab===t);});
   var h=banners();
   if(!S.students.length) h+=emptyState();
-  else h+= t==='schueler'?renderStudents(): t==='faellig'?renderDue(): renderOverview();
+  else h+= t==='schueler'?renderStudents(): t==='faellig'?renderDue(): t==='statistik'?renderStats(): renderOverview();
   app.innerHTML=h;
+  if(t==='statistik' && S.students.length) drawStats();
 }
 window.addEventListener('hashchange',function(){render();window.scrollTo(0,0);});
+
+/* ---------- Statistik ---------- */
+var COUNTRIES=['Deutschland','Österreich','Schweiz','Bosnien und Herzegowina','Kroatien','Serbien','Montenegro','Slowenien','Nordmazedonien','Türkei','Libanon','Ägypten','Jordanien','Marokko','Tunesien','Vereinigtes Königreich','Irland','USA','Kanada','Niederlande','Belgien','Luxemburg','Frankreich','Italien','Spanien','Schweden','Norwegen','Dänemark','Polen'];
+function countryOptions(){var set=COUNTRIES.slice(); S.students.forEach(function(s){if(s.country&&set.indexOf(s.country)<0) set.push(s.country);}); return set;}
+// feste Farben je Sprache (validierte Reihenfolge, nie neu verteilt)
+var PAL=['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#6250d6','#e34948'];
+var LANG_SLOT={Deutsch:0,Bosnisch:1,Arabisch:2};
+function langColors(){
+  var map={}, used={0:1,1:1,2:1}, extra=[];
+  Object.keys(LANG_SLOT).forEach(function(l){map[l]=PAL[LANG_SLOT[l]];});
+  S.students.forEach(function(s){s.langs.forEach(function(l){if(!(l in map)&&extra.indexOf(l)<0) extra.push(l);});});
+  extra.sort(function(a,b){return a.localeCompare(b,'de');}).forEach(function(l,k){map[l]=k+3<PAL.length-1?PAL[k+3]:'#8A93B0';});
+  return map;
+}
+var SV={mode:'monat',range:1,split:'zus',basis:'soll',table:false};
+var MON_S=['Jan.','Feb.','März','Apr.','Mai','Juni','Juli','Aug.','Sep.','Okt.','Nov.','Dez.'];
+function statMonths(){
+  var first=null; S.students.forEach(function(s){if(s.start&&s.status!=='bald'){var y=ymOf(s.start); if(!first||y<first) first=y;}
+    (s.lessons||[]).forEach(function(l){var y=ymOf(l.date); if(!first||y<first) first=y;});});
+  var cur=ymOf(today()); if(!first||first>cur) first=cur;
+  var out=[], ym=first, g=0; while(ym<=cur&&g++<600){out.push(ym); ym=ymAdd(ym,1);} return out;
+}
+// Werte eines Monats: gesamt, je Sprache, je Land, zahlende Schüler
+function monthAgg(ym,basis){
+  var r={tot:0,langs:{},countries:{},studs:{}};
+  S.students.forEach(function(st){
+    monthItems(st,ym).forEach(function(i){
+      if(basis==='paid' && !i.paid) return;
+      r.tot+=i.amount;
+      i.split.forEach(function(x){r.langs[x.lang]=(r.langs[x.lang]||0)+x.rev;});
+      var c=st.country||'Ohne Angabe'; r.countries[c]=(r.countries[c]||0)+i.amount;
+      if(i.amount>0) r.studs[st.id]=c;
+    });
+  });
+  return r;
+}
+function windowMonths(all){
+  var cur=ymOf(today()), n=SV.range;
+  if(!n) return {sel:all,prev:[]};
+  var from = SV.mode==='jahr' ? (parts(cur)[0]-n+1)+'-01' : ymAdd(cur,-(n*12-1));
+  var len = SV.mode==='jahr' ? null : n*12;
+  var sel=all.filter(function(m){return m>=from;});
+  var pFrom = SV.mode==='jahr' ? (parts(cur)[0]-2*n+1)+'-01' : ymAdd(from,-len);
+  var pTo = SV.mode==='jahr' ? (parts(cur)[0]-n)+'-'+pad(parts(cur)[1]) : ymAdd(from,-1);
+  // Vergleich nur, wenn der Zeitraum davor vollständig in deinen Daten liegt
+  var prev=pFrom>=all[0]?all.filter(function(m){return m>=pFrom&&m<=pTo;}):null;
+  return {sel:sel.length?sel:[cur],prev:prev,from:from};
+}
+function moneyC(n){try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:S.currency,notation:'compact',maximumFractionDigits:1}).format(n).replace('BAM','KM');}catch(e){return money(n);}}
+var statCache=null;
+function computeStats(){
+  var all=statMonths(), w=windowMonths(all), agg={};
+  all.forEach(function(m){agg[m]=monthAgg(m,SV.basis);});
+  var colors=langColors();
+  // Perioden
+  var periods=[];
+  if(SV.mode==='monat') w.sel.forEach(function(m){periods.push({key:m,label:MON_S[parts(m)[1]-1]+' '+parts(m)[0],months:[m]});});
+  else{var ys={}; w.sel.forEach(function(m){var y=m.slice(0,4); (ys[y]=ys[y]||[]).push(m);});
+    Object.keys(ys).sort().forEach(function(y){var cur=y===String(parts(today())[0]); periods.push({key:y,label:y+(cur?' (bis heute)':''),months:ys[y]});});}
+  var langTot={}, totSel=0;
+  periods.forEach(function(p){p.tot=0;p.langs={};p.months.forEach(function(m){var a=agg[m]; p.tot+=a.tot; for(var l in a.langs){p.langs[l]=(p.langs[l]||0)+a.langs[l];}});
+    totSel+=p.tot; for(var l in p.langs) langTot[l]=(langTot[l]||0)+p.langs[l];});
+  var langs=Object.keys(langTot).filter(function(l){return langTot[l]>0.004;}).sort(function(a,b){
+    var sa=(a in LANG_SLOT)?LANG_SLOT[a]:9, sb=(b in LANG_SLOT)?LANG_SLOT[b]:9; return sa-sb||a.localeCompare(b,'de');});
+  var prevTot=null; if(w.prev&&w.prev.length&&SV.range){prevTot=0; w.prev.forEach(function(m){prevTot+=agg[m].tot;});}
+  // Länder im Zeitraum
+  var cRev={}, cStud={};
+  w.sel.forEach(function(m){var a=agg[m]; for(var c in a.countries) cRev[c]=(cRev[c]||0)+a.countries[c]; for(var id in a.studs){(cStud[a.studs[id]]=cStud[a.studs[id]]||{})[id]=1;}});
+  var best=null; periods.forEach(function(p){if(p.tot>0&&(!best||p.tot>best.tot)) best=p;});
+  var activeMonths=w.sel.filter(function(m){return m>=all[0];}).length;
+  statCache={periods:periods,langs:langs,langTot:langTot,colors:colors,tot:totSel,prevTot:prevTot,best:best,avg:activeMonths?totSel/activeMonths:0,
+    cRev:cRev,cStud:cStud,first:all[0]};
+  return statCache;
+}
+function seg(key,opts){return '<div class="filters" role="group">'+opts.map(function(o){return '<button data-act="sv" data-k="'+key+'" data-v="'+o[0]+'" class="'+(String(SV[key])===String(o[0])?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>';}
+function renderStats(){
+  var d=computeStats();
+  var h='<div class="head"><div><h1>Statistik</h1><p class="sub">So entwickeln sich deine Umsätze'+(d.first?' · Daten seit '+fmtYm(d.first):'')+'</p></div></div>';
+  h+='<div class="sctl">'+seg('mode',[['monat','Monat für Monat'],['jahr','Jahr für Jahr']])+
+    seg('range',[[1,'1 J.'],[2,'2 J.'],[3,'3 J.'],[5,'5 J.'],[0,'Insgesamt']])+
+    seg('split',[['zus','Zusammen'],['lang','Nach Sprachen']])+
+    seg('basis',[['soll','Vereinbart'],['paid','Eingegangen']])+'</div>';
+  var ch=null; if(d.prevTot!=null&&d.prevTot>0) ch=(d.tot-d.prevTot)/d.prevTot*100;
+  var rl=SV.range?(SV.mode==='jahr'?(SV.range===1?'dieses Jahr':'letzte '+SV.range+' Kalenderjahre'):(SV.range===1?'letzte 12 Monate':'letzte '+SV.range*12+' Monate')):'insgesamt';
+  h+='<div class="grid tiles" style="margin-bottom:14px">'+
+    tile('Umsatz im Zeitraum',money(d.tot),rl+(SV.basis==='paid'?' · nur eingegangen':''),'dark')+
+    tile('Ø pro Monat',money(d.avg),'über die Monate im Zeitraum')+
+    '<div class="card tile"><div class="lab">Veränderung</div><div class="val '+(ch==null?'':ch>=0?'up':'down')+'">'+(ch==null?'–':(ch>=0?'+':'')+num(ch,0)+' %')+'</div><div class="hint">'+(ch==null?'kein Vergleichszeitraum':'zum gleich langen Zeitraum davor ('+money(d.prevTot)+')')+'</div></div>'+
+    tile(SV.mode==='jahr'?'Bestes Jahr':'Bester Monat',d.best?money(d.best.tot):'–',d.best?d.best.label:'—')+
+  '</div>';
+  h+='<div class="card chartcard"><div class="chart-h"><h2>Umsatz '+(SV.mode==='jahr'?'pro Jahr':'pro Monat')+'</h2>'+
+    '<button class="link" data-act="svtable">'+(SV.table?'Tabelle ausblenden':'Als Tabelle anzeigen')+'</button></div>';
+  if(SV.split==='lang') h+='<div class="legend">'+d.langs.map(function(l){return '<span><i style="background:'+d.colors[l]+'"></i>'+esc(l)+' <b>'+money(d.langTot[l])+'</b><small class="muted">'+(d.tot?num(d.langTot[l]/d.tot*100,0)+' %':'')+'</small></span>';}).join('')+'</div>';
+  h+='<div class="chartbox" id="chartbox"><div class="ctip" id="ctip"></div></div>';
+  if(SV.table) h+='<div class="stbl"><table><thead><tr><th>Zeitraum</th>'+(SV.split==='lang'?d.langs.map(function(l){return '<th class="num">'+esc(l)+'</th>';}).join(''):'')+'<th class="num">Gesamt</th></tr></thead><tbody>'+
+    d.periods.slice().reverse().map(function(p){return '<tr><td>'+esc(p.label)+'</td>'+(SV.split==='lang'?d.langs.map(function(l){return '<td class="num">'+money(p.langs[l]||0)+'</td>';}).join(''):'')+'<td class="num"><b>'+money(p.tot)+'</b></td></tr>';}).join('')+'</tbody></table></div>';
+  h+='</div>';
+  // Länder
+  var cs=Object.keys(d.cRev).sort(function(a,b){return d.cRev[b]-d.cRev[a];});
+  var cn=Object.keys(d.cStud).map(function(c){return [c,Object.keys(d.cStud[c]).length];}).sort(function(a,b){return b[1]-a[1]||a[0].localeCompare(b[0],'de');});
+  var nStud=cn.reduce(function(a,x){return a+x[1];},0);
+  var hb=function(rows,max,fmt,total){return rows.length?'<div class="hbars">'+rows.map(function(r){return '<div class="hb"><span class="nm" title="'+esc(r[0])+'">'+esc(r[0])+'</span><span class="tk"><i style="width:'+(max?r[1]/max*100:0)+'%;'+(r[0]==='Ohne Angabe'?'background:var(--aqua)':'')+'"></i></span><span class="vl">'+fmt(r[1])+'<small>'+(total?num(r[1]/total*100,0)+' %':'')+'</small></span></div>';}).join('')+'</div>':'<p class="muted">Keine Daten im Zeitraum.</p>';};
+  h+='<div class="grid two"><div class="card"><h2>Schüler nach Herkunft</h2><p class="sub small" style="margin:-8px 0 8px">Schüler mit Umsatz im Zeitraum ('+nStud+')</p>'+
+    hb(cn,cn.length?cn[0][1]:0,function(v){return v+(v===1?' Schüler':' Schüler');},nStud)+'</div>'+
+    '<div class="card"><h2>Umsatz nach Herkunft</h2><p class="sub small" style="margin:-8px 0 8px">'+rl+'</p>'+
+    hb(cs.map(function(c){return [c,d.cRev[c]];}),cs.length?d.cRev[cs[0]]:0,money,d.tot)+'</div></div>';
+  if(cs.indexOf('Ohne Angabe')>=0) h+='<p class="small muted" style="margin-top:10px">„Ohne Angabe“: Bei diesen Schülern ist noch kein Herkunftsland eingetragen – über den Stift auf der Schülerkarte nachtragen.</p>';
+  return h;
+}
+function niceStep(x){var p=Math.pow(10,Math.floor(Math.log10(x))), f=x/p; return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p;}
+function drawStats(){
+  var d=statCache, box=document.getElementById('chartbox'); if(!d||!box) return;
+  var W=Math.max(300,box.clientWidth), H=W<560?240:300, L=W<560?52:64, R=8, T=12, B=34;
+  var P=d.periods, n=P.length, series=SV.split==='lang'?d.langs.map(function(l){return {name:l,color:d.colors[l],v:P.map(function(p){return p.langs[l]||0;})};})
+    :[{name:'Umsatz',color:'#1D3A9A',v:P.map(function(p){return p.tot;})}];
+  var max=Math.max.apply(null,P.map(function(p){return p.tot;}).concat([0]));
+  var step=max>0?niceStep(max/4):1, top=Math.max(step,Math.ceil(max/step)*step);
+  var pw=W-L-R, ph=H-T-B, band=pw/n, bw=Math.max(2,Math.min(band*(n>40?0.78:0.66),56));
+  var y=function(v){return T+ph-(v/top)*ph;};
+  var s='<svg viewBox="0 0 '+W+' '+H+'" height="'+H+'" role="img" aria-label="Umsatzentwicklung">';
+  for(var t=0;t<=top+1e-9;t+=step){var yy=Math.round(y(t))+.5;
+    s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+yy+'" y2="'+yy+'" stroke="'+(t===0?'#C9D1E6':'#E8ECF5')+'" stroke-width="1"/>'+
+       '<text class="ax" x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end">'+esc(moneyC(t))+'</text>';}
+  s+='<rect id="hov" x="0" y="'+T+'" width="'+band+'" height="'+ph+'" fill="#EEF2FB" opacity="0" rx="6"/>';
+  P.forEach(function(p,i){
+    var x=L+i*band+(band-bw)/2, base=T+ph, segs=series.map(function(se){return {c:se.color,v:se.v[i]};}).filter(function(g){return g.v>0;});
+    segs.forEach(function(g,k){
+      var hgt=g.v/top*ph, last=k===segs.length-1, yTop=base-hgt, hh=last?hgt:Math.max(0,hgt-2);
+      if(hh<=0){base-=hgt;return;}
+      if(last){var r=Math.min(4,bw/2,hh);
+        s+='<path d="M'+x+' '+base+'V'+(yTop+r)+'Q'+x+' '+yTop+' '+(x+r)+' '+yTop+'H'+(x+bw-r)+'Q'+(x+bw)+' '+yTop+' '+(x+bw)+' '+(yTop+r)+'V'+base+'Z" fill="'+g.c+'"/>';}
+      else s+='<rect x="'+x+'" y="'+(base-hh)+'" width="'+bw+'" height="'+hh+'" fill="'+g.c+'"/>';
+      base-=hgt;
+    });
+  });
+  // x-Beschriftung
+  var maxLab=Math.max(1,Math.floor(pw/(SV.mode==='jahr'?60:46))), every=Math.ceil(n/maxLab);
+  P.forEach(function(p,i){ if((n-1-i)%every) return;
+    var cx=L+i*band+band/2, lab=SV.mode==='jahr'?p.key:MON_S[parts(p.key)[1]-1], sub=SV.mode==='monat'&&(parts(p.key)[1]===1||i===0||every>=12)?p.key.slice(0,4):'';
+    if(SV.mode==='monat'&&every>=12){lab=p.key.slice(0,4);sub='';}
+    s+='<text class="ax" x="'+cx+'" y="'+(H-B+16)+'" text-anchor="middle">'+esc(lab)+'</text>'+(sub?'<text class="ax" x="'+cx+'" y="'+(H-B+30)+'" text-anchor="middle" style="font-weight:600">'+sub+'</text>':'');
+  });
+  s+='<rect id="hit" x="'+L+'" y="'+T+'" width="'+pw+'" height="'+ph+'" fill="transparent"/></svg>';
+  var tip=document.getElementById('ctip'); box.innerHTML=s; box.appendChild(tip);
+  var svg=box.querySelector('svg'), hov=svg.getElementById?svg.querySelector('#hov'):null;
+  function show(i){
+    if(i<0||i>=n){tip.classList.remove('on');hov.setAttribute('opacity',0);return;}
+    hov.setAttribute('x',L+i*band); hov.setAttribute('opacity',1);
+    tip.textContent='';
+    var tt=document.createElement('div'); tt.className='tt'; tt.textContent=P[i].label; tip.appendChild(tt);
+    var rows=SV.split==='lang'?series.slice().reverse():series;
+    rows.forEach(function(se){var r=document.createElement('div'); r.className='tr';
+      var k=document.createElement('i'); k.style.background=se.color; r.appendChild(k);
+      var nm=document.createElement('span'); nm.textContent=se.name; r.appendChild(nm);
+      var v=document.createElement('b'); v.textContent=money(se.v[i]); r.appendChild(v); tip.appendChild(r);});
+    if(SV.split==='lang'){var r=document.createElement('div'); r.className='tr sum'; var nm=document.createElement('span'); nm.textContent='Gesamt'; r.appendChild(nm);
+      var v=document.createElement('b'); v.textContent=money(P[i].tot); r.appendChild(v); tip.appendChild(r);}
+    tip.classList.add('on');
+    var sc=box.clientWidth/W, cx=(L+i*band+band/2)*sc, tw=tip.offsetWidth;
+    var left=cx+14; if(left+tw>box.clientWidth) left=cx-14-tw; if(left<0) left=4;
+    tip.style.left=left+'px'; tip.style.top='8px';
+  }
+  function idx(e){var rc=svg.getBoundingClientRect(), x=(e.clientX-rc.left)/rc.width*W; return Math.floor((x-L)/band);}
+  svg.addEventListener('pointermove',function(e){show(idx(e));});
+  svg.addEventListener('pointerdown',function(e){show(idx(e));});
+  svg.addEventListener('pointerleave',function(){show(-1);});
+}
+var rzT; window.addEventListener('resize',function(){clearTimeout(rzT); rzT=setTimeout(function(){if(tab()==='statistik') drawStats();},120);});
 
 /* ---------- Toast ---------- */
 var toastEl=document.getElementById('toast'),toastT,undoFn=null;
@@ -839,7 +1042,8 @@ function openStudent(st){
   document.getElementById('langChecks').innerHTML=langs.filter(function(l){return BASE_LANGS.indexOf(l)>=0||sel.indexOf(l)>=0;})
     .map(function(l){return '<label class="chk"><input type="checkbox" name="lang" value="'+esc(l)+'"'+(sel.indexOf(l)>=0?' checked':'')+'> '+esc(l)+'</label>';}).join('');
   var E=fS.elements;
-  E.name.value=st?st.name:''; E.otherLangs.value='';
+  E.name.value=st?st.name:''; E.otherLangs.value=''; E.country.value=st&&st.country?st.country:'';
+  document.getElementById('countryList').innerHTML=countryOptions().map(function(c){return '<option value="'+esc(c)+'">';}).join('');
   E.status.value=st?st.status:'aktiv';
   E.start.value=st?st.start:today(); syncDates(fS);
   fS.querySelector('input[name=type][value='+(st?st.type:'monat')+']').checked=true;
@@ -883,6 +1087,7 @@ fS.addEventListener('submit',function(e){
   if(!st){st={id:uid(),pauses:[],paid:{},lessons:[]};}
   var oldStatus=st.status, oldType=st.type, t=today();
   var changed=partsChanged();
+  var cn=E.country.value.trim(); st.country=cn?cn.charAt(0).toUpperCase()+cn.slice(1):'';
   st.name=name; st.langs=langs; st.status=E.status.value; st.start=E.start.value; st.type=type;
   st.minutes=+vals[langs[0]].min||60;
   st.durations={}; langs.forEach(function(l){st.durations[l]=+vals[l].min||60;});
@@ -975,12 +1180,12 @@ function demo(){
   var t=today(), d=function(n){return addDays(t,n);};
   var m=function(off,day){var ym=ymAdd(ymOf(t),off);return ym+'-'+pad(Math.min(day,daysIn(ym)));};
   var s=[
-    {name:'Lea Hoffmann',langs:['Arabisch'],status:'aktiv',start:m(-4,parts(d(-3))[2]),type:'monat',fee:160,perMonth:4,minutes:60},
-    {name:'Jonas Weber',langs:['Bosnisch'],status:'aktiv',start:m(-3,parts(d(4))[2]),type:'monat',fee:90,perMonth:2,minutes:60},
-    {name:'Sara Novak',langs:['Arabisch','Deutsch'],status:'aktiv',start:m(-6,parts(d(-12))[2]),type:'monat',fee:240,perMonth:8,minutes:45},
-    {name:'Mira Kovač',langs:['Deutsch'],status:'aktiv',start:m(-2,1),type:'stunde',price:35,minutes:60},
-    {name:'Tom Becker',langs:['Arabisch'],status:'bald',start:d(10),type:'monat',fee:160,perMonth:4,minutes:60},
-    {name:'Elif Yılmaz',langs:['Bosnisch'],status:'pausiert',start:m(-5,parts(d(-20))[2]),type:'monat',fee:120,perMonth:4,minutes:45}
+    {name:'Lea Hoffmann',country:'Deutschland',langs:['Arabisch'],status:'aktiv',start:m(-14,parts(d(-3))[2]),type:'monat',fee:160,perMonth:4,minutes:60},
+    {name:'Jonas Weber',country:'Österreich',langs:['Bosnisch'],status:'aktiv',start:m(-3,parts(d(4))[2]),type:'monat',fee:90,perMonth:2,minutes:60},
+    {name:'Sara Novak',country:'Deutschland',langs:['Arabisch','Deutsch'],status:'aktiv',start:m(-22,parts(d(-12))[2]),type:'monat',fee:240,perMonth:8,minutes:45},
+    {name:'Mira Kovač',country:'Bosnien und Herzegowina',langs:['Deutsch'],status:'aktiv',start:m(-2,1),type:'stunde',price:35,minutes:60},
+    {name:'Tom Becker',country:'Schweiz',langs:['Arabisch'],status:'bald',start:d(10),type:'monat',fee:160,perMonth:4,minutes:60},
+    {name:'Elif Yılmaz',country:'Türkei',langs:['Bosnisch'],status:'pausiert',start:m(-30,parts(d(-20))[2]),type:'monat',fee:120,perMonth:4,minutes:45}
   ].map(function(x){x.id=uid();x.pauses=[];x.paid={};x.lessons=[];
     if(x.type==='monat'){
       x.parts=x.name==='Sara Novak'?[{lang:'Arabisch',fee:160,perMonth:5},{lang:'Deutsch',fee:80,perMonth:3}]:[{lang:x.langs[0],fee:x.fee,perMonth:x.perMonth}];
@@ -1015,7 +1220,9 @@ app.addEventListener('click',function(e){
   else if(a==='payall'){var ra=dueState(st), its=ra.open.slice(); its.forEach(function(i){payItem(st,i);}); save(); render();
       toast(its.length+' Zahlungen von '+st.name+' erhalten ('+money(ra.sum)+')',function(){its.forEach(function(i){unpayItem(st,i);});save();render();});}
   else if(a==='unpay'){var rr=dueState(st); if(rr.lastPaid){var li=rr.lastPaid; unpayItem(st,li); save(); render(); toast('Zahlung zurückgenommen');}}
-  else if(a==='filter'){stFilter=b.dataset.f; render();}
+  else if(a==='sv'){var k=b.dataset.k, v=b.dataset.v; SV[k]=k==='range'?+v:v; render();}
+  else if(a==='svtable'){SV.table=!SV.table; render();}
+    else if(a==='filter'){stFilter=b.dataset.f; render();}
   else if(a==='prev'){viewYm=ymAdd(viewYm,-1);render();}
   else if(a==='next'){viewYm=ymAdd(viewYm,1);render();}
   else if(a==='demo') demo();
