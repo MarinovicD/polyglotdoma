@@ -79,6 +79,17 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 .pill.bald{background:var(--blue-bg);color:var(--cobalt)}
 .pill.pausiert{background:#EEF0F5;color:var(--muted)}
 .pill.beendet{background:#EEF0F5;color:#7A84A6;text-decoration:none}
+.pill.grp{background:#F3ECE1;color:#7A5A2B}
+.glist{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.gitem{border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center}
+.gitem.off{background:var(--porc);color:var(--muted)}
+.gitem .gi{flex:1;min-width:0}
+.gitem b{display:block}
+.gitem small{color:var(--muted);font-size:13px}
+.mchecks{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:8px}
+.mchecks label{display:flex;gap:10px;align-items:center;padding:6px 8px;border-radius:9px;cursor:pointer}
+.mchecks label:hover{background:var(--porc)}
+.mchecks small{color:var(--muted);margin-left:auto;font-size:12px}
 .pill.bezahlt{background:var(--ok-bg);color:var(--ok)}
 .pill.offen{background:var(--red-bg);color:var(--red)}
 .pill.ueber{background:var(--red);color:#fff}
@@ -347,6 +358,32 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
   </div>
 </form></dialog>
 
+<!-- Gruppen -->
+<dialog id="dlgGroups"><div class="dlg">
+  <h2>Gruppen</h2>
+  <p class="sub" style="margin-top:-10px;font-size:14px">Schüler einer Gruppe zahlen weiter jeder für sich. Für Unterrichtsstunden, Minuten und „pro Unterrichtsstunde“ zählt eine Gruppenstunde aber nur einmal.</p>
+  <div class="glist" id="groupList"></div>
+  <div class="dlg-foot" style="justify-content:space-between">
+    <button type="button" class="btn" id="btnNewGroup">+ Neue Gruppe</button>
+    <button type="button" class="btn light" data-close>Fertig</button>
+  </div>
+</div></dialog>
+<dialog id="dlgGroup"><form class="dlg" id="formGroup" method="dialog" novalidate>
+  <h2 id="groupTitle">Neue Gruppe</h2>
+  <div class="row2">
+    <label class="f"><span>Name der Gruppe</span><input type="text" name="gname" autocomplete="off" placeholder="z. B. Arabisch Dienstag"></label>
+    <label class="f"><span>Sprache</span><select name="glang"></select></label>
+  </div>
+  <div class="f"><span>Mitglieder</span><div class="mchecks" id="memberChecks"></div></div>
+  <label class="f"><span id="gDateLabel">Gruppe besteht seit</span><input type="hidden" name="gdate"><input type="text" class="dinp" data-for="gdate" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
+  <div class="calc" id="groupInfo" style="margin-top:-4px"></div>
+  <p class="err" id="errGroup"></p>
+  <div class="dlg-foot" style="justify-content:space-between">
+    <span><button type="button" class="link red hide" id="btnDissolve">Gruppe auflösen</button><button type="button" class="link muted hide" id="btnDelGroup">ganz löschen</button></span>
+    <span style="display:flex;gap:8px"><button type="button" class="btn light" data-close>Abbrechen</button><button type="submit" class="btn">Speichern</button></span>
+  </div>
+</form></dialog>
+
 <!-- Bestätigen -->
 <dialog id="dlgConfirm"><div class="dlg">
   <h2 id="confirmTitle"></h2>
@@ -392,7 +429,7 @@ var BASE_LANGS=['Deutsch','Bosnisch','Arabisch'];
 var MONTHS=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 
 /* ---------- Speicher ---------- */
-function blank(){return {v:1,currency:'EUR',soonDays:7,students:[],demo:false,lastBackup:null};}
+function blank(){return {v:1,currency:'EUR',soonDays:7,students:[],groups:[],demo:false,lastBackup:null};}
 function load(){
   try{var raw=localStorage.getItem(KEY); if(!raw) return blank();
     return migrate(JSON.parse(raw));
@@ -487,6 +524,38 @@ function partsFor(st,ym){
 function durOf(st,l){return (st.durations&&st.durations[l])||st.minutes||60;}
 function monthItems(st,ym){return items(st,ym).filter(function(i){return i.ym===ym;});}
 
+/* ---------- Gruppen ----------
+   Gruppe: {id,name,lang,dissolved,members:[{sid,from,to}]} – Mitgliedschaft gilt von 'from' (einschließlich) bis 'to' (ausschließlich).
+   Abgerechnet wird weiter pro Schüler; nur für Stundenzahl und Minuten zählt eine Gruppenstunde einmal. */
+function memActiveOn(m,date){return m.from<=date && (!m.to || date<m.to);}
+function memInMonth(m,ym){return m.from<=ym+'-'+pad(daysIn(ym)) && (!m.to || m.to>ym+'-01');}
+function groupAdjust(ym){
+  var out={lessons:0,minutes:0,langs:{},groupLessons:0}, used={};
+  (S.groups||[]).forEach(function(g){
+    var L=g.lang, counted=0, countedMin=0, maxL=0, maxM=0, dates={}, n=0;
+    g.members.forEach(function(m){
+      if(!memInMonth(m,ym)) return;
+      var st=find(m.sid); if(!st || used[m.sid+'|'+L]) return;
+      var hit=false;
+      monthItems(st,ym).forEach(function(i){
+        if(i.kind==='monat'){
+          i.split.forEach(function(x){ if(x.lang===L && x.lessons>0){ hit=true; counted+=x.lessons; countedMin+=x.minutes; maxL=Math.max(maxL,x.lessons); maxM=Math.max(maxM,x.minutes);} });
+        }else if(i.split[0].lang===L && memActiveOn(m,i.due)){
+          hit=true; counted+=1; countedMin+=i.minutes; dates[i.due]=Math.max(dates[i.due]||0,i.minutes);
+        }
+      });
+      if(hit){used[m.sid+'|'+L]=1; n++;}
+    });
+    if(n<2) return;
+    var dl=Object.keys(dates), dMin=dl.reduce(function(a,d){return a+dates[d];},0);
+    var gl=Math.max(maxL,dl.length), gm=Math.max(maxM,dMin);
+    var dL=gl-counted, dM=gm-countedMin;
+    out.lessons+=dL; out.minutes+=dM; out.groupLessons+=gl;
+    var o=out.langs[L]||(out.langs[L]={lessons:0,minutes:0}); o.lessons+=dL; o.minutes+=dM;
+  });
+  return out;
+}
+function currentGroups(st){var t=today(); return (S.groups||[]).filter(function(g){return g.members.some(function(m){return m.sid===st.id&&memActiveOn(m,t);});});}
 function monthStats(ym){
   var r={rev:0,paid:0,open:0,lessons:0,minutes:0,payers:0,langs:{},per:[]};
   S.students.forEach(function(st){
@@ -504,6 +573,10 @@ function monthStats(ym){
     if(s.rev>0) r.payers++;
     r.per.push(s);
   });
+  // Gruppen: gemeinsame Stunden nur einmal zählen
+  var ga=groupAdjust(ym); r.groupLessons=ga.groupLessons;
+  r.lessons+=ga.lessons; r.minutes+=ga.minutes;
+  for(var L in ga.langs){ if(r.langs[L]){ r.langs[L].lessons+=ga.langs[L].lessons; r.langs[L].minutes+=ga.langs[L].minutes; } }
   r.open=r.rev-r.paid;
   r.per.sort(function(a,b){return b.rev-a.rev;});
   return r;
@@ -597,7 +670,7 @@ function renderOverview(){
     tile('Umsatz im Monat',money(r.rev),r.payers+' zahlende Schüler','dark')+
     tile('Schüler',act,'aktiv'+(bald?' · '+bald+' startet bald':'')+(pau?' · '+pau+' pausiert':''))+
     tile('Ø pro Schüler',r.payers?money(r.rev/r.payers):'–','Umsatz ÷ zahlende Schüler')+
-    tile('Unterrichtsstunden',num(r.lessons),r.minutes?mins(r.minutes)+' insgesamt':'—')+
+    tile('Unterrichtsstunden',num(r.lessons),(r.minutes?mins(r.minutes)+' insgesamt':'—')+(r.groupLessons?' · davon '+num(r.groupLessons)+' in Gruppen':''))+
     tile('Ø pro Unterrichtsstunde',r.lessons?money(r.rev/r.lessons):'–','je Termin, egal wie lang')+
     tile('Pro 60 Minuten',r.minutes?money(r.rev/r.minutes*60):'–','auf eine volle Stunde gerechnet')+
     '<div class="card tile" style="grid-column:span 2"><div class="lab">Abgerechnet</div>'+
@@ -664,8 +737,9 @@ function studentCard(st){
     tot=null; per='pro Stunde'; rh=mv2.every(function(v){return v===mv2[0];})?mv2[0]+' Min.':'';
     h+='<div class="sc-price"><b>'+money(lo)+(hi>lo?'–'+money(hi):'')+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';}
   if(m) h+='<div class="sc-price"><b>'+money(tot)+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';
+  var cg=currentGroups(st), grpOf=function(l){var g=cg.filter(function(x){return x.lang===l;})[0]; return g?' <span class="pill grp" style="font-size:12px;padding:1px 8px" title="Gruppenunterricht">Gruppe '+esc(g.name)+'</span>':'';};
   h+='<div class="sc-langs">'+st.langs.map(function(l){var f=FLAG[l];
-    return '<span class="lchip"><i'+(f?' style="background-image:url(../assets/img/flags/'+f+'.svg)"':'')+'></i>'+esc(l)+(st.langs.length>1?' <em>'+esc(amt[l])+'</em>':'')+'</span>';}).join('')+'</div>';
+    return '<span class="lchip"><i'+(f?' style="background-image:url(../assets/img/flags/'+f+'.svg)"':'')+'></i>'+esc(l)+(st.langs.length>1?' <em>'+esc(amt[l])+'</em>':'')+grpOf(l)+'</span>';}).join('')+'</div>';
   h+='<div class="sc-foot"><div><small>'+(st.status==='bald'?'Start':st.status==='beendet'?'Dabei':'Dabei seit')+'</small>'+fmtDate(st.start)+(st.status==='beendet'&&st.end?' – '+fmtDate(st.end):'')+'</div>'+
     '<div><small>'+(m?'Stichtag':'Stunden')+'</small>'+(m?'jeden '+parts(st.start)[2]+'.':(st.lessons||[]).length+' eingetragen')+'</div>'+
     (!m?'<button class="btn small light" data-act="lesson" data-id="'+st.id+'">+ Stunde</button>':'')+'</div>';
@@ -679,7 +753,7 @@ function gridHtml(){
 }
 function renderStudents(){
   var c=function(s){return S.students.filter(function(x){return x.status===s;}).length;};
-  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+c('aktiv')+' aktiv'+(c('beendet')?' · '+c('beendet')+' ehemalige':'')+'</p></div><button class="btn" data-act="add">+ Schüler hinzufügen</button></div>';
+  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+c('aktiv')+' aktiv'+(c('beendet')?' · '+c('beendet')+' ehemalige':'')+'</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn light" data-act="groups">Gruppen'+((S.groups||[]).filter(function(g){return !g.dissolved;}).length?' ('+(S.groups||[]).filter(function(g){return !g.dissolved;}).length+')':'')+'</button><button class="btn" data-act="add">+ Schüler hinzufügen</button></div></div>';
   h+='<div class="stools"><div class="filters">'+[['alle','Alle',S.students.length-c('beendet')],['aktiv','Aktiv',c('aktiv')],['bald','Startet bald',c('bald')],['pausiert','Pausiert',c('pausiert')],['beendet','Beendet',c('beendet')]]
     .filter(function(f){return f[0]==='alle'||f[0]==='aktiv'||f[2];})
     .map(function(f){return '<button data-act="filter" data-f="'+f[0]+'" class="'+(stFilter===f[0]?'on':'')+'">'+f[1]+'<span>'+f[2]+'</span></button>';}).join('')+'</div>'+
@@ -916,6 +990,97 @@ function drawStats(){
   svg.addEventListener('pointerleave',function(){show(-1);});
 }
 var rzT; window.addEventListener('resize',function(){clearTimeout(rzT); rzT=setTimeout(function(){if(tab()==='statistik') drawStats();},120);});
+
+/* ---------- Gruppen verwalten ---------- */
+var dGs=document.getElementById('dlgGroups'), dG=document.getElementById('dlgGroup'), fG=document.getElementById('formGroup'), gEdit=null;
+function findGroup(id){return (S.groups||[]).filter(function(g){return g.id===id;})[0]||null;}
+function activeMembers(g,date){return g.members.filter(function(m){return memActiveOn(m,date||today());});}
+function openGroups(){renderGroupList(); openDlg(dGs);}
+function renderGroupList(){
+  S.groups=S.groups||[];
+  var name=function(sid){var st=find(sid); return st?st.name:'(gelöscht)';};
+  var on=S.groups.filter(function(g){return !g.dissolved;}), off=S.groups.filter(function(g){return g.dissolved;});
+  var h=on.length?on.map(function(g){var am=activeMembers(g), since=g.members.reduce(function(a,m){return !a||m.from<a?m.from:a;},'');
+    return '<div class="gitem"><div class="gi"><b>'+esc(g.name)+' <span class="pill lang" style="font-size:12px">'+esc(g.lang)+'</span></b><small>'+
+      (am.length?am.map(function(m){return esc(name(m.sid));}).join(', '):'zurzeit keine Mitglieder')+' · seit '+fmtDate(since)+'</small></div>'+
+      '<button type="button" class="btn small light" data-gedit="'+g.id+'">Bearbeiten</button></div>';}).join('')
+    :'<p class="muted" style="margin:0">Noch keine Gruppen.</p>';
+  if(off.length) h+='<div class="small muted" style="margin-top:8px">Aufgelöst</div>'+off.map(function(g){var since=g.members.reduce(function(a,m){return !a||m.from<a?m.from:a;},'');
+    return '<div class="gitem off"><div class="gi"><b>'+esc(g.name)+' · '+esc(g.lang)+'</b><small>'+fmtDate(since)+' – '+fmtDate(g.dissolved)+' · '+
+      g.members.map(function(m){return esc(name(m.sid));}).filter(function(v,i,a){return a.indexOf(v)===i;}).join(', ')+'</small></div>'+
+      '<button type="button" class="link muted" data-gdel="'+g.id+'">ganz löschen</button></div>';}).join('');
+  document.getElementById('groupList').innerHTML=h;
+}
+document.getElementById('groupList').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.gedit) openGroup(findGroup(b.dataset.gedit));
+  if(b.dataset.gdel) delGroup(findGroup(b.dataset.gdel));
+});
+document.getElementById('btnNewGroup').addEventListener('click',function(){openGroup(null);});
+function renderMemberChecks(g){
+  var E=fG.elements, L=E.glang.value, cur=g?activeMembers(g,today()).map(function(m){return m.sid;}):[];
+  var list=S.students.filter(function(st){return cur.indexOf(st.id)>=0 || (st.langs.indexOf(L)>=0 && st.status!=='beendet');})
+    .sort(function(a,b){return a.name.localeCompare(b.name,'de');});
+  var keep={}; fG.querySelectorAll('input[name=gm]').forEach(function(i){keep[i.value]=i.checked;});
+  document.getElementById('memberChecks').innerHTML=list.length?list.map(function(st){
+    var ck=(st.id in keep)?keep[st.id]:cur.indexOf(st.id)>=0;
+    return '<label><input type="checkbox" name="gm" value="'+st.id+'"'+(ck?' checked':'')+'> '+esc(st.name)+'<small>'+(st.type==='monat'?'monatlich':'pro Stunde')+(st.status!=='aktiv'?' · '+STATUS[st.status]:'')+'</small></label>';}).join('')
+    :'<p class="muted small" style="margin:6px">Keine Schüler mit dieser Sprache.</p>';
+}
+function openGroup(g){
+  gEdit=g?g.id:null; var E=fG.elements;
+  document.getElementById('groupTitle').textContent=g?'Gruppe bearbeiten':'Neue Gruppe';
+  document.getElementById('errGroup').textContent='';
+  E.gname.value=g?g.name:'';
+  var cnt={}; S.students.forEach(function(st){ if(st.status!=='beendet') st.langs.forEach(function(l){cnt[l]=(cnt[l]||0)+1;}); });
+  var gl=Object.keys(cnt).sort(function(x,y){return cnt[y]-cnt[x]||x.localeCompare(y,'de');});
+  E.glang.innerHTML=gl.map(function(l){return '<option>'+esc(l)+'</option>';}).join('');
+  if(g){ if(gl.indexOf(g.lang)<0) E.glang.innerHTML+='<option>'+esc(g.lang)+'</option>'; E.glang.value=g.lang; }
+  E.glang.disabled=!!g;
+  document.getElementById('memberChecks').innerHTML='';
+  renderMemberChecks(g);
+  E.gdate.value=today(); syncDates(fG);
+  document.getElementById('gDateLabel').textContent=g?'Änderungen gelten ab':'Gruppe besteht seit';
+  document.getElementById('groupInfo').innerHTML=g?'Neue Mitglieder zählen <b>ab</b> diesem Datum mit, entfernte nur noch <b>bis</b> zu diesem Datum. Frühere Monate bleiben unverändert.'
+    :'Besteht die Gruppe schon länger, trag das echte Startdatum ein. Dann stimmen auch die früheren Monate.';
+  document.getElementById('btnDissolve').classList.toggle('hide',!g);
+  document.getElementById('btnDelGroup').classList.toggle('hide',!g);
+  openDlg(dG); if(!g) setTimeout(function(){E.gname.focus();},50);
+}
+fG.elements.glang.addEventListener('change',function(){document.getElementById('memberChecks').innerHTML=''; renderMemberChecks(gEdit?findGroup(gEdit):null);});
+fG.addEventListener('submit',function(e){
+  e.preventDefault();
+  var E=fG.elements, err=document.getElementById('errGroup'), name=E.gname.value.trim(), d=E.gdate.value;
+  var ck=[].map.call(fG.querySelectorAll('input[name=gm]:checked'),function(i){return i.value;});
+  if(!name){err.textContent='Bitte einen Namen für die Gruppe eintragen.';return;}
+  if(!d){err.textContent='Bitte das Datum als TT.MM.JJJJ eintragen.';return;}
+  var g=gEdit?findGroup(gEdit):null;
+  if(!g && ck.length<2){err.textContent='Eine Gruppe braucht mindestens zwei Schüler.';return;}
+  S.groups=S.groups||[];
+  if(!g){ S.groups.push({id:uid(),name:name,lang:E.glang.value,dissolved:null,members:ck.map(function(sid){return {sid:sid,from:d,to:null};})}); }
+  else{
+    g.name=name;
+    var open=g.members.filter(function(m){return !m.to;}), openIds=open.map(function(m){return m.sid;});
+    open.forEach(function(m){ if(ck.indexOf(m.sid)<0){ if(m.from>=d) g.members.splice(g.members.indexOf(m),1); else m.to=d; } });
+    ck.forEach(function(sid){ if(openIds.indexOf(sid)<0) g.members.push({sid:sid,from:d,to:null}); });
+  }
+  save(); closeDlg(dG); renderGroupList(); render(); toast(g?'Gruppe gespeichert':'Gruppe „'+name+'“ angelegt');
+});
+document.getElementById('btnDissolve').addEventListener('click',function(){
+  var g=findGroup(gEdit), d=fG.elements.gdate.value||today(); if(!g) return;
+  ask('Gruppe „'+g.name+'“ auflösen?','Ab dem '+fmtDate(d)+' zählen die Stunden wieder einzeln. Frühere Monate bleiben so, wie sie waren. Das Datum kannst du oben unter „Änderungen gelten ab“ wählen.','Auflösen',function(){
+    g.members.slice().forEach(function(m){ if(!m.to){ if(m.from>=d) g.members.splice(g.members.indexOf(m),1); else m.to=d; } });
+    g.dissolved=d; save(); closeDlg(dG); renderGroupList(); render(); toast('Gruppe aufgelöst');
+  });
+});
+function delGroup(g){
+  if(!g) return;
+  ask('Gruppe „'+g.name+'“ ganz löschen?','Die Gruppe wird auch rückwirkend entfernt: Frühere Monate zählen dann so, als hätte es sie nie gegeben. Das ist nur für Fehler gedacht – wenn die Gruppe wirklich bestand, nimm lieber „Auflösen“.','Ganz löschen',function(){
+    var idx=S.groups.indexOf(g); S.groups.splice(idx,1); save(); closeDlg(dG); renderGroupList(); render();
+    toast('Gruppe gelöscht',function(){S.groups.splice(idx,0,g);save();renderGroupList();render();});
+  });
+}
+document.getElementById('btnDelGroup').addEventListener('click',function(){delGroup(findGroup(gEdit));});
 
 /* ---------- Toast ---------- */
 var toastEl=document.getElementById('toast'),toastT,undoFn=null;
@@ -1258,7 +1423,8 @@ function demo(){
   var sara=s[2]; items(sara,ymOf(t)).forEach(function(i){ if(i.due>=d(-12)) unpayItem(sara,i); });
   var mira=s[3];
   [-30,-23,-16,-9,-2].forEach(function(o,k){mira.lessons.push({id:uid(),date:d(o),minutes:60,price:35,lang:'Deutsch',paid:k<4?d(o):null});});
-  S={v:1,currency:'EUR',soonDays:7,students:s,demo:true,lastBackup:null}; save(); render();
+  var jo=s[1], el=s[5];
+  S={v:1,currency:'EUR',soonDays:7,students:s,demo:true,lastBackup:null,groups:[{id:uid(),name:'Bosnisch Montag',lang:'Bosnisch',dissolved:null,members:[{sid:jo.id,from:jo.start,to:null},{sid:el.id,from:jo.start,to:d(-25)}]}]}; save(); render();
 }
 
 /* ---------- Klicks ---------- */
@@ -1283,6 +1449,7 @@ app.addEventListener('click',function(e){
   else if(a==='sv'){var k=b.dataset.k, v=b.dataset.v; SV[k]=k==='range'?+v:v; render();}
   else if(a==='svtable'){SV.table=!SV.table; render();}
     else if(a==='filter'){stFilter=b.dataset.f; render();}
+  else if(a==='groups') openGroups();
   else if(a==='prev'){viewYm=ymAdd(viewYm,-1);render();}
   else if(a==='next'){viewYm=ymAdd(viewYm,1);render();}
   else if(a==='demo') demo();
