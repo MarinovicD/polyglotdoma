@@ -127,10 +127,17 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .calc b{color:var(--ink)}
 .dlg-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
 .err{color:var(--red);font-size:14px;margin:-4px 0 10px;min-height:0}
+.prow{display:grid;grid-template-columns:110px 1fr 1fr;gap:12px;align-items:end;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.prow.one{grid-template-columns:110px 1fr}
+.prow>b{padding-bottom:10px}
+.prow label{font-size:13px;color:var(--muted);font-weight:500}
+.prow input{width:100%;margin-top:4px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.ptotal{font-size:14px;color:var(--muted);margin:-2px 0 14px;text-align:right}
+.ptotal b{color:var(--ink)}
 .lessons{border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto;margin-bottom:10px}
 .lessons div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--line);font-size:14px}
 .lessons div:first-child{border-top:0}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:15px;opacity:0;transition:.25s;pointer-events:none;z-index:50;display:flex;gap:12px;align-items:center;white-space:nowrap;max-width:calc(100vw - 24px)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:15px;opacity:0;transition:.25s;pointer-events:none;z-index:50;display:flex;gap:12px;align-items:center;width:max-content;max-width:calc(100vw - 24px);border-radius:18px}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 .toast button{background:none;border:0;color:var(--aqua);font-weight:700;cursor:pointer;text-decoration:underline}
 .hide{display:none!important}
@@ -205,18 +212,12 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
       <label><input type="radio" name="type" value="stunde">Pro Stunde</label>
     </div>
   </div>
-  <div id="fMonat">
-    <div class="row3">
-      <label class="f"><span>Betrag pro Monat</span><input type="number" name="fee" min="0" step="0.01" inputmode="decimal"></label>
-      <label class="f"><span>Stunden pro Monat</span><input type="number" name="perMonth" min="0" step="0.5" inputmode="decimal"></label>
-      <label class="f"><span>Dauer (Minuten)</span><input type="number" name="minutes" min="0" step="5" inputmode="numeric"></label>
-    </div>
-  </div>
-  <div id="fStunde" class="hide">
-    <div class="row2">
-      <label class="f"><span>Preis pro Stunde</span><input type="number" name="price" min="0" step="0.01" inputmode="decimal"></label>
-      <label class="f"><span>Übliche Dauer (Minuten)</span><input type="number" name="minutesS" min="0" step="5" inputmode="numeric"></label>
-    </div>
+  <div id="fParts"></div>
+  <div class="row2">
+    <label class="f"><span>Dauer einer Stunde (Minuten)</span><input type="number" name="minutes" min="0" step="5" inputmode="numeric"></label>
+    <label class="f hide" id="fFrom"><span>Neue Beträge gelten ab</span><select name="from">
+      <option value="now" id="optNow">diesem Monat</option><option value="start">Einstieg (alles korrigieren)</option>
+    </select></label>
   </div>
   <div class="calc" id="calcBox"></div>
   <div id="lessonBox" class="hide">
@@ -295,8 +296,21 @@ var MONTHS=['Januar','Februar','März','April','Mai','Juni','Juli','August','Sep
 function blank(){return {v:1,currency:'EUR',soonDays:7,students:[],demo:false,lastBackup:null};}
 function load(){
   try{var raw=localStorage.getItem(KEY); if(!raw) return blank();
-    var d=JSON.parse(raw); var b=blank(); for(var k in b) if(!(k in d)) d[k]=b[k]; return d;
+    return migrate(JSON.parse(raw));
   }catch(e){return blank();}
+}
+// ältere Daten: Beträge je Sprache ergänzen
+function migrate(d){
+  var b=blank(); for(var k in b) if(!(k in d)) d[k]=b[k];
+  d.students.forEach(function(st){
+    var n=st.langs.length||1;
+    if(st.type==='monat' && !st.parts){
+      st.parts=st.langs.map(function(l){return {lang:l,fee:(+st.fee||0)/n,perMonth:(+st.perMonth||0)/n};});
+    }
+    if(st.type==='monat' && !st.hist) st.hist=[{from:st.start?st.start.slice(0,7):'2000-01',parts:st.parts}];
+    if(st.type==='stunde' && !st.prices){st.prices={}; st.langs.forEach(function(l){st.prices[l]=+st.price||0;});}
+  });
+  return d;
 }
 var S=load(), storageOk=true;
 function save(){
@@ -344,19 +358,31 @@ function items(st,uptoYm){
     while(ym<=uptoYm && guard++<600){
       var due=dueOf(st,ym);
       if(!inPause(st,due)){
-        var p=(st.paid||{})[ym];
-        out.push({kind:'monat',key:ym,ym:ym,due:due,amount:p?p.amount:(+st.fee||0),paid:p?p.date:null,
-          lessons:+st.perMonth||0,minutes:(+st.perMonth||0)*(+st.minutes||0),langs:st.langs});
+        var p=(st.paid||{})[ym], parts=partsFor(st,ym);
+        var tot=parts.reduce(function(a,x){return a+(+x.fee||0);},0);
+        var amount=p?p.amount:tot, n=0;
+        var split=parts.map(function(x){n+=+x.perMonth||0;
+          return {lang:x.lang,rev:tot?(+x.fee||0)*amount/tot:amount/parts.length,lessons:+x.perMonth||0,minutes:(+x.perMonth||0)*(+st.minutes||0)};});
+        out.push({kind:'monat',key:ym,ym:ym,due:due,amount:amount,paid:p?p.date:null,
+          lessons:n,minutes:n*(+st.minutes||0),split:split});
       }
       ym=ymAdd(ym,1);
     }
   }else{
     (st.lessons||[]).forEach(function(l){
       if(ymOf(l.date)<=uptoYm) out.push({kind:'stunde',key:l.id,ym:ymOf(l.date),due:l.date,amount:+l.price||0,paid:l.paid||null,
-        lessons:1,minutes:+l.minutes||0,langs:[l.lang||st.langs[0]]});
+        lessons:1,minutes:+l.minutes||0,split:[{lang:l.lang||st.langs[0],rev:+l.price||0,lessons:1,minutes:+l.minutes||0}]});
     });
   }
   return out.sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0;});
+}
+// Beträge je Sprache, die in einem Monat galten (Änderungen gelten ab einem Monat, offene alte Monate behalten ihren Betrag)
+function partsFor(st,ym){
+  var h=(st.hist||[]).slice().sort(function(a,b){return a.from<b.from?-1:1;});
+  if(!h.length) return st.parts||[];
+  var pick=h[0];
+  h.forEach(function(x){if(x.from<=ym) pick=x;});
+  return pick.parts;
 }
 function monthItems(st,ym){return items(st,ym).filter(function(i){return i.ym===ym;});}
 
@@ -368,10 +394,9 @@ function monthStats(ym){
     its.forEach(function(i){
       s.rev+=i.amount; s.lessons+=i.lessons; s.minutes+=i.minutes;
       if(i.paid) s.paid+=i.amount;
-      var share=1/(i.langs.length||1);
-      i.langs.forEach(function(L){
-        var o=r.langs[L]||(r.langs[L]={rev:0,lessons:0,minutes:0});
-        o.rev+=i.amount*share; o.lessons+=i.lessons*share; o.minutes+=i.minutes*share;
+      i.split.forEach(function(x){
+        var o=r.langs[x.lang]||(r.langs[x.lang]={rev:0,lessons:0,minutes:0});
+        o.rev+=x.rev; o.lessons+=x.lessons; o.minutes+=x.minutes;
       });
     });
     r.rev+=s.rev; r.paid+=s.paid; r.lessons+=s.lessons; r.minutes+=s.minutes;
@@ -452,6 +477,15 @@ function renderOverview(){
   var bald=S.students.filter(function(s){return s.status==='bald';}).length;
   var pau=S.students.filter(function(s){return s.status==='pausiert';}).length;
   var pct=r.rev?Math.round(r.paid/r.rev*100):0;
+  // Offene Forderungen: unbezahlte Beträge aus Monaten vor dem gewählten Monat
+  var prev={sum:0,n:0,rows:[]};
+  S.students.forEach(function(st){
+    var op=items(st,ymAdd(viewYm,-1)).filter(function(i){return !i.paid;});
+    if(!op.length) return;
+    var s=op.reduce(function(a,i){return a+i.amount;},0);
+    prev.sum+=s; prev.n+=op.length; prev.rows.push({st:st,sum:s,its:op});
+  });
+  prev.rows.sort(function(a,b){return b.sum-a.sum;});
   var h='<div class="head"><div><h1>Übersicht</h1><p class="sub">Umsatz und Zahlungen im gewählten Monat</p></div>'+
     '<div class="monthnav"><button data-act="prev" aria-label="Voriger Monat">‹</button><span>'+fmtYm(viewYm)+'</span><button data-act="next" aria-label="Nächster Monat">›</button></div></div>';
   h+='<div class="grid tiles">'+
@@ -463,7 +497,16 @@ function renderOverview(){
     tile('Pro 60 Minuten',r.minutes?money(r.rev/r.minutes*60):'–','auf eine volle Stunde gerechnet')+
     '<div class="card tile" style="grid-column:span 2"><div class="lab">Abgerechnet</div>'+
       '<div class="val">'+pct+' %</div><div class="bar ok" style="margin-top:8px"><i style="width:'+pct+'%"></i></div>'+
-      '<div class="split"><span>Bezahlt <b>'+money(r.paid)+'</b></span><span>Steht noch aus <b>'+money(r.open)+'</b></span></div></div>'+
+      '<div class="split"><span>Bezahlt <b>'+money(r.paid)+'</b></span><span>Steht noch aus <b>'+money(r.open)+'</b></span></div>'+
+      '</div>'+
+  '</div>';
+  h+='<div class="card" style="margin-top:14px'+(prev.sum?';border-color:#F1B8B2':'')+'"><div class="head" style="margin-bottom:'+(prev.rows.length?'12px':'0')+';align-items:center">'+
+    '<div><h2 style="margin:0">Offene Forderungen</h2><p class="sub" style="margin:2px 0 0;font-size:14px">Unbezahlte Beträge aus den Monaten vor '+fmtYm(viewYm)+'. Sie zählen nicht zum Monat oben.</p></div>'+
+    '<div style="text-align:right"><div style="font-size:26px;font-weight:700;color:'+(prev.sum?'var(--red)':'var(--ok)')+'">'+money(prev.sum)+'</div>'+
+    '<div class="small muted">'+(prev.n?prev.n+(prev.n===1?' Zahlung':' Zahlungen')+' · '+prev.rows.length+(prev.rows.length===1?' Schüler':' Schüler'):'nichts offen')+'</div></div></div>'+
+    (prev.rows.length?'<table class="per"><tbody>'+prev.rows.map(function(r){
+      return '<tr><td><b>'+esc(r.st.name)+'</b></td><td class="muted small">'+r.its.map(function(i){return i.kind==='monat'?shortYm(i.ym):'Stunde '+fmtDate(i.due).slice(0,6);}).join(', ')+'</td>'+
+        '<td class="num"><b>'+money(r.sum)+'</b></td><td class="num"><a class="link" href="#faellig">Zu den Fälligkeiten</a></td></tr>';}).join('')+'</tbody></table>':'')+
   '</div>';
   // Sprachen
   var L=Object.keys(r.langs).sort(function(a,b){return r.langs[b].rev-r.langs[a].rev;});
@@ -478,15 +521,20 @@ function renderOverview(){
       return '<tr><td><b>'+esc(s.st.name)+'</b></td><td class="num">'+money(s.rev)+'</td><td class="num hide-m">'+num(s.lessons)+'</td><td class="num">'+(s.minutes?money(s.rev/s.minutes*60):'–')+'</td><td class="num"><span class="pill '+(paid?'bezahlt':'offen')+'">'+(paid?'bezahlt':'offen')+'</span></td></tr>';}).join('')+
     '</tbody></table>':'<p class="muted">Keine Zahlungen in diesem Monat.</p>';
   h+='<div class="grid two"><div class="card"><h2>Pro Sprache</h2>'+lh+
-    (L.length&&S.students.some(function(s){return s.langs.length>1&&s.type==='monat';})?'<p class="small muted" style="margin:10px 0 0">Bei Schülern mit mehreren Sprachen und Monatsbetrag wird der Betrag gleichmäßig auf die Sprachen verteilt.</p>':'')+
     '</div><div class="card"><h2>Pro Schüler</h2>'+ph+'</div></div>';
   return h;
 }
 function tile(lab,val,hint,cls){return '<div class="card tile '+(cls||'')+'"><div class="lab">'+lab+'</div><div class="val">'+val+'</div><div class="hint">'+hint+'</div></div>';}
 
 function modelText(st){
-  if(st.type==='monat') return money(st.fee)+' / Monat<br><span class="muted small">'+num(st.perMonth)+' × '+(+st.minutes||0)+' Min.</span>';
-  return money(st.price)+' pro Stunde<br><span class="muted small">'+(+st.minutes||0)+' Min. · '+(st.lessons||[]).length+' eingetragen</span>';
+  if(st.type==='monat'){
+    var ps=partsFor(st,ymOf(today()));
+    var tot=ps.reduce(function(a,x){return a+(+x.fee||0);},0), n=ps.reduce(function(a,x){return a+(+x.perMonth||0);},0);
+    return money(tot)+' / Monat<br><span class="muted small">'+num(n)+' × '+(+st.minutes||0)+' Min.'+
+      (ps.length>1?'<br>'+ps.map(function(x){return esc(x.lang)+' '+money(x.fee);}).join(' · '):'')+'</span>';
+  }
+  var pr=st.langs.map(function(l){return st.prices&&st.prices[l]!=null?st.prices[l]:st.price;});
+  return (st.langs.length>1?st.langs.map(function(l,k){return esc(l)+' '+money(pr[k]);}).join(' · '):money(pr[0]))+' pro Stunde<br><span class="muted small">'+(+st.minutes||0)+' Min. · '+(st.lessons||[]).length+' eingetragen</span>';
 }
 var STATUS={aktiv:'Aktiv',bald:'Startet bald',pausiert:'Pausiert'};
 function renderStudents(){
@@ -528,6 +576,7 @@ function renderDue(){
   if(!rows.length) h+='<div class="card empty"><p>Keine aktiven Schüler.</p></div>';
   return h;
 }
+function shortYm(ym){var p=parts(ym);return ['Jan.','Feb.','März','Apr.','Mai','Juni','Juli','Aug.','Sep.','Okt.','Nov.','Dez.'][p[1]-1]+(p[0]!==parts(today())[0]?' '+String(p[0]).slice(2):'');}
 function sec(t){return '<div class="section-t">'+t+'<span class="line"></span></div>';}
 function stich(st){return st.type==='monat'?'jeden '+parts(st.start)[2]+'. des Monats':'bei jeder Stunde';}
 function dueRow(r){
@@ -545,10 +594,13 @@ function dueRow(r){
     h+='<div><span class="k">Nächste Zahlung</span>'+(r.next?money(r.next.amount)+' am '+fmtDate(r.next.due):'<span class="muted">–</span>')+'</div>';
   }else{
     var more=r.open.length-1;
-    h+='<div><span class="k">Betrag</span><span class="amt">'+money(r.item.amount)+'</span>'+(more>0?'<span class="k">+'+more+' weitere offen ('+money(r.sum)+' gesamt)</span>':'')+'</div>';
+    h+='<div><span class="k">'+(more>0?'Offen insgesamt':'Betrag')+'</span><span class="amt">'+money(r.sum)+'</span>'+
+      (more>0?'<span class="k">'+r.open.length+' Zahlungen: '+r.open.map(function(i){return (i.kind==='monat'?shortYm(i.ym):fmtDate(i.due).slice(0,6))+' '+money(i.amount);}).join(', ')+'</span>':'')+'</div>';
   }
   h+='<div class="c-stich"><span class="k">Stichtag</span>'+stich(st)+'</div>';
-  h+='<div class="end">'+(r.cat!=='done'?'<button class="btn ok small" data-act="pay" data-id="'+st.id+'">✓ Zahlung erhalten</button>':
+  h+='<div class="end">'+(r.cat!=='done'?
+    (r.open.length>1?'<button class="btn ok small" data-act="pay" data-id="'+st.id+'" title="Bucht die älteste offene Zahlung">✓ '+(r.item.kind==='monat'?shortYm(r.item.ym):fmtDate(r.item.due).slice(0,6))+' erhalten</button><button class="btn light small" data-act="payall" data-id="'+st.id+'">Alle erhalten</button>'
+      :'<button class="btn ok small" data-act="pay" data-id="'+st.id+'">✓ Zahlung erhalten</button>'):
     (r.lastPaid?'<button class="link" data-act="unpay" data-id="'+st.id+'">Letzte Zahlung zurücknehmen</button>':''))+'</div>';
   return h+'</div>';
 }
@@ -588,25 +640,54 @@ function allLangs(){
   return set;
 }
 function typeSel(){return fS.querySelector('input[name=type]:checked').value;}
-function syncType(){
-  var m=typeSel()==='monat';
-  document.getElementById('fMonat').classList.toggle('hide',!m);
-  document.getElementById('fStunde').classList.toggle('hide',m);
-  calc();
+// Beträge je Sprache im Formular
+var vals={};   // {Sprache:{fee,per,price}}
+function selLangs(){
+  var langs=[].map.call(fS.querySelectorAll('input[name=lang]:checked'),function(i){return i.value;});
+  fS.elements.otherLangs.value.split(',').forEach(function(x){x=x.trim(); if(x){x=x.charAt(0).toUpperCase()+x.slice(1); if(langs.indexOf(x)<0) langs.push(x);}});
+  return langs;
+}
+function renderParts(){
+  var langs=selLangs(), m=typeSel()==='monat', box=document.getElementById('fParts');
+  if(!langs.length){box.innerHTML='<p class="small muted" style="margin:0 0 14px">Wähle oben eine Sprache, dann kannst du die Beträge eintragen.</p>';calc();return;}
+  var h=langs.map(function(l){var v=vals[l]||(vals[l]={fee:'',per:'',price:''});
+    return '<div class="prow'+(m?'':' one')+'"><b>'+esc(l)+'</b>'+
+      (m?'<label>Betrag pro Monat<input type="number" min="0" step="0.01" inputmode="decimal" data-l="'+esc(l)+'" data-k="fee" value="'+esc(v.fee)+'"></label>'+
+         '<label>Stunden pro Monat<input type="number" min="0" step="0.5" inputmode="decimal" data-l="'+esc(l)+'" data-k="per" value="'+esc(v.per)+'"></label>'
+        :'<label>Preis pro Stunde<input type="number" min="0" step="0.01" inputmode="decimal" data-l="'+esc(l)+'" data-k="price" value="'+esc(v.price)+'"></label>')+
+      '</div>';}).join('');
+  if(m && langs.length>1) h+='<div class="ptotal" id="ptotal"></div>';
+  box.innerHTML=h; calc();
+}
+document.getElementById('fParts').addEventListener('input',function(e){
+  var i=e.target; if(!i.dataset.l) return; (vals[i.dataset.l]=vals[i.dataset.l]||{})[i.dataset.k]=i.value; calc();
+});
+function totals(){
+  var fee=0,per=0; selLangs().forEach(function(l){var v=vals[l]||{}; fee+=+v.fee||0; per+=+v.per||0;}); return {fee:fee,per:per};
+}
+var origParts=null;
+function partsChanged(){
+  if(!origParts) return false;
+  var langs=selLangs(); if(langs.length!==origParts.length) return true;
+  return origParts.some(function(p){var v=vals[p.lang]; return !v || (+v.fee||0)!==(+p.fee||0) || (+v.per||0)!==(+p.perMonth||0);});
 }
 function calc(){
-  var box=document.getElementById('calcBox'), E=fS.elements;
+  var box=document.getElementById('calcBox'), E=fS.elements, m=+E.minutes.value||0;
   if(typeSel()==='monat'){
-    var fee=+E.fee.value||0, n=+E.perMonth.value||0, m=+E.minutes.value||0;
-    if(fee&&n&&m) box.innerHTML='Das sind <b>'+money(fee/n)+'</b> pro Unterrichtsstunde und <b>'+money(fee/(n*m)*60)+'</b> pro 60 Minuten.';
+    var t=totals(), pt=document.getElementById('ptotal');
+    if(pt) pt.innerHTML='Zusammen <b>'+money(t.fee)+'</b> pro Monat für <b>'+num(t.per)+'</b> Stunden';
+    if(t.fee&&t.per&&m) box.innerHTML='Das sind <b>'+money(t.fee/t.per)+'</b> pro Unterrichtsstunde und <b>'+money(t.fee/(t.per*m)*60)+'</b> pro 60 Minuten.';
     else box.innerHTML='Bei Schülern alle 2 Wochen: 2 Stunden pro Monat eintragen.';
-    var s=E.start.value; if(s) box.innerHTML+='<br>Fällig ist die Zahlung jeden <b>'+parts(s)[2]+'.</b> des Monats (Tag des Einstiegs).';
+    var s=E.start.value; if(s) box.innerHTML+='<br>Fällig ist die Zahlung jeden <b>'+parts(s)[2]+'.</b> des Monats (Tag des Einstiegs). Offene Zahlungen bleiben stehen, bis du sie als erhalten markierst.';
+    var ch=partsChanged(); document.getElementById('fFrom').classList.toggle('hide',!ch);
   }else{
-    var p=+E.price.value||0, mm=+E.minutesS.value||0;
-    box.innerHTML='Du trägst jede Stunde einzeln ein, wenn sie stattfindet. Abgesagte Stunden trägst du einfach nicht ein.'+(p&&mm?'<br>Das sind <b>'+money(p/mm*60)+'</b> pro 60 Minuten.':'');
+    document.getElementById('fFrom').classList.add('hide');
+    box.innerHTML='Du trägst jede Stunde einzeln ein, wenn sie stattfindet. Abgesagte Stunden trägst du einfach nicht ein.';
   }
 }
-fS.addEventListener('input',calc);
+function syncType(){renderParts();}
+fS.addEventListener('input',function(e){ if(e.target.name==='otherLangs') renderParts(); else calc(); });
+fS.addEventListener('change',function(e){ if(e.target.name==='lang') renderParts(); });
 fS.querySelectorAll('input[name=type]').forEach(function(r){r.addEventListener('change',syncType);});
 
 function openStudent(st){
@@ -621,9 +702,14 @@ function openStudent(st){
   E.status.value=st?st.status:'aktiv';
   E.start.value=st?st.start:today();
   fS.querySelector('input[name=type][value='+(st?st.type:'monat')+']').checked=true;
-  E.fee.value=st&&st.type==='monat'?st.fee:''; E.perMonth.value=st&&st.type==='monat'?st.perMonth:'4';
-  E.minutes.value=st&&st.type==='monat'?st.minutes:'60';
-  E.price.value=st&&st.type==='stunde'?st.price:''; E.minutesS.value=st&&st.type==='stunde'?st.minutes:'60';
+  E.minutes.value=st&&st.minutes?st.minutes:'60';
+  E.from.value='now'; document.getElementById('optNow').textContent='diesem Monat ('+fmtYm(ymOf(today()))+')';
+  vals={}; origParts=null;
+  if(st&&st.type==='monat'){
+    origParts=partsFor(st,ymOf(today()));
+    origParts.forEach(function(p){vals[p.lang]={fee:String(Math.round(p.fee*100)/100),per:String(p.perMonth),price:''};});
+  }
+  if(st&&st.type==='stunde') st.langs.forEach(function(l){vals[l]={fee:'',per:'',price:String(st.prices&&st.prices[l]!=null?st.prices[l]:st.price)};});
   renderLessonList(st);
   syncType(); openDlg(dS); setTimeout(function(){E.name.focus();},50);
 }
@@ -646,20 +732,28 @@ fS.addEventListener('submit',function(e){
   e.preventDefault();
   var E=fS.elements, err=document.getElementById('errStudent');
   var name=E.name.value.trim();
-  var langs=[].map.call(fS.querySelectorAll('input[name=lang]:checked'),function(i){return i.value;});
-  E.otherLangs.value.split(',').forEach(function(x){x=x.trim(); if(x){x=x.charAt(0).toUpperCase()+x.slice(1); if(langs.indexOf(x)<0) langs.push(x);}});
+  var langs=selLangs();
   var type=typeSel();
   if(!name){err.textContent='Bitte einen Namen eintragen.';return;}
   if(!langs.length){err.textContent='Bitte mindestens eine Sprache wählen.';return;}
   if(!E.start.value){err.textContent='Bitte das Einstiegsdatum eintragen.';return;}
-  if(type==='monat' && !(+E.fee.value>0)){err.textContent='Bitte den Monatsbetrag eintragen.';return;}
-  if(type==='stunde' && !(+E.price.value>0)){err.textContent='Bitte den Preis pro Stunde eintragen.';return;}
+  var miss=langs.filter(function(l){var v=vals[l]||{}; return type==='monat'?(v.fee===''||v.fee==null||!(+v.per>0)):(v.price===''||v.price==null);});
+  if(miss.length){err.textContent=(type==='monat'?'Bitte Betrag und Stunden pro Monat eintragen für: ':'Bitte den Preis pro Stunde eintragen für: ')+miss.join(', ')+'.';return;}
   var st=editId?find(editId):null, isNew=!st;
   if(!st){st={id:uid(),pauses:[],paid:{},lessons:[]};}
-  var oldStatus=st.status, t=today();
+  var oldStatus=st.status, oldType=st.type, t=today();
+  var changed=partsChanged();
   st.name=name; st.langs=langs; st.status=E.status.value; st.start=E.start.value; st.type=type;
-  if(type==='monat'){st.fee=+E.fee.value; st.perMonth=+E.perMonth.value||0; st.minutes=+E.minutes.value||0;}
-  else{st.price=+E.price.value; st.minutes=+E.minutesS.value||0;}
+  st.minutes=+E.minutes.value||0;
+  if(type==='monat'){
+    var ps=langs.map(function(l){return {lang:l,fee:+vals[l].fee||0,perMonth:+vals[l].per||0};});
+    st.parts=ps; st.fee=ps.reduce(function(a,x){return a+x.fee;},0); st.perMonth=ps.reduce(function(a,x){return a+x.perMonth;},0);
+    var cur=ymOf(t);
+    if(isNew || oldType!=='monat' || !st.hist || E.from.value==='start') st.hist=[{from:ymOf(st.start),parts:ps}];
+    else if(changed){ st.hist=st.hist.filter(function(h){return h.from<cur;}); st.hist.push({from:cur,parts:ps}); }
+  }else{
+    st.prices={}; langs.forEach(function(l){st.prices[l]=+vals[l].price||0;}); st.price=st.prices[langs[0]];
+  }
   st.pauses=st.pauses||[];
   // Pausen merken, damit in der Pause keine Zahlungen fällig werden
   if(!isNew && oldStatus!=='pausiert' && st.status==='pausiert') st.pauses.push({from:t,to:null});
@@ -677,6 +771,8 @@ function openLesson(st){
   document.getElementById('errLesson').textContent='';
   E.date.value=today(); E.minutes.value=st.minutes||60; E.price.value=st.price||''; E.paid.checked=false;
   E.lang.innerHTML=st.langs.map(function(l){return '<option>'+esc(l)+'</option>';}).join('');
+  var pr=function(){var l=E.lang.value; E.price.value=st.prices&&st.prices[l]!=null?st.prices[l]:(st.price||'');};
+  pr(); E.lang.onchange=pr;
   document.getElementById('lessonLangF').classList.toggle('hide',st.langs.length<2);
   openDlg(dL);
 }
@@ -722,7 +818,7 @@ fileIn.addEventListener('change',function(){
   var f=fileIn.files[0]; if(!f) return; var rd=new FileReader();
   rd.onload=function(){
     try{var d=JSON.parse(rd.result); if(!d||!Array.isArray(d.students)) throw 0;
-      var go=function(){var b=blank(); for(var k in b) if(!(k in d)) d[k]=b[k]; S=d; save(); closeDlg(dSet); render(); toast(d.students.length+' Schüler aus der Sicherung geladen');};
+      var go=function(){S=migrate(d); save(); closeDlg(dSet); render(); toast(d.students.length+' Schüler aus der Sicherung geladen');};
       if(S.students.length && !S.demo) ask('Sicherung laden?','Die aktuellen Daten in diesem Browser werden durch die Sicherung ersetzt ('+d.students.length+' Schüler).','Ersetzen',go); else go();
     }catch(e){toast('Diese Datei ist keine gültige Sicherung.');}
     fileIn.value='';
@@ -744,7 +840,12 @@ function demo(){
     {name:'Mira Kovač',langs:['Deutsch'],status:'aktiv',start:m(-2,1),type:'stunde',price:35,minutes:60},
     {name:'Tom Becker',langs:['Arabisch'],status:'bald',start:d(10),type:'monat',fee:160,perMonth:4,minutes:60},
     {name:'Elif Yılmaz',langs:['Bosnisch'],status:'pausiert',start:m(-5,parts(d(-20))[2]),type:'monat',fee:120,perMonth:4,minutes:45}
-  ].map(function(x){x.id=uid();x.pauses=[];x.paid={};x.lessons=[];return x;});
+  ].map(function(x){x.id=uid();x.pauses=[];x.paid={};x.lessons=[];
+    if(x.type==='monat'){
+      x.parts=x.name==='Sara Novak'?[{lang:'Arabisch',fee:160,perMonth:5},{lang:'Deutsch',fee:80,perMonth:3}]:[{lang:x.langs[0],fee:x.fee,perMonth:x.perMonth}];
+      x.hist=[{from:ymOf(x.start),parts:x.parts}];
+    }else{x.prices={}; x.prices[x.langs[0]]=x.price;}
+    return x;});
   // bisherige Monate bezahlt, außer den gewollt offenen
   s.forEach(function(st){
     if(st.type!=='monat'||st.status==='bald') return;
@@ -770,6 +871,8 @@ app.addEventListener('click',function(e){
       toast(st.name+' gelöscht',function(){S.students.splice(idx,0,st);save();render();});});
   else if(a==='pay'){var r=dueState(st); if(r.item){var it=r.item; payItem(st,it); save(); render();
       toast('Zahlung von '+st.name+' erhalten ('+money(it.amount)+')',function(){unpayItem(st,it);save();render();});}}
+  else if(a==='payall'){var ra=dueState(st), its=ra.open.slice(); its.forEach(function(i){payItem(st,i);}); save(); render();
+      toast(its.length+' Zahlungen von '+st.name+' erhalten ('+money(ra.sum)+')',function(){its.forEach(function(i){unpayItem(st,i);});save();render();});}
   else if(a==='unpay'){var rr=dueState(st); if(rr.lastPaid){var li=rr.lastPaid; unpayItem(st,li); save(); render(); toast('Zahlung zurückgenommen');}}
   else if(a==='prev'){viewYm=ymAdd(viewYm,-1);render();}
   else if(a==='next'){viewYm=ymAdd(viewYm,1);render();}
