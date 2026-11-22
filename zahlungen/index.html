@@ -1027,6 +1027,10 @@ function renderMemberChecks(g){
     var ck=(st.id in keep)?keep[st.id]:cur.indexOf(st.id)>=0;
     return '<label><input type="checkbox" name="gm" value="'+st.id+'"'+(ck?' checked':'')+'> '+esc(st.name)+'<small>'+(st.type==='monat'?'monatlich':'pro Stunde')+(st.status!=='aktiv'?' · '+STATUS[st.status]:'')+'</small></label>';}).join('')
     :'<p class="muted small" style="margin:6px">Keine Schüler mit dieser Sprache.</p>';
+  // Wer nicht in der Liste steht – und warum
+  var miss=S.students.filter(function(st){return list.indexOf(st)<0;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');});
+  if(miss.length) document.getElementById('memberChecks').innerHTML+='<div class="small muted" style="padding:8px 8px 2px;border-top:1px dashed var(--line);margin-top:4px">Nicht in der Liste: '+
+    miss.map(function(st){return '<b>'+esc(st.name)+'</b> ('+(st.status==='beendet'?'beendet':'lernt '+esc(st.langs.join(', ')))+')';}).join(', ')+'</div>';
 }
 function openGroup(g){
   gEdit=g?g.id:null; var E=fG.elements;
