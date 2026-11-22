@@ -78,6 +78,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 .pill.aktiv{background:var(--ok-bg);color:var(--ok)}
 .pill.bald{background:var(--blue-bg);color:var(--cobalt)}
 .pill.pausiert{background:#EEF0F5;color:var(--muted)}
+.pill.beendet{background:#EEF0F5;color:#7A84A6;text-decoration:none}
 .pill.bezahlt{background:var(--ok-bg);color:var(--ok)}
 .pill.offen{background:var(--red-bg);color:var(--red)}
 .pill.ueber{background:var(--red);color:#fff}
@@ -200,12 +201,15 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
 .scard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:14px;position:relative;transition:box-shadow .2s,transform .2s}
 .scard:hover{box-shadow:0 10px 30px rgba(14,27,77,.08)}
 .scard.st-pausiert{background:#FAFBFD}
+.scard.st-beendet{background:#F7F8FB;border-color:#E6E9F2}
+.scard.st-beendet .ava{background:#C3CBE0}
+.scard.st-beendet .sc-price b{color:#5B6690}
 .scard.st-pausiert .ava{background:var(--aqua)}
 .scard.st-bald{border-style:dashed;border-color:var(--aqua)}
 .sc-top{display:flex;gap:12px;align-items:center}
 .ava{flex:none;width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:16px;letter-spacing:.02em;position:relative}
 .ava::after{content:"";position:absolute;right:1px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 2px #fff}
-.st-pausiert .ava::after,.st-bald .ava::after{display:none}
+.st-pausiert .ava::after,.st-bald .ava::after,.st-beendet .ava::after{display:none}
 .sc-id{flex:1;min-width:0}
 .sc-id h3{margin:0 0 4px;font-size:18px;line-height:1.2;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc-pills{display:flex;gap:6px;flex-wrap:wrap}
@@ -289,10 +293,11 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
   </div>
   <div class="row2">
     <label class="f"><span>Status</span><select name="status">
-      <option value="aktiv">Aktiv</option><option value="bald">Startet bald</option><option value="pausiert">Pausiert</option>
+      <option value="aktiv">Aktiv</option><option value="bald">Startet bald</option><option value="pausiert">Pausiert</option><option value="beendet">Beendet</option>
     </select></label>
     <label class="f"><span>Einstieg (erste Stunde)</span><input type="hidden" name="start"><input type="text" class="dinp" data-for="start" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
   </div>
+  <label class="f hide" id="fEnd"><span>Letzte Stunde (ab danach wird nichts mehr fällig)</span><input type="hidden" name="end"><input type="text" class="dinp" data-for="end" inputmode="numeric" placeholder="TT.MM.JJJJ" autocomplete="off" maxlength="10"></label>
   <label class="f"><span>Herkunftsland</span><input type="text" name="country" list="countryList" autocomplete="off" placeholder="z. B. Deutschland"></label>
   <datalist id="countryList"></datalist>
   <div class="f"><span>Abrechnung</span>
@@ -343,6 +348,7 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
   <p id="confirmText" class="muted"></p>
   <div class="dlg-foot">
     <button type="button" class="btn light" data-close>Abbrechen</button>
+    <button type="button" class="btn hide" id="confirmAlt"></button>
     <button type="button" class="btn danger" id="confirmOk">Löschen</button>
   </div>
 </div></dialog>
@@ -445,7 +451,7 @@ function items(st,uptoYm){
     var ym=ymOf(st.start), guard=0;
     while(ym<=uptoYm && guard++<600){
       var due=dueOf(st,ym);
-      if(!inPause(st,due)){
+      if(!inPause(st,due) && !(st.status==='beendet' && st.end && due>st.end)){
         var p=(st.paid||{})[ym], parts=partsFor(st,ym);
         var tot=parts.reduce(function(a,x){return a+(+x.fee||0);},0);
         var amount=p?p.amount:tot, n=0;
@@ -626,7 +632,7 @@ function modelText(st){
   var pr=st.langs.map(function(l){return st.prices&&st.prices[l]!=null?st.prices[l]:st.price;});
   return (st.langs.length>1?st.langs.map(function(l,k){return esc(l)+' '+money(pr[k]);}).join(' · '):money(pr[0]))+' pro Stunde<br><span class="muted small">'+(+st.minutes||0)+' Min. · '+(st.lessons||[]).length+' eingetragen</span>';
 }
-var STATUS={aktiv:'Aktiv',bald:'Startet bald',pausiert:'Pausiert'};
+var STATUS={aktiv:'Aktiv',bald:'Startet bald',pausiert:'Pausiert',beendet:'Beendet'};
 var FLAG={Deutsch:'de',Bosnisch:'ba',Arabisch:'ar',Englisch:'en','Französisch':'fr','Türkisch':'tr',Libanesisch:'lb'};
 var stFilter='alle', stQuery='';
 var IC_EDIT='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
@@ -651,21 +657,21 @@ function studentCard(st){
   if(m) h+='<div class="sc-price"><b>'+money(tot)+'</b><span class="per">'+per+'</span><span class="rh">'+rh+'</span></div>';
   h+='<div class="sc-langs">'+st.langs.map(function(l){var f=FLAG[l];
     return '<span class="lchip"><i'+(f?' style="background-image:url(../assets/img/flags/'+f+'.svg)"':'')+'></i>'+esc(l)+(st.langs.length>1?' <em>'+esc(amt[l])+'</em>':'')+'</span>';}).join('')+'</div>';
-  h+='<div class="sc-foot"><div><small>'+(st.status==='bald'?'Start':'Dabei seit')+'</small>'+fmtDate(st.start)+'</div>'+
+  h+='<div class="sc-foot"><div><small>'+(st.status==='bald'?'Start':st.status==='beendet'?'Dabei':'Dabei seit')+'</small>'+fmtDate(st.start)+(st.status==='beendet'&&st.end?' – '+fmtDate(st.end):'')+'</div>'+
     '<div><small>'+(m?'Stichtag':'Stunden')+'</small>'+(m?'jeden '+parts(st.start)[2]+'.':(st.lessons||[]).length+' eingetragen')+'</div>'+
     (!m?'<button class="btn small light" data-act="lesson" data-id="'+st.id+'">+ Stunde</button>':'')+'</div>';
   return h+'</article>';
 }
 function gridHtml(){
-  var o={aktiv:0,bald:1,pausiert:2}, q=stQuery.trim().toLowerCase();
-  var list=S.students.filter(function(s){return (stFilter==='alle'||s.status===stFilter)&&(!q||s.name.toLowerCase().indexOf(q)>=0||s.langs.join(' ').toLowerCase().indexOf(q)>=0||(s.country||'').toLowerCase().indexOf(q)>=0);})
+  var o={aktiv:0,bald:1,pausiert:2,beendet:3}, q=stQuery.trim().toLowerCase();
+  var list=S.students.filter(function(s){return (stFilter==='alle'?s.status!=='beendet':s.status===stFilter)&&(!q||s.name.toLowerCase().indexOf(q)>=0||s.langs.join(' ').toLowerCase().indexOf(q)>=0||(s.country||'').toLowerCase().indexOf(q)>=0);})
     .sort(function(a,b){return (o[a.status]-o[b.status])||a.name.localeCompare(b.name,'de');});
   return list.length?list.map(studentCard).join(''):'<p class="snone">Keine Schüler gefunden.</p>';
 }
 function renderStudents(){
   var c=function(s){return S.students.filter(function(x){return x.status===s;}).length;};
-  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+S.students.length+' insgesamt · '+c('aktiv')+' aktiv</p></div><button class="btn" data-act="add">+ Schüler hinzufügen</button></div>';
-  h+='<div class="stools"><div class="filters">'+[['alle','Alle',S.students.length],['aktiv','Aktiv',c('aktiv')],['bald','Startet bald',c('bald')],['pausiert','Pausiert',c('pausiert')]]
+  var h='<div class="head"><div><h1>Schüler</h1><p class="sub">'+c('aktiv')+' aktiv'+(c('beendet')?' · '+c('beendet')+' ehemalige':'')+'</p></div><button class="btn" data-act="add">+ Schüler hinzufügen</button></div>';
+  h+='<div class="stools"><div class="filters">'+[['alle','Alle',S.students.length-c('beendet')],['aktiv','Aktiv',c('aktiv')],['bald','Startet bald',c('bald')],['pausiert','Pausiert',c('pausiert')],['beendet','Beendet',c('beendet')]]
     .filter(function(f){return f[0]==='alle'||f[0]==='aktiv'||f[2];})
     .map(function(f){return '<button data-act="filter" data-f="'+f[0]+'" class="'+(stFilter===f[0]?'on':'')+'">'+f[1]+'<span>'+f[2]+'</span></button>';}).join('')+'</div>'+
     '<label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'+
@@ -676,7 +682,7 @@ function renderStudents(){
 app.addEventListener('input',function(e){ if(e.target.id==='stSearch'){stQuery=e.target.value; document.getElementById('sgrid').innerHTML=gridHtml();} });
 
 function renderDue(){
-  var rows=S.students.filter(function(s){return s.status!=='bald';}).map(dueState);
+  var rows=S.students.filter(function(s){return s.status!=='bald';}).map(dueState).filter(function(r){return r.st.status!=='beendet'||r.cat!=='done';});
   var over=rows.filter(function(r){return r.cat==='ueber';}).sort(function(a,b){return b.days-a.days;});
   var soon=rows.filter(function(r){return r.cat==='soon';}).sort(function(a,b){return a.days-b.days;});
   var done=rows.filter(function(r){return r.cat==='done';}).sort(function(a,b){return a.st.name.localeCompare(b.st.name,'de');});
@@ -1030,6 +1036,11 @@ function calc(){
   }
 }
 function syncType(){renderParts();}
+function syncEnd(){
+  var on=fS.elements.status.value==='beendet'; document.getElementById('fEnd').classList.toggle('hide',!on);
+  if(on && !fS.elements.end.value){fS.elements.end.value=today(); syncDates(fS);}
+}
+fS.elements.status.addEventListener('change',syncEnd);
 fS.addEventListener('input',function(e){ if(e.target.name==='otherLangs') renderParts(); else calc(); });
 fS.addEventListener('change',function(e){ if(e.target.name==='lang') renderParts(); });
 fS.querySelectorAll('input[name=type]').forEach(function(r){r.addEventListener('change',syncType);});
@@ -1045,7 +1056,7 @@ function openStudent(st){
   E.name.value=st?st.name:''; E.otherLangs.value=''; E.country.value=st&&st.country?st.country:'';
   document.getElementById('countryList').innerHTML=countryOptions().map(function(c){return '<option value="'+esc(c)+'">';}).join('');
   E.status.value=st?st.status:'aktiv';
-  E.start.value=st?st.start:today(); syncDates(fS);
+  E.start.value=st?st.start:today(); E.end.value=st&&st.end?st.end:''; syncDates(fS); syncEnd();
   fS.querySelector('input[name=type][value='+(st?st.type:'monat')+']').checked=true;
   E.from.value='now'; document.getElementById('optNow').textContent='diesem Monat ('+fmtYm(ymOf(today()))+')';
   vals={}; origParts=null;
@@ -1081,6 +1092,8 @@ fS.addEventListener('submit',function(e){
   if(!name){err.textContent='Bitte einen Namen eintragen.';return;}
   if(!langs.length){err.textContent='Bitte mindestens eine Sprache wählen.';return;}
   if(!E.start.value){err.textContent='Bitte das Einstiegsdatum als TT.MM.JJJJ eintragen.';return;}
+  if(E.status.value==='beendet' && !E.end.value){err.textContent='Bitte das Datum der letzten Stunde als TT.MM.JJJJ eintragen.';return;}
+  if(E.status.value==='beendet' && E.end.value<E.start.value){err.textContent='Die letzte Stunde kann nicht vor dem Einstieg liegen.';return;}
   var miss=langs.filter(function(l){var v=vals[l]||{}; return !(+v.min>0) || (type==='monat'?(v.fee===''||v.fee==null||!(+v.per>0)):(v.price===''||v.price==null));});
   if(miss.length){err.textContent=(type==='monat'?'Bitte Betrag, Stunden pro Monat und Dauer eintragen für: ':'Bitte Preis und Dauer eintragen für: ')+miss.join(', ')+'.';return;}
   var st=editId?find(editId):null, isNew=!st;
@@ -1105,6 +1118,7 @@ fS.addEventListener('submit',function(e){
   if(!isNew && oldStatus!=='pausiert' && st.status==='pausiert') st.pauses.push({from:t,to:null});
   if(!isNew && oldStatus==='pausiert' && st.status!=='pausiert'){var p=st.pauses[st.pauses.length-1]; if(p&&!p.to) p.to=t;}
   if(isNew && st.status==='pausiert') st.pauses.push({from:t,to:null});
+  if(st.status==='beendet') st.end=E.end.value||t; else delete st.end;
   if(isNew) S.students.push(st);
   save(); closeDlg(dS); render(); toast(isNew?name+' hinzugefügt':'Änderungen gespeichert');
 });
@@ -1132,7 +1146,10 @@ fL.addEventListener('submit',function(e){
 
 // Bestätigen
 var dC=document.getElementById('dlgConfirm'), confirmFn=null;
-function ask(title,text,okLabel,fn){
+var altFn=null;
+document.getElementById('confirmAlt').addEventListener('click',function(){closeDlg(dC); if(altFn) altFn();});
+function ask(title,text,okLabel,fn,alt){
+  var ab=document.getElementById('confirmAlt'); altFn=alt?alt.fn:null; ab.classList.toggle('hide',!alt); if(alt) ab.textContent=alt.label;
   document.getElementById('confirmTitle').textContent=title;
   document.getElementById('confirmText').textContent=text;
   document.getElementById('confirmOk').textContent=okLabel; confirmFn=fn; openDlg(dC);
@@ -1212,9 +1229,10 @@ app.addEventListener('click',function(e){
   if(a==='add') openStudent(null);
   else if(a==='edit') openStudent(st);
   else if(a==='lesson') openLesson(st);
-  else if(a==='del') ask(st.name+' löschen?','Der Schüler und alle seine Zahlungen werden aus der Übersicht entfernt.','Löschen',function(){
+  else if(a==='del') ask(st.name+' löschen?','Dabei verschwinden auch alle seine Zahlungen und sein Umsatz aus der Statistik. Wenn '+st.name.split(' ')[0]+' nur aufgehört hat, setz den Schüler lieber auf „Beendet“ – dann bleibt der Umsatz erhalten.','Endgültig löschen',function(){
       var idx=S.students.indexOf(st); S.students.splice(idx,1); save(); render();
-      toast(st.name+' gelöscht',function(){S.students.splice(idx,0,st);save();render();});});
+      toast(st.name+' gelöscht',function(){S.students.splice(idx,0,st);save();render();});},
+      st.status!=='beendet'?{label:'Stattdessen beenden',fn:function(){openStudent(st); fS.elements.status.value='beendet'; syncEnd();}}:null);
   else if(a==='pay'){var r=dueState(st); if(r.item){var it=r.item; payItem(st,it); save(); render();
       toast('Zahlung von '+st.name+' erhalten ('+money(it.amount)+')',function(){unpayItem(st,it);save();render();});}}
   else if(a==='payall'){var ra=dueState(st), its=ra.open.slice(); its.forEach(function(i){payItem(st,i);}); save(); render();
