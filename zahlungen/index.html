@@ -314,6 +314,10 @@ dialog::backdrop{background:rgba(14,27,77,.45)}
     </select></label>
   </div>
   <div class="calc" id="calcBox"></div>
+  <div id="waivedBox" class="hide">
+    <div class="f" style="margin-bottom:6px"><span>Gestrichene Zahlungen</span></div>
+    <div class="lessons" id="waivedList"></div>
+  </div>
   <div id="lessonBox" class="hide">
     <div class="f" style="margin-bottom:6px"><span>Eingetragene Stunden</span></div>
     <div class="lessons" id="lessonList"></div>
@@ -452,7 +456,7 @@ function items(st,uptoYm){
     var ym=ymOf(st.start), guard=0;
     while(ym<=uptoYm && guard++<600){
       var due=dueOf(st,ym);
-      if(!inPause(st,due) && !(st.status==='beendet' && st.end && due>st.end)){
+      if(!inPause(st,due) && !(st.status==='beendet' && st.end && due>st.end) && !(st.waived&&st.waived[ym])){
         var p=(st.paid||{})[ym], parts=partsFor(st,ym);
         var tot=parts.reduce(function(a,x){return a+(+x.fee||0);},0);
         var amount=p?p.amount:tot, n=0;
@@ -466,7 +470,7 @@ function items(st,uptoYm){
     }
   }else{
     (st.lessons||[]).forEach(function(l){
-      if(ymOf(l.date)<=uptoYm) out.push({kind:'stunde',key:l.id,ym:ymOf(l.date),due:l.date,amount:+l.price||0,paid:l.paid||null,
+      if(ymOf(l.date)<=uptoYm && !l.waived) out.push({kind:'stunde',key:l.id,ym:ymOf(l.date),due:l.date,amount:+l.price||0,paid:l.paid||null,
         lessons:1,minutes:+l.minutes||0,split:[{lang:l.lang||st.langs[0],rev:+l.price||0,lessons:1,minutes:+l.minutes||0}]});
     });
   }
@@ -524,6 +528,10 @@ function dueState(st){
   }
   res.sum=open.reduce(function(a,i){return a+i.amount;},0);
   return res;
+}
+function waiveItem(st,item,on){
+  if(item.kind==='monat'){st.waived=st.waived||{}; if(on) st.waived[item.key]=today(); else delete st.waived[item.key];}
+  else (st.lessons||[]).forEach(function(l){if(l.id===item.key){ if(on) l.waived=today(); else delete l.waived; }});
 }
 function payItem(st,item,date){
   date=date||today();
@@ -724,7 +732,8 @@ function dueRow(r){
   h+='<div class="c-stich"><span class="k">Stichtag</span>'+stich(st)+'</div>';
   h+='<div class="end">'+(r.cat!=='done'?
     (r.open.length>1?'<button class="btn ok small" data-act="pay" data-id="'+st.id+'" title="Bucht die älteste offene Zahlung">✓ '+(r.item.kind==='monat'?shortYm(r.item.ym):fmtDate(r.item.due).slice(0,6))+' erhalten</button><button class="btn light small" data-act="payall" data-id="'+st.id+'">Alle erhalten</button>'
-      :'<button class="btn ok small" data-act="pay" data-id="'+st.id+'">✓ Zahlung erhalten</button>'):
+      :'<button class="btn ok small" data-act="pay" data-id="'+st.id+'">✓ Zahlung erhalten</button>')+
+     '<button class="link muted" data-act="waive" data-id="'+st.id+'" title="Diese Zahlung wird nicht mehr fällig und zählt nicht zum Umsatz">'+(r.item.kind==='monat'?shortYm(r.item.ym):'Stunde')+' streichen</button>':
     (r.lastPaid?'<button class="link" data-act="unpay" data-id="'+st.id+'">Letzte Zahlung zurücknehmen</button>':''))+'</div>';
   return h+'</div>';
 }
@@ -1082,19 +1091,35 @@ function openStudent(st){
   renderLessonList(st);
   syncType(); openDlg(dS); setTimeout(function(){E.name.focus();},50);
 }
+function renderWaived(st){
+  var ks=st&&st.type==='monat'&&st.waived?Object.keys(st.waived).sort():[];
+  document.getElementById('waivedBox').classList.toggle('hide',!ks.length);
+  document.getElementById('waivedList').innerHTML=ks.map(function(k){
+    return '<div><span>'+fmtYm(k)+'</span><span><span class="pill pausiert">gestrichen</span> <button type="button" class="link" data-unw="'+k+'">wiederherstellen</button></span></div>';}).join('');
+}
+document.getElementById('waivedList').addEventListener('click',function(e){
+  var st=find(editId), b=e.target.closest('button'); if(!st||!b) return;
+  delete st.waived[b.dataset.unw]; save(); renderWaived(st); render();
+});
 function renderLessonList(st){
+  renderWaived(st);
   var box=document.getElementById('lessonBox'), ls=st&&st.type==='stunde'?(st.lessons||[]).slice().sort(function(a,b){return a.date<b.date?1:-1;}):[];
   box.classList.toggle('hide',!ls.length);
   document.getElementById('lessonList').innerHTML=ls.map(function(l){
+    if(l.waived) return '<div><span style="text-decoration:line-through;color:var(--muted)">'+fmtDate(l.date)+' · '+(+l.minutes||0)+' Min. · '+money(l.price)+'</span><span>'+
+      '<span class="pill pausiert">gestrichen</span> <button type="button" class="link" data-lunw="'+l.id+'">wiederherstellen</button>'+
+      '<button type="button" class="link red" data-ldel="'+l.id+'">löschen</button></span></div>';
     return '<div><span>'+fmtDate(l.date)+' · '+(+l.minutes||0)+' Min. · '+money(l.price)+(st.langs.length>1?' · '+esc(l.lang):'')+'</span><span>'+
       '<span class="pill '+(l.paid?'bezahlt':'offen')+'">'+(l.paid?'bezahlt':'offen')+'</span> '+
       '<button type="button" class="link" data-lpay="'+l.id+'">'+(l.paid?'auf offen':'bezahlt')+'</button>'+
+      (l.paid?'':'<button type="button" class="link muted" data-lwv="'+l.id+'">streichen</button>')+
       '<button type="button" class="link red" data-ldel="'+l.id+'">löschen</button></span></div>';}).join('');
 }
 document.getElementById('lessonList').addEventListener('click',function(e){
   var st=find(editId); if(!st) return; var b=e.target.closest('button'); if(!b) return;
   if(b.dataset.lpay){st.lessons.forEach(function(l){if(l.id===b.dataset.lpay) l.paid=l.paid?null:today();});}
   if(b.dataset.ldel){st.lessons=st.lessons.filter(function(l){return l.id!==b.dataset.ldel;});}
+  if(b.dataset.lwv||b.dataset.lunw){var id=b.dataset.lwv||b.dataset.lunw; st.lessons.forEach(function(l){if(l.id===id){ if(b.dataset.lwv) l.waived=today(); else delete l.waived; }});}
   save(); renderLessonList(st); render();
 });
 fS.addEventListener('submit',function(e){
@@ -1249,6 +1274,9 @@ app.addEventListener('click',function(e){
       st.status!=='beendet'?{label:'Stattdessen beenden',fn:function(){openStudent(st); fS.elements.status.value='beendet'; syncEnd();}}:null);
   else if(a==='pay'){var r=dueState(st); if(r.item){var it=r.item; payItem(st,it); save(); render();
       toast('Zahlung von '+st.name+' erhalten ('+money(it.amount)+')',function(){unpayItem(st,it);save();render();});}}
+  else if(a==='waive'){var rw=dueState(st); if(rw.item){var wi=rw.item, wl=wi.kind==='monat'?fmtYm(wi.ym):'die Stunde vom '+fmtDate(wi.due);
+      ask('Zahlung streichen?','Die Zahlung für '+wl+' ('+money(wi.amount)+') von '+st.name+' wird gestrichen: Sie ist nicht mehr fällig und zählt nicht zum Umsatz. Du kannst das über den Stift beim Schüler wieder rückgängig machen.','Streichen',function(){
+        waiveItem(st,wi,true); save(); render(); toast('Zahlung gestrichen ('+wl+')',function(){waiveItem(st,wi,false);save();render();});});}}
   else if(a==='payall'){var ra=dueState(st), its=ra.open.slice(); its.forEach(function(i){payItem(st,i);}); save(); render();
       toast(its.length+' Zahlungen von '+st.name+' erhalten ('+money(ra.sum)+')',function(){its.forEach(function(i){unpayItem(st,i);});save();render();});}
   else if(a==='unpay'){var rr=dueState(st); if(rr.lastPaid){var li=rr.lastPaid; unpayItem(st,li); save(); render(); toast('Zahlung zurückgenommen');}}
