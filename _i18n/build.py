@@ -395,7 +395,7 @@ def build_seo():
                 new = new.replace('</head>', tag + '</head>', 1)
             if new != html:
                 open(path, 'w', encoding='utf-8').write(new)
-            if 'name="robots" content="noindex"' not in new:
+            if not re.search(r'<meta name="robots" content="[^"]*noindex', new):
                 urls.append(url)
     order = {'de': 0, 'en': 1, 'bs': 2, 'ar': 3}
     urls.sort(key=lambda u: (order.get(u[len(BASE_URL):].split('/')[0], 0), u))
