@@ -372,6 +372,22 @@ LD_JSON = ('<script type="application/ld+json">' + json.dumps({
     'availableLanguage': ['de', 'en', 'bs', 'ar'],
 }, ensure_ascii=False) + '</script>\n')
 
+# Vorschaubilder (og:image, seit 23.11.2026): assets/img/og/<adresse>.png, 1200×630,
+# z. B. bosnisch.png, en-bosnian.png, start.png (DE-Startseite), en.png (EN-Startseite).
+# Erzeugt aus den Seiten selbst (h1, Etikett, Hero-Zeichnung) per Playwright; die Tags
+# setzt build_seo() nur, wenn das Bild existiert.
+OG_RE = re.compile(r'<meta (?:property="og:image[^"]*"|name="twitter:card")[^>]*>\n?')
+OG_TAGS = ('<meta property="og:image" content="%s">\n'
+           '<meta property="og:image:width" content="1200">\n'
+           '<meta property="og:image:height" content="630">\n'
+           '<meta name="twitter:card" content="summary_large_image">\n')
+
+def og_image_name(rel):
+    rel = rel.replace(os.sep, '/')
+    if rel.endswith('index.html'):
+        rel = rel[:-len('index.html')]
+    return (rel.strip('/').replace('/', '-') or 'start') + '.png'
+
 def build_seo():
     urls = []
     for dirpath, dirnames, filenames in os.walk(ROOT):
@@ -385,10 +401,13 @@ def build_seo():
             if 'http-equiv="refresh"' in html:
                 continue
             url = page_url(rel)
-            new = LD_RE.sub('', CANON_RE.sub('', html))
+            new = OG_RE.sub('', LD_RE.sub('', CANON_RE.sub('', html)))
             tag = '<link rel="canonical" href="%s">\n' % url
             if rel.replace(os.sep, '/') in START_PAGES:
                 tag += LD_JSON
+            og = og_image_name(rel)
+            if os.path.exists(os.path.join(ROOT, 'assets', 'img', 'og', og)):
+                tag += OG_TAGS % (BASE_URL + 'assets/img/og/' + og)
             if '<!--ALT-->' in new:
                 new = new.replace('<!--ALT-->', tag + '<!--ALT-->', 1)
             else:
