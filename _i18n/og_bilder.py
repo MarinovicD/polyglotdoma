@@ -1,5 +1,4 @@
 """Vorschaubilder (og:image) für alle Sitemap-Seiten erzeugen: lokalen Server auf Port 8765 starten, dann python3 _i18n/og_bilder.py. Schreibt assets/img/og/<adresse>.png."""
-damit Schriften und SVG-Defs der Hero-Zeichnung verfügbar sind."""
 from playwright.sync_api import sync_playwright
 
 LOGO = '''<svg viewBox="0 0 200 200" width="64" height="64"><defs><clipPath id="ogw"><rect x="0" y="110" width="200" height="13"/><rect x="0" y="129" width="200" height="9"/><rect x="0" y="144" width="200" height="6"/></clipPath></defs><path d="M16 104 L70 50 L88 68 L114 34 L184 104 Z" fill="#1D3A9A"/><path d="M114 34 L104 48 L110 45 L115 51 L120 45 L125 49 Z" fill="#F4F6FB"/><path d="M16 104 L70 158 L88 140 L114 174 L184 104 Z" fill="#4A68C2" clip-path="url(#ogw)"/><circle cx="152" cy="40" r="12" fill="#B88A4A"/></svg>'''
