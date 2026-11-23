@@ -8,7 +8,7 @@ Ergebnis: en/, bs/, ar/ mit index.html, impressum.html, datenschutz.html.
 Außerdem werden Sprachumschalter (und, sobald BASE_URL gesetzt ist, hreflang-Links)
 in die deutschen Seiten geschrieben. Die erzeugten Dateien nicht von Hand ändern.
 """
-import os, re, sys
+import json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from index_strings import S, AR_EXTRA
 from legal_strings import UI, IMPRESSUM, DATENSCHUTZ
@@ -213,6 +213,8 @@ def page_switchers(html, slug, langs, lang):
     alt = ''
     if BASE_URL:
         alt = '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s%s/">' % (l, BASE_URL, '' if l == 'de' else l + '/', slug_of(slug, l)) for l in langs)
+        xd = 'de' if 'de' in langs else 'en'  # x-default: Deutsch, sonst Englisch (seit 23.11.2026)
+        alt += '\n<link rel="alternate" hreflang="x-default" href="%s%s%s/">' % (BASE_URL, '' if xd == 'de' else xd + '/', slug_of(slug, xd))
     html = fill(html, 'LANGSW', sw)
     html = fill(html, 'LANGMENU', mn)
     return fill(html, 'ALT', alt)
@@ -328,7 +330,8 @@ def build_deutsch():
         out = fill(out, 'LANGSW', lang_dropdown(lang, items))
         out = fill(out, 'LANGMENU', lang_menu(lang, items))
         out = fill(out, 'ALT', '\n'.join('<link rel="alternate" hreflang="%s" href="%s%s/%s/">' % (l, BASE_URL, l, DE_SLUG[l])
-                                         for l in DE_PAGE_LANGS))
+                                         for l in DE_PAGE_LANGS)
+                   + '\n<link rel="alternate" hreflang="x-default" href="%sen/%s/">' % (BASE_URL, DE_SLUG['en']))
         left = sorted(t for t in text_nodes(out) & de_text if t not in ALLOW)
         if left:
             print('[%s/%s] noch deutsch?' % (lang, DE_SLUG[lang]), left)
@@ -351,6 +354,24 @@ def page_url(rel):
         return BASE_URL + rel[:-len('index.html')]
     return BASE_URL + rel
 
+# Strukturierte Daten (JSON-LD, seit 23.11.2026) nur auf den vier Startseiten.
+# Nur Angaben, die auch auf der Website bzw. im Impressum stehen – keine Preise.
+LD_RE = re.compile(r'<script type="application/ld\+json">.*?</script>\n?', re.S)
+START_PAGES = {'index.html', 'en/index.html', 'bs/index.html', 'ar/index.html'}
+LD_JSON = ('<script type="application/ld+json">' + json.dumps({
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    'name': 'polyglot.doma',
+    'url': BASE_URL,
+    'logo': BASE_URL + 'assets/img/logo-bildmarke.svg',
+    'founder': {'@type': 'Person', 'name': 'Domagoj Marinović',
+                'url': BASE_URL + 'ueber-mich/',
+                'knowsLanguage': ['bs', 'de', 'en', 'fr', 'ar', 'tr']},
+    'address': {'@type': 'PostalAddress', 'addressLocality': 'Žepče',
+                'postalCode': '72230', 'addressCountry': 'BA'},
+    'availableLanguage': ['de', 'en', 'bs', 'ar'],
+}, ensure_ascii=False) + '</script>\n')
+
 def build_seo():
     urls = []
     for dirpath, dirnames, filenames in os.walk(ROOT):
@@ -364,8 +385,10 @@ def build_seo():
             if 'http-equiv="refresh"' in html:
                 continue
             url = page_url(rel)
-            new = CANON_RE.sub('', html)
+            new = LD_RE.sub('', CANON_RE.sub('', html))
             tag = '<link rel="canonical" href="%s">\n' % url
+            if rel.replace(os.sep, '/') in START_PAGES:
+                tag += LD_JSON
             if '<!--ALT-->' in new:
                 new = new.replace('<!--ALT-->', tag + '<!--ALT-->', 1)
             else:
